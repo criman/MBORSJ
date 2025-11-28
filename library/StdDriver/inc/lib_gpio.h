@@ -1,0 +1,526 @@
+/***************************************************************
+ *文件名： lib_gpio.h
+ *作 者： AE Team
+ *版 本： V1.00
+ *日 期： 2021/11/2
+ *描 述： GPIO模块及外部中断、按键中断库函数头文件
+ *备 注：
+ * Copyright (C) Shanghai Eastsoft Microelectronics Co. Ltd. All rights reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the License); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************/
+#ifndef __LIBGPIO_H__
+#define __LIBGPIO_H__
+
+#include "ES8H018x.h"
+#include "type.h"
+
+/*状态定义*/
+
+/*端口定义*/
+typedef enum
+{
+    GPIOA = 0x0,
+    GPIOB = 0x1,
+} GPIO_TYPE;
+
+/*引脚定义*/
+typedef enum
+{
+    GPIO_Pin_0 = 0x00,
+    GPIO_Pin_1 = 0x01,
+    GPIO_Pin_2 = 0x02,
+    GPIO_Pin_3 = 0x03,
+    GPIO_Pin_4 = 0x04,
+    GPIO_Pin_5 = 0x05,
+    GPIO_Pin_6 = 0x06,
+    GPIO_Pin_7 = 0x07,
+    GPIO_Pin_8 = 0x08,
+    GPIO_Pin_9 = 0x09,
+    GPIO_Pin_10 = 0x0A,
+    GPIO_Pin_11 = 0x0B,
+    GPIO_Pin_12 = 0x0C,
+    GPIO_Pin_13 = 0x0D,
+    GPIO_Pin_14 = 0x0E,
+    GPIO_Pin_15 = 0x0F,
+    GPIO_Pin_16 = 0x10,
+    GPIO_Pin_17 = 0x11,
+    GPIO_Pin_18 = 0x12,
+    GPIO_Pin_19 = 0x13,
+    GPIO_Pin_20 = 0x14,
+    GPIO_Pin_21 = 0x15,
+    GPIO_Pin_22 = 0x16,
+    GPIO_Pin_23 = 0x17,
+    GPIO_Pin_24 = 0x18,
+    GPIO_Pin_25 = 0x19,
+    GPIO_Pin_26 = 0x1A,
+    GPIO_Pin_27 = 0x1B,
+    GPIO_Pin_28 = 0x1C,
+    GPIO_Pin_29 = 0x1D,
+    GPIO_Pin_30 = 0x1E,
+    GPIO_Pin_31 = 0x1F,
+} GPIO_TYPE_PIN;
+
+/* 引脚功能选择 */
+typedef enum
+{
+    GPIO_Func_0 = 0x0,
+    GPIO_Func_1 = 0x1,
+    GPIO_Func_2 = 0x2,
+    GPIO_Func_3 = 0x3,
+    GPIO_Func_4 = 0x4,
+    GPIO_Func_5 = 0x5,
+    GPIO_Func_6 = 0x6,
+    GPIO_Func_7 = 0x7,
+} GPIO_TYPE_FUNC;
+
+/* 引脚方向选择 */
+typedef enum
+{
+    GPIO_Dir_Out = 0x0,
+    GPIO_Dir_In = 0x1,
+} GPIO_TYPE_DIR;
+
+/* 引脚输出电流驱动能力选择 */
+typedef enum
+{
+    GPIO_DS_Output_Normal = 0,   // 普通电流输出
+    GPIO_DS_Output_Strong = 1,   // 强电流输出
+} GPIO_TYPE_DS;
+
+/* 引脚端口类型选择 */
+typedef enum
+{
+    GPIO_TYP_CMOS = 0,   // CMOS
+    GPIO_TYP_TTL  = 1,   // TTL
+} GPIO_TYPE_TYP;
+
+/* 引脚20ns滤波使能 */
+typedef enum
+{
+    GPIO_TYP_FLT_DISABLE = 0,
+    GPIO_TYP_FLT_ENABLE  = 1,
+} GPIO_TYPE_FLT;
+
+/* 引脚信号类型 */
+typedef enum
+{
+    GPIO_Pin_Signal_Digital = 0, // 数字信号引脚
+    GPIO_Pin_Signal_Analog = 1,  // 模拟信号引脚
+} GPIO_Pin_Signal;
+
+/* 引脚输入弱上拉使能 */
+typedef enum
+{
+    GPIO_PUE_Input_Disable = 0,  // 弱上拉禁止
+    GPIO_PUE_Input_Enable = 1,   // 弱上拉使能
+} GPIO_PUE_Input;
+
+/* 引脚输入弱下拉使能 */
+typedef enum
+{
+    GPIO_PDE_Input_Disable = 0,  // 弱下拉禁止
+    GPIO_PDE_Input_Enable = 1,   // 弱下拉使能
+} GPIO_PDE_Input;
+
+
+/* 引脚输出开漏使能位 */
+typedef enum
+{
+    GPIO_ODE_Output_Disable = 0, // 开漏禁止
+    GPIO_ODE_Output_Enable = 1,  // 开漏使能
+} GPIO_ODE_Output;
+
+/* 脉宽调制电平 */
+typedef enum
+{
+    UART_TXPLV_Low = 0x0,          //脉宽调制电平:低
+    UART_TXPLV_High = 0x1,         //脉宽调制电平:高
+} UART_TYPE_TXPLV;
+
+/* 脉宽PWM脉冲选择 */
+typedef enum
+{
+    UART_TX3PS_NO = 0x0,         //脉宽PWM脉冲选择:非调制输出
+    UART_TX3PS_BUZ = 0x1,        //脉宽PWM脉冲选择:BUZ，需要固定38K输出
+    UART_TX3PS_T16N3Out0 = 0x2,  //脉宽PWM脉冲选择:T16N3OUT0
+    UART_TX3PS_T16N3Out1 = 0x3,  //脉宽PWM脉冲选择:T16N3OUT1
+} UART_TYPE_TX3PS;
+
+typedef enum
+{
+    UART_TX2PS_NO = 0x0,         //脉宽PWM脉冲选择:非调制输出
+    UART_TX2PS_BUZ = 0x1,        //脉宽PWM脉冲选择:BUZ，需要固定38K输出
+    UART_TX2PS_T16N2Out0 = 0x2,  //脉宽PWM脉冲选择:T16N2OUT0
+    UART_TX2PS_T16N2Out1 = 0x3,  //脉宽PWM脉冲选择:T16N2OUT1
+} UART_TYPE_TX2PS;
+
+typedef enum
+{
+    UART_TX1PS_NO = 0x0,         //脉宽PWM脉冲选择:非调制输出
+    UART_TX1PS_BUZ = 0x1,        //脉宽PWM脉冲选择:BUZ，需要固定38K输出
+    UART_TX1PS_T16N1Out0 = 0x2,  //脉宽PWM脉冲选择:T16N1OUT0
+    UART_TX1PS_T16N1Out1 = 0x3,  //脉宽PWM脉冲选择:T16N1OUT1
+} UART_TYPE_TX1PS;
+
+typedef enum
+{
+    UART_TX0PS_NO = 0x0,         //脉宽PWM脉冲选择:非调制输出
+    UART_TX0PS_BUZ = 0x1,        //脉宽PWM脉冲选择:BUZ，需要固定38K输出
+    UART_TX0PS_T16N0Out0 = 0x2,  //脉宽PWM脉冲选择:T16N0OUT0
+    UART_TX0PS_T16N0Out1 = 0x3,  //脉宽PWM脉冲选择:T16N0OUT1
+} UART_TYPE_TX0PS;
+
+/*调制波形输出管脚配置*/
+typedef enum
+{
+    UART_TYPE_TXD3 = 0x0,        //TXD3管脚输出
+    UART_TYPE_TX3BUZ = 0x1,      //BUZ管脚输出
+    UART_TYPE_T16N3OUT0 = 0x2,   //T16N3OUT0管脚输出
+    UART_TYPE_T16N3OUT1 = 0x3,   //T16N3OUT1管脚输出
+} UART_TYPE_TX3Sx;
+
+typedef enum
+{
+    UART_TYPE_TXD2 = 0x0,        //TXD2管脚输出
+    UART_TYPE_TX2BUZ = 0x1,      //BUZ管脚输出
+    UART_TYPE_T16N2OUT0 = 0x2,   //T16N2OUT0管脚输出
+    UART_TYPE_T16N2OUT1 = 0x3,   //T16N2OUT1管脚输出
+} UART_TYPE_TX2Sx;
+
+typedef enum
+{
+    UART_TYPE_TXD1 = 0x0,        //TXD1管脚输出
+    UART_TYPE_TX1BUZ = 0x1,      //BUZ管脚输出
+    UART_TYPE_T16N1OUT0 = 0x2,   //T16N1OUT0管脚输出
+    UART_TYPE_T16N1OUT1 = 0x3,   //T16N1OUT1管脚输出
+} UART_TYPE_TX1Sx;
+
+typedef enum
+{
+    UART_TYPE_TXD0 = 0x0,        //TXD0管脚输出
+    UART_TYPE_TX0BUZ = 0x1,      //BUZ管脚输出
+    UART_TYPE_T16N0OUT0 = 0x2,   //T16N0OUT0管脚输出
+    UART_TYPE_T16N0OUT1 = 0x3,   //T16N0OUT1管脚输出
+} UART_TYPE_TX0Sx;
+
+/* GPIO初始化配置结构体定义 */
+typedef struct
+{
+    GPIO_Pin_Signal GPIO_Signal; /* 引脚上的信号类型，只有模拟和数字两种 */
+    GPIO_TYPE_FUNC GPIO_Func;    //引脚功能选择
+    GPIO_TYPE_DIR GPIO_Direction;//方向选择
+    GPIO_PUE_Input GPIO_PUEN;    //上拉使能
+    GPIO_PDE_Input GPIO_PDEN;    //下拉使能
+    GPIO_ODE_Output GPIO_OD;     //输出模式开漏使能
+    GPIO_TYPE_DS GPIO_DS;        //驱动电流控制
+    GPIO_TYPE_TYP GPIO_TYP;      //端口类型选择
+    GPIO_TYPE_FLT GPIO_FLT;      //20ns滤波使能
+} GPIO_InitStruType;
+
+
+
+/* PINT */
+typedef enum
+{
+    PINT0 = 0x0,
+    PINT1 = 0x1,
+    PINT2 = 0x2,
+    PINT3 = 0x3,
+    PINT4 = 0x4,
+    PINT5 = 0x5,
+    PINT6 = 0x6,
+    PINT7 = 0x7,
+    PINT8 = 0x8,
+    PINT9 = 0x9,
+    PINT10 = 0xA,
+    PINT11 = 0xB,
+} PINT_TYPE;
+
+/* PINT SEL */
+typedef enum
+{
+    PINT_SEL0 = 0x0,
+    PINT_SEL1 = 0x1,
+    PINT_SEL2 = 0x2,
+    PINT_SEL3 = 0x3,
+    PINT_SEL4 = 0x4,
+    PINT_SEL5 = 0x5,
+} PINT_TYPE_SEL;
+
+/* PINT Trigger */
+typedef enum
+{
+    PINT_Trig_Rise = 0x0,
+    PINT_Trig_Fall = 0x1,
+    PINT_Trig_High = 0x2,
+    PINT_Trig_Low  = 0x3,
+    PINT_Trig_Change = 0x4,
+} PINT_TYPE_TRIG;
+
+/* KINT */
+typedef enum
+{
+    KINT0 = 0x0,
+    KINT1 = 0x1,
+    KINT2 = 0x2,
+    KINT3 = 0x3,
+    KINT4 = 0x4,
+    KINT5 = 0x5,
+    KINT6 = 0x6,
+    KINT7 = 0x7,
+    KINT8 = 0x8,
+    KINT9 = 0x9,
+    KINT10 = 0xA,
+    KINT11 = 0xB,
+} KINT_TYPE;
+
+/* KINT SEL */
+typedef enum
+{
+    KINT_SEL0 = 0x0,
+    KINT_SEL1 = 0x1,
+    KINT_SEL2 = 0x2,
+    KINT_SEL3 = 0x3,
+    KINT_SEL4 = 0x4,
+    KINT_SEL5 = 0x5,
+} KINT_TYPE_SEL;
+
+/* KINT Trigger */
+typedef enum
+{
+    KINT_Trig_Rise = 0x0,
+    KINT_Trig_Fall = 0x1,
+    KINT_Trig_High = 0x2,
+    KINT_Trig_Low  = 0x3,
+    KINT_Trig_Change = 0x4,
+} KINT_TYPE_TRIG;
+
+/* PINT中断标志 */
+typedef enum
+{
+    PINT_IT_PINT0 = 0x01,
+    PINT_IT_PINT1 = 0x02,
+    PINT_IT_PINT2 = 0x04,
+    PINT_IT_PINT3 = 0x08,
+    PINT_IT_PINT4 = 0x10,
+    PINT_IT_PINT5 = 0x20,
+    PINT_IT_PINT6 = 0x40,
+    PINT_IT_PINT7 = 0x80,
+    PINT_IT_PINT8 = 0x100,
+    PINT_IT_PINT9 = 0x200,
+    PINT_IT_PINT10 = 0x400,
+    PINT_IT_PINT11 = 0x800,
+    PINT_IT_ALL   = 0xFFF,
+} PINT_TYPE_IT;
+
+/* PINT中断使能状态 */
+typedef enum
+{
+    PINT_IE_PINT0 = 0x01,
+    PINT_IE_PINT1 = 0x02,
+    PINT_IE_PINT2 = 0x04,
+    PINT_IE_PINT3 = 0x08,
+    PINT_IE_PINT4 = 0x10,
+    PINT_IE_PINT5 = 0x20,
+    PINT_IE_PINT6 = 0x40,
+    PINT_IE_PINT7 = 0x80,
+    PINT_IE_PINT8 = 0x10000,
+    PINT_IE_PINT9 = 0x20000,
+    PINT_IE_PINT10 = 0x40000,
+    PINT_IE_PINT11 = 0x80000,
+} PINT_TYPE_IE;
+
+/* KINT中断标志 */
+typedef enum
+{
+    KINT_IT_KINT0 = 0x01,
+    KINT_IT_KINT1 = 0x02,
+    KINT_IT_KINT2 = 0x04,
+    KINT_IT_KINT3 = 0x08,
+    KINT_IT_KINT4 = 0x10,
+    KINT_IT_KINT5 = 0x20,
+    KINT_IT_KINT6 = 0x40,
+    KINT_IT_KINT7 = 0x80,
+    KINT_IT_KINT8 = 0x100,
+    KINT_IT_KINT9 = 0x200,
+    KINT_IT_KINT10 = 0x400,
+    KINT_IT_KINT11 = 0x800,
+    KINT_IT_ALL   = 0xFFF,
+} KINT_TYPE_IT;
+
+/* PINT中断使能状态 */
+typedef enum
+{
+    KINT_IE_KINT0 = 0x01,
+    KINT_IE_KINT1 = 0x02,
+    KINT_IE_KINT2 = 0x04,
+    KINT_IE_KINT3 = 0x08,
+    KINT_IE_KINT4 = 0x10,
+    KINT_IE_KINT5 = 0x20,
+    KINT_IE_KINT6 = 0x40,
+    KINT_IE_KINT7 = 0x80,
+    KINT_IE_KINT8 = 0x10000,
+    KINT_IE_KINT9 = 0x20000,
+    KINT_IE_KINT10 = 0x40000,
+    KINT_IE_KINT11 = 0x80000,
+} KINT_TYPE_IE;
+
+/* PINT使能控制 */
+#define PINT0_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x01)
+#define PINT1_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x02)
+#define PINT2_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x04)
+#define PINT3_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x08)
+#define PINT4_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x10)
+#define PINT5_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x20)
+#define PINT6_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x40)
+#define PINT7_Enable() (GPIO->PINTIE.PINTIE_7_0 |= 0x80)
+#define PINT8_Enable() (GPIO->PINTIE.PINTIE_11_8 |= 0x01)
+#define PINT9_Enable() (GPIO->PINTIE.PINTIE_11_8 |= 0x02)
+#define PINT10_Enable() (GPIO->PINTIE.PINTIE_11_8 |= 0x04)
+#define PINT11_Enable() (GPIO->PINTIE.PINTIE_11_8 |= 0x08)
+#define PINT0_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x01)
+#define PINT1_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x02)
+#define PINT2_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x04)
+#define PINT3_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x08)
+#define PINT4_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x10)
+#define PINT5_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x20)
+#define PINT6_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x40)
+#define PINT7_Disable() (GPIO->PINTIE.PINTIE_7_0 &= ~0x80)
+#define PINT8_Disable() (GPIO->PINTIE.PINTIE_11_8 &= ~0x01)
+#define PINT9_Disable() (GPIO->PINTIE.PINTIE_11_8 &= ~0x02)
+#define PINT10_Disable() (GPIO->PINTIE.PINTIE_11_8 &= ~0x04)
+#define PINT11_Disable() (GPIO->PINTIE.PINTIE_11_8 &= ~0x08)
+
+/* PINT屏蔽使能控制 */
+#define PINT0_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x01)
+#define PINT1_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x02)
+#define PINT2_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x04)
+#define PINT3_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x08)
+#define PINT4_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x10)
+#define PINT5_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x20)
+#define PINT6_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x40)
+#define PINT7_MaskEnable()   (GPIO->PINTIE.PMASK_7_0 |= 0x80)
+#define PINT8_MaskEnable()   (GPIO->PINTIE.PMASK_11_8 |= 0x01)
+#define PINT9_MaskEnable()   (GPIO->PINTIE.PMASK_11_8 |= 0x02)
+#define PINT10_MaskEnable()   (GPIO->PINTIE.PMASK_11_8 |= 0x04)
+#define PINT11_MaskEnable()   (GPIO->PINTIE.PMASK_11_8 |= 0x08)
+#define PINT0_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x01)
+#define PINT1_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x02)
+#define PINT2_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x04)
+#define PINT3_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x08)
+#define PINT4_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x10)
+#define PINT5_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x20)
+#define PINT6_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x40)
+#define PINT7_MaskDisable()  (GPIO->PINTIE.PMASK_7_0 &= ~0x80)
+#define PINT8_MaskDisable()  (GPIO->PINTIE.PMASK_11_8 &= ~0x01)
+#define PINT9_MaskDisable()  (GPIO->PINTIE.PMASK_11_8 &= ~0x02)
+#define PINT10_MaskDisable()  (GPIO->PINTIE.PMASK_11_8 &= ~0x04)
+#define PINT11_MaskDisable()  (GPIO->PINTIE.PMASK_11_8 &= ~0x08)
+
+/* KINT使能控制 */
+#define KINT0_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x01)
+#define KINT1_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x02)
+#define KINT2_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x04)
+#define KINT3_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x08)
+#define KINT4_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x10)
+#define KINT5_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x20)
+#define KINT6_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x40)
+#define KINT7_Enable() (GPIO->KINTIE.KINTIE_7_0 |= 0x80)
+#define KINT8_Enable() (GPIO->KINTIE.KINTIE_11_8 |= 0x01)
+#define KINT9_Enable() (GPIO->KINTIE.KINTIE_11_8 |= 0x02)
+#define KINT10_Enable() (GPIO->KINTIE.KINTIE_11_8 |= 0x04)
+#define KINT11_Enable() (GPIO->KINTIE.KINTIE_11_8 |= 0x08)
+#define KINT0_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x01)
+#define KINT1_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x02)
+#define KINT2_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x04)
+#define KINT3_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x08)
+#define KINT4_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x10)
+#define KINT5_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x20)
+#define KINT6_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x40)
+#define KINT7_Disable() (GPIO->KINTIE.KINTIE_7_0 &= ~0x80)
+#define KINT8_Disable() (GPIO->KINTIE.KINTIE_11_8 &= ~0x01)
+#define KINT9_Disable() (GPIO->KINTIE.KINTIE_11_8 &= ~0x02)
+#define KINT10_Disable() (GPIO->KINTIE.KINTIE_11_8 &= ~0x04)
+#define KINT11_Disable() (GPIO->KINTIE.KINTIE_11_8 &= ~0x08)
+
+/* KINT屏蔽使能控制 */
+#define KINT0_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x01)
+#define KINT1_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x02)
+#define KINT2_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x04)
+#define KINT3_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x08)
+#define KINT4_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x10)
+#define KINT5_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x20)
+#define KINT6_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x40)
+#define KINT7_MaskEnable()   (GPIO->KINTIE.KMASK_7_0 |= 0x80)
+#define KINT8_MaskEnable()   (GPIO->KINTIE.KMASK_11_8 |= 0x01)
+#define KINT9_MaskEnable()   (GPIO->KINTIE.KMASK_11_8 |= 0x02)
+#define KINT10_MaskEnable()   (GPIO->KINTIE.KMASK_11_8 |= 0x04)
+#define KINT11_MaskEnable()   (GPIO->KINTIE.KMASK_11_8 |= 0x08)
+#define KINT0_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x01)
+#define KINT1_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x02)
+#define KINT2_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x04)
+#define KINT3_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x08)
+#define KINT4_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x10)
+#define KINT5_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x20)
+#define KINT6_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x40)
+#define KINT7_MaskDisable()  (GPIO->KINTIE.KMASK_7_0 &= ~0x80)
+#define KINT8_MaskDisable()  (GPIO->KINTIE.KMASK_11_8 &= ~0x01)
+#define KINT9_MaskDisable()  (GPIO->KINTIE.KMASK_11_8 &= ~0x02)
+#define KINT10_MaskDisable()  (GPIO->KINTIE.KMASK_11_8 &= ~0x04)
+#define KINT11_MaskDisable()  (GPIO->KINTIE.KMASK_11_8 &= ~0x08)
+
+/* PINT清除所有中断标记 */
+#define PINT_ClearAllITPending() (GPIO->PIF.Word = (uint32_t)0xFFF)
+/* KINT清除所有中断标记 */
+#define KINT_ClearAllITPending() (GPIO->KIF.Word = (uint32_t)0xFFF)
+
+void GPIO_Init(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_InitStruType *GPIO_InitStruct);
+void GPIO_Write(GPIO_TYPE GPIOx, uint32_t Value);
+uint32_t GPIO_Read(GPIO_TYPE GPIOx);
+PinStatus GPIO_ReadBit(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+void GPIOA_SetBit(GPIO_TYPE_PIN PINx);
+void GPIOA_ResetBit(GPIO_TYPE_PIN PINx);
+void GPIOA_ToggleBit(GPIO_TYPE_PIN PINx);
+void GPIOB_SetBit(GPIO_TYPE_PIN PINx);
+void GPIOB_ResetBit(GPIO_TYPE_PIN PINx);
+void GPIOB_ToggleBit(GPIO_TYPE_PIN PINx);
+void BUZC_Frequence(uint32_t Frequence, TYPE_FUNCEN sys_buz);
+void PINT_Config(PINT_TYPE PINTx, PINT_TYPE_SEL SELx, PINT_TYPE_TRIG TRIGx);
+void KINT_Config(KINT_TYPE KINTx, KINT_TYPE_SEL SELx, KINT_TYPE_TRIG TRIGx);
+void GPIO_SetSingalTypeFromPin(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_Pin_Signal GPIO_Signal);
+void GPIO_SetDirRegFromPin(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_TYPE_DIR Dir);
+void GPIO_SetODERegFromPin(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_ODE_Output ODE);
+void GPIO_SetDSRegFromPin(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_TYPE_DS DS);
+void GPIO_SetPinType(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_TYPE_TYP TYP);
+void GPIO_SetPinFLT(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_TYPE_FLT FLT);
+void GPIO_SetPUERegFromPin(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_PUE_Input PUE);
+void GPIO_SetPDERegFromPin(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_PDE_Input PDE);
+void GPIO_SetFuncxRegFromPin(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx, GPIO_TYPE_FUNC Func);
+
+FlagStatus PINT_GetITStatus(PINT_TYPE_IE PINT_IE);
+FlagStatus PINT_GetITFlag(PINT_TYPE_IT PINT_Flag);
+void PINT_ClearITPendingBit(PINT_TYPE_IT PINT_Flag);
+
+FlagStatus KINT_GetITStatus(KINT_TYPE_IE KINT_IE);
+FlagStatus KINT_GetITFlag(KINT_TYPE_IT KINT_Flag);
+void KINT_ClearITPendingBit(KINT_TYPE_IT KINT_Flag);
+
+void GPIO_TX0Config(UART_TYPE_TXPLV Plv, UART_TYPE_TX0PS Ps, UART_TYPE_TX0Sx TX0Sx);
+void GPIO_TX1Config(UART_TYPE_TXPLV Plv, UART_TYPE_TX1PS Ps, UART_TYPE_TX1Sx TX1Sx);
+void GPIO_TX2Config(UART_TYPE_TXPLV Plv, UART_TYPE_TX2PS Ps, UART_TYPE_TX2Sx TX2Sx);
+void GPIO_TX3Config(UART_TYPE_TXPLV Plv, UART_TYPE_TX3PS Ps, UART_TYPE_TX3Sx TX3Sx);
+
+#endif

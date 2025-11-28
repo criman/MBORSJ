@@ -1,0 +1,133 @@
+/***************************************************************
+*文件名： lib_crc.h
+*作  者:  AE Team
+*版  本:  V1.00
+*日  期:  2021/11/8
+*描  述： CRC库函数头文件
+*备  注：
+ * Copyright (C) Shanghai Eastsoft Microelectronics Co. Ltd. All rights reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the License); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+***************************************************************/
+#ifndef __LIBCRC_H
+#define __LIBCRC_H
+
+#include "ES8H018x.h"
+#include "type.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef enum
+{
+    CRC_XOROUT_NORMAL = 0,   //数据输出不取反
+    CRC_XOROUT_ANTI   = 1,   //数据输出取反
+} CRC_XOROUT;
+
+typedef enum
+{
+    CRC_REFOUT_NORMAL  = 0,  //数据输出正序
+    CRC_REFOUT_REVERSE = 1,  //数据输出倒序
+} CRC_REFOUT;
+
+typedef enum
+{
+    CRC_REFIN_NORMAL  = 0,   //数据输入正序
+    CRC_REFIN_REVERSE = 1,   //数据输入倒序
+} CRC_REFIN;
+
+typedef enum
+{
+    CRC_BYTE_BYTE = 0,       //CRC位宽为字节
+    CRC_BYTE_HALF = 1,       //CRC位宽为半字
+    CRC_BYTE_WORD = 2,       //CRC位宽为字
+} CRC_BYTE;
+
+typedef enum
+{
+    CRC_MOD_CRC32       = 0, //CRC32模型
+    CRC_MOD_CRC16       = 2, //CRC16模型
+    CRC_MOD_CRC16_CCITT = 3, //CRC16-CCITT模型
+} CRC_MOD;
+
+typedef enum
+{
+    CRC_INIT_DATA_ALL_0 = 0, //CRC初始化数据全为0
+    CRC_INIT_DATA_ALL_1 = 1, //CRC初始化数据全为1
+} CRC_INIT_DATA;
+
+typedef enum
+{
+    CRC_HS_TYPE_DISABLE = 0,       //CRC高速模式禁止
+    CRC_HS_TYPE_ENABLE  = 1,       //CRC高速模式使能，当CRC时钟小于24M时才能使能
+} CRC_HS_TYPE;
+
+typedef enum
+{
+    CRC_TRIG_FLASH_VERIFY = 0x6E91, //Flash校验
+    CRC_TRIG_EMPTY_CHECK  = 0x6D92, //Flash查空
+    CRC_TRIG_USER_VERIFY  = 0x6C93, //用户校验
+} CRC_TRIG;
+
+typedef enum
+{
+    CRC_IFREN_CODE = 0,       //Flash选择Code区
+    CRC_IFREN_INFO = 1,       //Flash选择Info区
+} CRC_IFREN;
+
+/*CRC_CON 数据配置值结构体初始化*/
+typedef struct
+{
+    CRC_XOROUT xorout;
+    CRC_REFOUT refout;
+    CRC_REFIN refin;
+    CRC_BYTE byte;
+    CRC_MOD mode;
+    TYPE_FUNCEN flash;
+    CRC_IFREN ifren;
+    uint32_t addr;
+    uint16_t size;
+    CRC_INIT_DATA init_data_type;
+    CRC_HS_TYPE hs_type;
+} CRC_CONValueStrutType;
+
+/* CRC状态寄存器位 */
+typedef enum
+{
+    CRC_BUSY = 0x1,        //CRC工作状态
+    CRC_RSTF = 0x2,        //CRC复位标志
+    CRC_EMPTY_ERR = 0x4,   //CRC查空错误标志
+} CRC_STA;
+
+#define CRC_UNLOCK()  CRC->UL.UL = 0x43524355
+#define CRC_LOCK()    CRC->UL.UL = 0
+#define CRC_RESET()   {CRC_UNLOCK();CRC->CON.RST = ENUM_ENABLE;CRC_LOCK();}
+#define CRC_ENABLE()  {CRC_UNLOCK();CRC->CON.EN = ENUM_ENABLE;CRC_LOCK();}
+#define CRC_DIASBLE() {CRC_UNLOCK();CRC->CON.EN = ENUM_DISABLE;CRC_LOCK();}
+
+void CRC_Init(CRC_CONValueStrutType *CRC_CONValueStrut);
+void CRC_WriteData(uint32_t data);
+void CRC_Trig(CRC_TRIG trig);
+uint32_t CRC_GetData(void);
+FlagStatus CRC_GetCRCStatus(CRC_STA sta);
+void CRC_ClearCRCStatus(CRC_STA sta);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+/*************************END OF FILE**********************/

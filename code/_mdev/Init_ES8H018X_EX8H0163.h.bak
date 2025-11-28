@@ -1,0 +1,1146 @@
+/*===================================================================================================
+                		Copyright(C) 2011-2099.  SUNRAM. Co., Ltd.
+-----------------------------------------------------------------------------------------------------
+Project Name  		: Init_ES8H018X_EX8H0163.h
+Description   		: H
+Author        		: Wuhaiming
+Start Date    		: 2023/08/04
+Version       		: V1.0
+Revision History   1:
+                   2:
+===================================================================================================*/ 
+
+#ifndef			_INIT_ES8H018X_EX8H0163_H_
+
+#define			_INIT_ES8H018X_EX8H0163_H_
+
+#include    "lib_gpio.h"
+
+//===================================================================================================//
+//定时器T16N0(//使用CF_ENABLE/不使用CF_DISABLE)
+//---------------------------------------------------------------------------------------------------//
+#define		TIMER_T16N0_ENABLE						CF_ENABLE
+//---------------------------------------------------------------------------------------------------//
+//===================================================================================================//
+//定时器T16N1(//使用CF_ENABLE/不使用CF_DISABLE)
+//---------------------------------------------------------------------------------------------------//
+#define		TIMER_T16N1_ENABLE						CF_DISABLE
+//---------------------------------------------------------------------------------------------------//
+//===================================================================================================//
+//定时器T16N2(//使用CF_ENABLE/不使用CF_DISABLE)
+//---------------------------------------------------------------------------------------------------//
+#define		TIMER_T16N2_ENABLE						CF_DISABLE
+//---------------------------------------------------------------------------------------------------//
+//===================================================================================================//
+//定时器T16N3(//使用CF_ENABLE/不使用CF_DISABLE)
+//---------------------------------------------------------------------------------------------------//
+#define		TIMER_T16N3_ENABLE						CF_DISABLE
+//---------------------------------------------------------------------------------------------------//
+//===================================================================================================//
+//===================================================================================================//
+//低电压检测(//使用CF_ENABLE/不使用CF_DISABLE)
+//---------------------------------------------------------------------------------------------------//
+#define		LVD_ENABLE								CF_ENABLE
+//---------------------------------------------------------------------------------------------------//
+//===================================================================================================//
+
+//===================================================================================================//
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA0									PortPin_Read			 (GPIOA, GPIO_Pin_0)								
+#define		DEFINE_PA0_HI								GPIOA_SetBit			 (		 GPIO_Pin_0)
+#define		DEFINE_PA0_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_0)
+#define		DEFINE_PA0_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_0)
+#define		DEFINE_PA0_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_0)		
+#define		DEFINE_PA0_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_0)
+#define		DEFINE_PA0_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_0)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA1									PortPin_Read			 (GPIOA, GPIO_Pin_1)								
+#define		DEFINE_PA1_HI								GPIOA_SetBit			 (		 GPIO_Pin_1)
+#define		DEFINE_PA1_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_1)
+#define		DEFINE_PA1_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_1)
+#define		DEFINE_PA1_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_1)		
+#define		DEFINE_PA1_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_1)
+#define		DEFINE_PA1_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_1)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA2									PortPin_Read			 (GPIOA, GPIO_Pin_2)								
+#define		DEFINE_PA2_HI								GPIOA_SetBit			 (		 GPIO_Pin_2)
+#define		DEFINE_PA2_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_2)
+#define		DEFINE_PA2_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_2)
+#define		DEFINE_PA2_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_2)		
+#define		DEFINE_PA2_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_2)
+#define		DEFINE_PA2_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_2)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA3									PortPin_Read			 (GPIOA, GPIO_Pin_3)								
+#define		DEFINE_PA3_HI								GPIOA_SetBit			 (		 GPIO_Pin_3)
+#define		DEFINE_PA3_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_3)
+#define		DEFINE_PA3_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_3)
+#define		DEFINE_PA3_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_3)		
+#define		DEFINE_PA3_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_3)
+#define		DEFINE_PA3_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_3)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA4									PortPin_Read			 (GPIOA, GPIO_Pin_4)								
+#define		DEFINE_PA4_HI								GPIOA_SetBit			 (		 GPIO_Pin_4)
+#define		DEFINE_PA4_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_4)
+#define		DEFINE_PA4_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_4)
+#define		DEFINE_PA4_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_4)		
+#define		DEFINE_PA4_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_4)
+#define		DEFINE_PA4_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_4)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA5									PortPin_Read			 (GPIOA, GPIO_Pin_5)								
+#define		DEFINE_PA5_HI								GPIOA_SetBit			 (		 GPIO_Pin_5)
+#define		DEFINE_PA5_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_5)
+#define		DEFINE_PA5_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_5)
+#define		DEFINE_PA5_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_5)		
+#define		DEFINE_PA5_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_5)
+#define		DEFINE_PA5_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_5)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA6									PortPin_Read			 (GPIOA, GPIO_Pin_6)								
+#define		DEFINE_PA6_HI								GPIOA_SetBit			 (		 GPIO_Pin_6)
+#define		DEFINE_PA6_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_6)
+#define		DEFINE_PA6_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_6)
+#define		DEFINE_PA6_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_6)		
+#define		DEFINE_PA6_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_6)
+#define		DEFINE_PA6_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_6)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA7									PortPin_Read			 (GPIOA, GPIO_Pin_7)								
+#define		DEFINE_PA7_HI								GPIOA_SetBit			 (		 GPIO_Pin_7)
+#define		DEFINE_PA7_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_7)
+#define		DEFINE_PA7_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_7)
+#define		DEFINE_PA7_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_7)		
+#define		DEFINE_PA7_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_7)
+#define		DEFINE_PA7_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_7)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA8									PortPin_Read			 (GPIOA, GPIO_Pin_8)								
+#define		DEFINE_PA8_HI								GPIOA_SetBit			 (		 GPIO_Pin_8)
+#define		DEFINE_PA8_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_8)
+#define		DEFINE_PA8_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_8)
+#define		DEFINE_PA8_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_8)		
+#define		DEFINE_PA8_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_8)
+#define		DEFINE_PA8_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_8)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA9									PortPin_Read			 (GPIOA, GPIO_Pin_9)								
+#define		DEFINE_PA9_HI								GPIOA_SetBit			 (		 GPIO_Pin_9)
+#define		DEFINE_PA9_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_9)
+#define		DEFINE_PA9_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_9)
+#define		DEFINE_PA9_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_9)		
+#define		DEFINE_PA9_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_ENOD								ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_9)
+#define		DEFINE_PA9_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_9)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA10									PortPin_Read			 (GPIOA, GPIO_Pin_10)								
+#define		DEFINE_PA10_HI								GPIOA_SetBit			 (		 GPIO_Pin_10)
+#define		DEFINE_PA10_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_10)
+#define		DEFINE_PA10_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_10)
+#define		DEFINE_PA10_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_10)		
+#define		DEFINE_PA10_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_10)
+#define		DEFINE_PA10_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_10)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA11									PortPin_Read			 (GPIOA, GPIO_Pin_11)								
+#define		DEFINE_PA11_HI								GPIOA_SetBit			 (		 GPIO_Pin_11)
+#define		DEFINE_PA11_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_11)
+#define		DEFINE_PA11_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_11)
+#define		DEFINE_PA11_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_11)		
+#define		DEFINE_PA11_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_11)
+#define		DEFINE_PA11_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_11)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA12									PortPin_Read			 (GPIOA, GPIO_Pin_12)								
+#define		DEFINE_PA12_HI								GPIOA_SetBit			 (		 GPIO_Pin_12)
+#define		DEFINE_PA12_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_12)
+#define		DEFINE_PA12_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_12)
+#define		DEFINE_PA12_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_12)		
+#define		DEFINE_PA12_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_12)
+#define		DEFINE_PA12_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_12)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA13									PortPin_Read			 (GPIOA, GPIO_Pin_13)								
+#define		DEFINE_PA13_HI								GPIOA_SetBit			 (		 GPIO_Pin_13)
+#define		DEFINE_PA13_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_13)
+#define		DEFINE_PA13_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_13)
+#define		DEFINE_PA13_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_13)		
+#define		DEFINE_PA13_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_13)
+#define		DEFINE_PA13_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_13)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA14									PortPin_Read			 (GPIOA, GPIO_Pin_14)								
+#define		DEFINE_PA14_HI								GPIOA_SetBit			 (		 GPIO_Pin_14)
+#define		DEFINE_PA14_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_14)
+#define		DEFINE_PA14_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_14)
+#define		DEFINE_PA14_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_14)		
+#define		DEFINE_PA14_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_14)
+#define		DEFINE_PA14_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_14)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA15									PortPin_Read			 (GPIOA, GPIO_Pin_15)								
+#define		DEFINE_PA15_HI								GPIOA_SetBit			 (		 GPIO_Pin_15)
+#define		DEFINE_PA15_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_15)
+#define		DEFINE_PA15_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_15)
+#define		DEFINE_PA15_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_15)		
+#define		DEFINE_PA15_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_15)
+#define		DEFINE_PA15_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_15)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA16									PortPin_Read			 (GPIOA, GPIO_Pin_16)								
+#define		DEFINE_PA16_HI								GPIOA_SetBit			 (		 GPIO_Pin_16)
+#define		DEFINE_PA16_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_16)
+#define		DEFINE_PA16_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_16)
+#define		DEFINE_PA16_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_16)		
+#define		DEFINE_PA16_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_16)
+#define		DEFINE_PA16_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_16)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA17									PortPin_Read			 (GPIOA, GPIO_Pin_17)								
+#define		DEFINE_PA17_HI								GPIOA_SetBit			 (		 GPIO_Pin_17)
+#define		DEFINE_PA17_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_17)
+#define		DEFINE_PA17_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_17)
+#define		DEFINE_PA17_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_17)		
+#define		DEFINE_PA17_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_17)
+#define		DEFINE_PA17_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_17)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA18									PortPin_Read			 (GPIOA, GPIO_Pin_18)								
+#define		DEFINE_PA18_HI								GPIOA_SetBit			 (		 GPIO_Pin_18)
+#define		DEFINE_PA18_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_18)
+#define		DEFINE_PA18_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_18)
+#define		DEFINE_PA18_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_18)		
+#define		DEFINE_PA18_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_18)
+#define		DEFINE_PA18_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_18)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA19									PortPin_Read			 (GPIOA, GPIO_Pin_19)								
+#define		DEFINE_PA19_HI								GPIOA_SetBit			 (		 GPIO_Pin_19)
+#define		DEFINE_PA19_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_19)
+#define		DEFINE_PA19_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_19)
+#define		DEFINE_PA19_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_19)		
+#define		DEFINE_PA19_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_19)
+#define		DEFINE_PA19_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_19)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA20									PortPin_Read			 (GPIOA, GPIO_Pin_20)								
+#define		DEFINE_PA20_HI								GPIOA_SetBit			 (		 GPIO_Pin_20)
+#define		DEFINE_PA20_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_20)
+#define		DEFINE_PA20_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_20)
+#define		DEFINE_PA20_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_20)		
+#define		DEFINE_PA20_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_20)
+#define		DEFINE_PA20_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_20)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA21									PortPin_Read			 (GPIOA, GPIO_Pin_21)								
+#define		DEFINE_PA21_HI								GPIOA_SetBit			 (		 GPIO_Pin_21)
+#define		DEFINE_PA21_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_21)
+#define		DEFINE_PA21_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_21)
+#define		DEFINE_PA21_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_21)		
+#define		DEFINE_PA21_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_21)
+#define		DEFINE_PA21_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_21)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA22									PortPin_Read			 (GPIOA, GPIO_Pin_22)								
+#define		DEFINE_PA22_HI								GPIOA_SetBit			 (		 GPIO_Pin_22)
+#define		DEFINE_PA22_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_22)
+#define		DEFINE_PA22_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_22)
+#define		DEFINE_PA22_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_22)		
+#define		DEFINE_PA22_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_22)
+#define		DEFINE_PA22_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_22)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA23									PortPin_Read			 (GPIOA, GPIO_Pin_23)								
+#define		DEFINE_PA23_HI								GPIOA_SetBit			 (		 GPIO_Pin_23)
+#define		DEFINE_PA23_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_23)
+#define		DEFINE_PA23_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_23)
+#define		DEFINE_PA23_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_23)		
+#define		DEFINE_PA23_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_23)
+#define		DEFINE_PA23_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_23)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA24									PortPin_Read			 (GPIOA, GPIO_Pin_24)								
+#define		DEFINE_PA24_HI								GPIOA_SetBit			 (		 GPIO_Pin_24)
+#define		DEFINE_PA24_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_24)
+#define		DEFINE_PA24_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_24)
+#define		DEFINE_PA24_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_24)		
+#define		DEFINE_PA24_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_24)
+#define		DEFINE_PA24_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_24)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA25									PortPin_Read			 (GPIOA, GPIO_Pin_25)								
+#define		DEFINE_PA25_HI								GPIOA_SetBit			 (		 GPIO_Pin_25)
+#define		DEFINE_PA25_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_25)
+#define		DEFINE_PA25_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_25)
+#define		DEFINE_PA25_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_25)		
+#define		DEFINE_PA25_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_25)
+#define		DEFINE_PA25_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_25)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA26									PortPin_Read			 (GPIOA, GPIO_Pin_26)								
+#define		DEFINE_PA26_HI								GPIOA_SetBit			 (		 GPIO_Pin_26)
+#define		DEFINE_PA26_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_26)
+#define		DEFINE_PA26_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_26)
+#define		DEFINE_PA26_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_26)		
+#define		DEFINE_PA26_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_26)
+#define		DEFINE_PA26_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_26)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA27									PortPin_Read			 (GPIOA, GPIO_Pin_27)								
+#define		DEFINE_PA27_HI								GPIOA_SetBit			 (		 GPIO_Pin_27)
+#define		DEFINE_PA27_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_27)
+#define		DEFINE_PA27_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_27)
+#define		DEFINE_PA27_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_27)		
+#define		DEFINE_PA27_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_27)
+#define		DEFINE_PA27_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_27)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA28									PortPin_Read			 (GPIOA, GPIO_Pin_28)								
+#define		DEFINE_PA28_HI								GPIOA_SetBit			 (		 GPIO_Pin_28)
+#define		DEFINE_PA28_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_28)
+#define		DEFINE_PA28_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_28)
+#define		DEFINE_PA28_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_28)		
+#define		DEFINE_PA28_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_28)
+#define		DEFINE_PA28_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_28)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA29									PortPin_Read			 (GPIOA, GPIO_Pin_29)								
+#define		DEFINE_PA29_HI								GPIOA_SetBit			 (		 GPIO_Pin_29)
+#define		DEFINE_PA29_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_29)
+#define		DEFINE_PA29_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_29)
+#define		DEFINE_PA29_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_29)		
+#define		DEFINE_PA29_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_29)
+#define		DEFINE_PA29_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_29)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA30									PortPin_Read			 (GPIOA, GPIO_Pin_30)								
+#define		DEFINE_PA30_HI								GPIOA_SetBit			 (		 GPIO_Pin_30)
+#define		DEFINE_PA30_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_30)
+#define		DEFINE_PA30_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_30)
+#define		DEFINE_PA30_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_30)		
+#define		DEFINE_PA30_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_30)
+#define		DEFINE_PA30_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_30)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PA31									PortPin_Read			 (GPIOA, GPIO_Pin_31)								
+#define		DEFINE_PA31_HI								GPIOA_SetBit			 (		 GPIO_Pin_31)
+#define		DEFINE_PA31_LOW								GPIOA_ResetBit			 (		 GPIO_Pin_31)
+#define		DEFINE_PA31_REVERSE						    GPIOA_ToggleBit			 (		 GPIO_Pin_31)
+#define		DEFINE_PA31_OUTPUT							ConfigIO_Output			 (GPIOA, GPIO_Pin_31)		
+#define		DEFINE_PA31_INPUT							ConfigIO_Input			 (GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_ENOD							ConfigIO_OpenDrainEnable (GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_DISOD							ConfigIO_OpenDrainDisable(GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_STRONG							ConfigIO_OutputStrong	 (GPIOA, GPIO_Pin_31)
+#define		DEFINE_PA31_NORMAL							ConfigIO_OutputNormal	 (GPIOA, GPIO_Pin_31)
+//---------------------------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB0									PortPin_Read			 (GPIOB, GPIO_Pin_0)								
+#define		DEFINE_PB0_HI								GPIOB_SetBit			 (		 GPIO_Pin_0)
+#define		DEFINE_PB0_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_0)
+#define		DEFINE_PB0_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_0)
+#define		DEFINE_PB0_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_0)		
+#define		DEFINE_PB0_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_0)
+#define		DEFINE_PB0_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_0)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB1									PortPin_Read			 (GPIOB, GPIO_Pin_1)								
+#define		DEFINE_PB1_HI								GPIOB_SetBit			 (		 GPIO_Pin_1)
+#define		DEFINE_PB1_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_1)
+#define		DEFINE_PB1_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_1)
+#define		DEFINE_PB1_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_1)		
+#define		DEFINE_PB1_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_1)
+#define		DEFINE_PB1_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_1)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB2									PortPin_Read			 (GPIOB, GPIO_Pin_2)								
+#define		DEFINE_PB2_HI								GPIOB_SetBit			 (		 GPIO_Pin_2)
+#define		DEFINE_PB2_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_2)
+#define		DEFINE_PB2_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_2)
+#define		DEFINE_PB2_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_2)		
+#define		DEFINE_PB2_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_2)
+#define		DEFINE_PB2_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_2)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB3									PortPin_Read			 (GPIOB, GPIO_Pin_3)								
+#define		DEFINE_PB3_HI								GPIOB_SetBit			 (		 GPIO_Pin_3)
+#define		DEFINE_PB3_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_3)
+#define		DEFINE_PB3_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_3)
+#define		DEFINE_PB3_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_3)		
+#define		DEFINE_PB3_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_3)
+#define		DEFINE_PB3_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_3)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB4									PortPin_Read			 (GPIOB, GPIO_Pin_4)								
+#define		DEFINE_PB4_HI								GPIOB_SetBit			 (		 GPIO_Pin_4)
+#define		DEFINE_PB4_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_4)
+#define		DEFINE_PB4_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_4)
+#define		DEFINE_PB4_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_4)		
+#define		DEFINE_PB4_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_4)
+#define		DEFINE_PB4_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_4)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB5									PortPin_Read			 (GPIOB, GPIO_Pin_5)								
+#define		DEFINE_PB5_HI								GPIOB_SetBit			 (		 GPIO_Pin_5)
+#define		DEFINE_PB5_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_5)
+#define		DEFINE_PB5_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_5)
+#define		DEFINE_PB5_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_5)		
+#define		DEFINE_PB5_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_5)
+#define		DEFINE_PB5_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_5)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB6									PortPin_Read			 (GPIOB, GPIO_Pin_6)								
+#define		DEFINE_PB6_HI								GPIOB_SetBit			 (		 GPIO_Pin_6)
+#define		DEFINE_PB6_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_6)
+#define		DEFINE_PB6_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_6)
+#define		DEFINE_PB6_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_6)		
+#define		DEFINE_PB6_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_6)
+#define		DEFINE_PB6_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_6)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB7									PortPin_Read			 (GPIOB, GPIO_Pin_7)								
+#define		DEFINE_PB7_HI								GPIOB_SetBit			 (		 GPIO_Pin_7)
+#define		DEFINE_PB7_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_7)
+#define		DEFINE_PB7_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_7)
+#define		DEFINE_PB7_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_7)		
+#define		DEFINE_PB7_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_7)
+#define		DEFINE_PB7_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_7)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB8									PortPin_Read			 (GPIOB, GPIO_Pin_8)								
+#define		DEFINE_PB8_HI								GPIOB_SetBit			 (		 GPIO_Pin_8)
+#define		DEFINE_PB8_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_8)
+#define		DEFINE_PB8_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_8)
+#define		DEFINE_PB8_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_8)		
+#define		DEFINE_PB8_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_8)
+#define		DEFINE_PB8_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_8)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB9									PortPin_Read			 (GPIOB, GPIO_Pin_9)								
+#define		DEFINE_PB9_HI								GPIOB_SetBit			 (		 GPIO_Pin_9)
+#define		DEFINE_PB9_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_9)
+#define		DEFINE_PB9_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_9)
+#define		DEFINE_PB9_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_9)		
+#define		DEFINE_PB9_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_ENPULLUP							ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_ENOD								ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_9)
+#define		DEFINE_PB9_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_9)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB10									PortPin_Read			 (GPIOB, GPIO_Pin_10)								
+#define		DEFINE_PB10_HI								GPIOB_SetBit			 (		 GPIO_Pin_10)
+#define		DEFINE_PB10_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_10)
+#define		DEFINE_PB10_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_10)
+#define		DEFINE_PB10_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_10)		
+#define		DEFINE_PB10_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_10)
+#define		DEFINE_PB10_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_10)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB11									PortPin_Read			 (GPIOB, GPIO_Pin_11)								
+#define		DEFINE_PB11_HI								GPIOB_SetBit			 (		 GPIO_Pin_11)
+#define		DEFINE_PB11_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_11)
+#define		DEFINE_PB11_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_11)
+#define		DEFINE_PB11_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_11)		
+#define		DEFINE_PB11_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_11)
+#define		DEFINE_PB11_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_11)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB12									PortPin_Read			 (GPIOB, GPIO_Pin_12)								
+#define		DEFINE_PB12_HI								GPIOB_SetBit			 (		 GPIO_Pin_12)
+#define		DEFINE_PB12_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_12)
+#define		DEFINE_PB12_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_12)
+#define		DEFINE_PB12_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_12)		
+#define		DEFINE_PB12_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_12)
+#define		DEFINE_PB12_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_12)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB13									PortPin_Read			 (GPIOB, GPIO_Pin_13)								
+#define		DEFINE_PB13_HI								GPIOB_SetBit			 (		 GPIO_Pin_13)
+#define		DEFINE_PB13_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_13)
+#define		DEFINE_PB13_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_13)
+#define		DEFINE_PB13_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_13)		
+#define		DEFINE_PB13_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_13)
+#define		DEFINE_PB13_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_13)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB14									PortPin_Read			 (GPIOB, GPIO_Pin_14)								
+#define		DEFINE_PB14_HI								GPIOB_SetBit			 (		 GPIO_Pin_14)
+#define		DEFINE_PB14_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_14)
+#define		DEFINE_PB14_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_14)
+#define		DEFINE_PB14_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_14)		
+#define		DEFINE_PB14_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_14)
+#define		DEFINE_PB14_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_14)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB15									PortPin_Read			 (GPIOB, GPIO_Pin_15)								
+#define		DEFINE_PB15_HI								GPIOB_SetBit			 (		 GPIO_Pin_15)
+#define		DEFINE_PB15_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_15)
+#define		DEFINE_PB15_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_15)
+#define		DEFINE_PB15_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_15)		
+#define		DEFINE_PB15_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_15)
+#define		DEFINE_PB15_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_15)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB16									PortPin_Read			 (GPIOB, GPIO_Pin_16)								
+#define		DEFINE_PB16_HI								GPIOB_SetBit			 (		 GPIO_Pin_16)
+#define		DEFINE_PB16_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_16)
+#define		DEFINE_PB16_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_16)
+#define		DEFINE_PB16_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_16)		
+#define		DEFINE_PB16_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_16)
+#define		DEFINE_PB16_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_16)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB17									PortPin_Read			 (GPIOB, GPIO_Pin_17)								
+#define		DEFINE_PB17_HI								GPIOB_SetBit			 (		 GPIO_Pin_17)
+#define		DEFINE_PB17_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_17)
+#define		DEFINE_PB17_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_17)
+#define		DEFINE_PB17_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_17)		
+#define		DEFINE_PB17_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_17)
+#define		DEFINE_PB17_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_17)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB18									PortPin_Read			 (GPIOB, GPIO_Pin_18)								
+#define		DEFINE_PB18_HI								GPIOB_SetBit			 (		 GPIO_Pin_18)
+#define		DEFINE_PB18_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_18)
+#define		DEFINE_PB18_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_18)
+#define		DEFINE_PB18_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_18)		
+#define		DEFINE_PB18_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_18)
+#define		DEFINE_PB18_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_18)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB19									PortPin_Read			 (GPIOB, GPIO_Pin_19)								
+#define		DEFINE_PB19_HI								GPIOB_SetBit			 (		 GPIO_Pin_19)
+#define		DEFINE_PB19_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_19)
+#define		DEFINE_PB19_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_19)
+#define		DEFINE_PB19_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_19)		
+#define		DEFINE_PB19_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_19)
+#define		DEFINE_PB19_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_19)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB20									PortPin_Read			 (GPIOB, GPIO_Pin_20)								
+#define		DEFINE_PB20_HI								GPIOB_SetBit			 (		 GPIO_Pin_20)
+#define		DEFINE_PB20_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_20)
+#define		DEFINE_PB20_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_20)
+#define		DEFINE_PB20_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_20)		
+#define		DEFINE_PB20_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_20)
+#define		DEFINE_PB20_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_20)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB21									PortPin_Read			 (GPIOB, GPIO_Pin_21)								
+#define		DEFINE_PB21_HI								GPIOB_SetBit			 (		 GPIO_Pin_21)
+#define		DEFINE_PB21_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_21)
+#define		DEFINE_PB21_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_21)
+#define		DEFINE_PB21_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_21)		
+#define		DEFINE_PB21_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_21)
+#define		DEFINE_PB21_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_21)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB22									PortPin_Read			 (GPIOB, GPIO_Pin_22)								
+#define		DEFINE_PB22_HI								GPIOB_SetBit			 (		 GPIO_Pin_22)
+#define		DEFINE_PB22_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_22)
+#define		DEFINE_PB22_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_22)
+#define		DEFINE_PB22_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_22)		
+#define		DEFINE_PB22_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_22)
+#define		DEFINE_PB22_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_22)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB23									PortPin_Read			 (GPIOB, GPIO_Pin_23)								
+#define		DEFINE_PB23_HI								GPIOB_SetBit			 (		 GPIO_Pin_23)
+#define		DEFINE_PB23_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_23)
+#define		DEFINE_PB23_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_23)
+#define		DEFINE_PB23_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_23)		
+#define		DEFINE_PB23_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_23)
+#define		DEFINE_PB23_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_23)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB24									PortPin_Read			 (GPIOB, GPIO_Pin_24)								
+#define		DEFINE_PB24_HI								GPIOB_SetBit			 (		 GPIO_Pin_24)
+#define		DEFINE_PB24_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_24)
+#define		DEFINE_PB24_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_24)
+#define		DEFINE_PB24_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_24)		
+#define		DEFINE_PB24_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_24)
+#define		DEFINE_PB24_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_24)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB25									PortPin_Read			 (GPIOB, GPIO_Pin_25)								
+#define		DEFINE_PB25_HI								GPIOB_SetBit			 (		 GPIO_Pin_25)
+#define		DEFINE_PB25_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_25)
+#define		DEFINE_PB25_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_25)
+#define		DEFINE_PB25_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_25)		
+#define		DEFINE_PB25_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_25)
+#define		DEFINE_PB25_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_25)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB26									PortPin_Read			 (GPIOB, GPIO_Pin_26)								
+#define		DEFINE_PB26_HI								GPIOB_SetBit			 (		 GPIO_Pin_26)
+#define		DEFINE_PB26_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_26)
+#define		DEFINE_PB26_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_26)
+#define		DEFINE_PB26_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_26)		
+#define		DEFINE_PB26_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_26)
+#define		DEFINE_PB26_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_26)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB27									PortPin_Read			 (GPIOB, GPIO_Pin_27)								
+#define		DEFINE_PB27_HI								GPIOB_SetBit			 (		 GPIO_Pin_27)
+#define		DEFINE_PB27_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_27)
+#define		DEFINE_PB27_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_27)
+#define		DEFINE_PB27_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_27)		
+#define		DEFINE_PB27_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_27)
+#define		DEFINE_PB27_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_27)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB28									PortPin_Read			 (GPIOB, GPIO_Pin_28)								
+#define		DEFINE_PB28_HI								GPIOB_SetBit			 (		 GPIO_Pin_28)
+#define		DEFINE_PB28_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_28)
+#define		DEFINE_PB28_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_28)
+#define		DEFINE_PB28_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_28)		
+#define		DEFINE_PB28_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_28)
+#define		DEFINE_PB28_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_28)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB29									PortPin_Read			 (GPIOB, GPIO_Pin_29)								
+#define		DEFINE_PB29_HI								GPIOB_SetBit			 (		 GPIO_Pin_29)
+#define		DEFINE_PB29_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_29)
+#define		DEFINE_PB29_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_29)
+#define		DEFINE_PB29_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_29)		
+#define		DEFINE_PB29_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_29)
+#define		DEFINE_PB29_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_29)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB30									PortPin_Read			 (GPIOB, GPIO_Pin_30)								
+#define		DEFINE_PB30_HI								GPIOB_SetBit			 (		 GPIO_Pin_30)
+#define		DEFINE_PB30_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_30)
+#define		DEFINE_PB30_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_30)
+#define		DEFINE_PB30_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_30)		
+#define		DEFINE_PB30_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_30)
+#define		DEFINE_PB30_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_30)
+//---------------------------------------------------------------------------------------------------//
+#define		DEFINE_PB31									PortPin_Read			 (GPIOB, GPIO_Pin_31)								
+#define		DEFINE_PB31_HI								GPIOB_SetBit			 (		 GPIO_Pin_31)
+#define		DEFINE_PB31_LOW								GPIOB_ResetBit			 (		 GPIO_Pin_31)
+#define		DEFINE_PB31_REVERSE						    GPIOB_ToggleBit			 (		 GPIO_Pin_31)
+#define		DEFINE_PB31_OUTPUT							ConfigIO_Output			 (GPIOB, GPIO_Pin_31)		
+#define		DEFINE_PB31_INPUT							ConfigIO_Input			 (GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_ENPULLUP						ConfigIO_PullUpEnable	 (GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_DISPULLUP						ConfigIO_PullUpDisable	 (GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_ENPULLDOWN						ConfigIO_PullDownEnable	 (GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_DISPULLDOWN						ConfigIO_PullDownDisable (GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_ENOD							ConfigIO_OpenDrainEnable (GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_DISOD							ConfigIO_OpenDrainDisable(GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_STRONG							ConfigIO_OutputStrong	 (GPIOB, GPIO_Pin_31)
+#define		DEFINE_PB31_NORMAL							ConfigIO_OutputNormal	 (GPIOB, GPIO_Pin_31)
+//---------------------------------------------------------------------------------------------------//
+
+/****************************************************************************************************
+Function Name       :U8    PortPin_Read(GPIO_TYPE Port, GPIO_TYPE_PIN Pin)
+Description         :读取引脚电平
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+U8    PortPin_Read(GPIO_TYPE Port, GPIO_TYPE_PIN Pin);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_Output(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字输出
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_Output(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_Input(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字输入
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_Input(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_PullUpEnable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字上拉有效
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_PullUpEnable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_PullUpDisable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字上拉禁止
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_PullUpDisable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_PullDownEnable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字下拉有效
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_PullDownEnable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_PullDownDisable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字下拉禁止
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_PullDownDisable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_OpenDrainEnable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字开漏有效
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_OpenDrainEnable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_OpenDrainDisable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字开漏禁止
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_OpenDrainDisable(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_OutputStrong(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字输出强电流
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_OutputStrong(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    ConfigIO_OutputNormal(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx)	
+Description         :配置IO端口数字输出普通电流
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    ConfigIO_OutputNormal(GPIO_TYPE GPIOx, GPIO_TYPE_PIN PINx);
+/****************************************************************************************************
+Function Name       :void    Init_MCU_System(void)
+Description         :初始化MCU系统配置
+Input               :无
+Return              :无
+Author              :wuhaiming
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    Init_MCU_System(void);
+
+
+#endif
+

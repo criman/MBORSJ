@@ -1877,13 +1877,13 @@ void    Log_Comp(void)
 //				}
 				
 				Fan.Outdoor.u16_Delay = 0;			//制热外风机立即停
-				Fan.Outdoor.u16_Delay = 50;			//外风机延时5s后关闭
+				Fan.Outdoor.u16_Delay = (FtyPara.u16P3 * 10);			//外风机延时P3(s)后关闭
 			}
 			else
 			{
 				Fan.Indoor.u16_Delay = 0;
 //				Fan.Outdoor.u16_Delay = 300;		//外风机延时30s后关闭
-				Fan.Outdoor.u16_Delay = 50;			//外风机延时5s后关闭
+				Fan.Outdoor.u16_Delay = (FtyPara.u16P3 * 10);			//外风机延时P3(s)后关闭
 			}
 
 			

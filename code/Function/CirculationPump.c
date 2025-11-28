@@ -43,20 +43,25 @@ Revision History   1:
 void    Func_CirculationPump(void)
 {
 //	CirculationPump.f_AppOn = Comp.f_DrvOn;
-	if (((CirculationPump.f_AppOn == 1) 
-//	&& (Comp.f_AppOn == 1)
-	&& (Comp.u16_RestartDelay <= 900 ) 
-	&& (Comp.u8_SelTestDelay <= 900) 
-	&& (Comp.u8_PowerOnDelay <= 900))
-	|| (Defrost.f_Enable))
 	{
-		CirculationPump.f_AppOn = ON;
-	}
-	else if ((Comp.f_DrvOn == 0)
-	&& (Comp.u32_StopContCount >= 300)
-	&& (Fan.Outdoor.f_DrvOn == 0))
-	{
-		CirculationPump.f_AppOn = OFF;
+		U32 u32StopDelay = (U32)(FtyPara.u16P3 + FtyPara.u16P5) * 10U;
+		U8 bCompStopped = (Comp.f_DrvOn == 0);
+		U8 bStopSeqKeepOn = bCompStopped && (Comp.u32_StopContCount < u32StopDelay);
+		U8 bStopSeqAllowOff = bCompStopped && (Comp.u32_StopContCount >= u32StopDelay) && (Fan.Outdoor.f_DrvOn == 0);
+
+		if (((CirculationPump.f_AppOn == 1)
+		&& (Comp.u16_RestartDelay <= 900 )
+		&& (Comp.u8_SelTestDelay <= 900)
+		&& (Comp.u8_PowerOnDelay <= 900))
+		|| (Defrost.f_Enable)
+		|| bStopSeqKeepOn)
+		{
+			CirculationPump.f_AppOn = ON;
+		}
+		else if (bStopSeqAllowOff)
+		{
+			CirculationPump.f_AppOn = OFF;
+		}
 	}
 
 	

@@ -216,8 +216,8 @@ void 	App_Status_On(void)
 						&& (Comp.u32_StopContCount >= (FtyPara.u16P3 * 10)))
 						{
 							Fan.Outdoor.f_AppOn = OFF;
-							if (Comp.u32_StopContCount >= (FtyPara.u16P5 * 10))
-							{
+							if (Comp.u32_StopContCount >= ((FtyPara.u16P3 * 10) + (FtyPara.u16P5 * 10)))
+							{//20251128 延长循环泵运行时间
 								CirculationPump.f_AppOn = OFF;
 							}
 							

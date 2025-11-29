@@ -72,7 +72,14 @@ void    Func_CirculationPump(void)
 		U8 bStopSeqKeepOn = bCompStopped && (Comp.u32_StopContCount < u32StopDelay);
 		U8 bStopSeqAllowOff = bCompStopped && (Comp.u32_StopContCount >= u32StopDelay) && (Fan.Outdoor.f_DrvOn == 0);
 
-		if (((CirculationPump.f_AppOn == 1)
+		/* 关闭顺序优先：一旦满足“允许关闭”的条件，应立即关闭循环泵，
+		 * 其优先级高于常规保持开启的逻辑。
+		 */
+		if (bStopSeqAllowOff)
+		{
+			CirculationPump.f_AppOn = OFF;
+		}
+		else if (((CirculationPump.f_AppOn == 1)
 		&& (Comp.u16_RestartDelay <= 900 )
 		&& (Comp.u8_SelTestDelay <= 900)
 		&& (Comp.u8_PowerOnDelay <= 900))
@@ -80,10 +87,6 @@ void    Func_CirculationPump(void)
 		|| bStopSeqKeepOn)
 		{
 			CirculationPump.f_AppOn = ON;
-		}
-		else if (bStopSeqAllowOff)
-		{
-			CirculationPump.f_AppOn = OFF;
 		}
 	}
 

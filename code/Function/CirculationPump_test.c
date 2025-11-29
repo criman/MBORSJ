@@ -19,6 +19,20 @@ STRUCT_DEFROST          Defrost = {0};
 
 /* CirculationPump 由 CirculationPump.c 定义 */
 
+/* 取消 CirculationPump.h 中的硬件宏，用函数实现以便统计调用 */
+#ifdef P_CirculationPump_On
+#undef P_CirculationPump_On
+#endif
+#ifdef P_CirculationPump_Off
+#undef P_CirculationPump_Off
+#endif
+#ifdef P_CirculationPump_Output
+#undef P_CirculationPump_Output
+#endif
+#ifdef P_CirculationPump_Dispull
+#undef P_CirculationPump_Dispull
+#endif
+
 /* 硬件模拟 */
 static int P_Circ_On_called     = 0;
 static int P_Circ_Off_called    = 0;
@@ -125,7 +139,8 @@ static void test_Circ_drive_output(void)
     test_total++;
     setup_env();
 
-    /* 开启路径 */
+    /* 开启路径：压机处于运行状态，避免停止顺序逻辑干扰 */
+    Comp.f_DrvOn            = 1;
     CirculationPump.f_AppOn = 1;
     Func_CirculationPump();
     TEST_ASSERT(CirculationPump.f_DrvOn == 1, "驱动：f_AppOn=1 时应置 f_DrvOn=1");
@@ -133,7 +148,7 @@ static void test_Circ_drive_output(void)
     Func_CirculationPump();
     TEST_ASSERT(P_Circ_On_called > 0, "驱动：f_DrvOn=1 时应调用 P_CirculationPump_On");
 
-    /* 关闭路径（无延时） */
+    /* 关闭路径（无延时），压机仍为运行状态 */
     CirculationPump.f_AppOn  = 0;
     CirculationPump.u16_Delay = 0;
     Func_CirculationPump();

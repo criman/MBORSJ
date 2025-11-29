@@ -18,12 +18,23 @@ Revision History   1:
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
 //引用标准化模块头文件
+// 为兼容 PC 上的 gcc 单元测试，显式给出相对路径；在 Keil 下仍可正常使用
+#if defined(__GNUC__)
+#include    "../Module/Module_EEP24C02_V1.0.0/EEP24C02.h"
+#include    "../Module/Module_Ad_ES8H018X_V1.0.0/Ad.h"
+#include    "../Module/Module_Switch_V1.0.0/Switch.h"
+#include    "../Module/Module_Stepmotor_V1.0.0/Stepmotor.h"
+#include    "../Module/Module32_Uart_V1.0.0/Uart.h"
+#include    "../Module/Module_Modbus_V1.0.0/modbus.h"
+#else
+//引用标准化模块头文件（Keil 工程使用相对简单的模块包含）
 #include    "EEP24C02.h"
 #include    "Ad.h"
 #include    "Switch.h"
 #include    "Stepmotor.h"
 #include    "Uart.h"
-#include 	"modbus.h"
+#include    "modbus.h"
+#endif
 
 //--------------------------------------------------------------------------------------------------//
 //--------------------------------------------------------------------------------------------------//
@@ -99,9 +110,13 @@ typedef    struct
 	U8    f_OutEEpromErr	  :1;		//室外E方故障
 	U8    f_InEEpromErr	  	  :1;		//室内E方故障
 	U8    f_T4Limit   	      :1;		//T4限频作用下限频标志
-	U8    f_T4LimitOff		  :1;		//T4限频引起停机标志
+    U8    f_T4LimitOff		  :1;		//T4限频引起停机标志
 	U8    f_HumiCSetInitOK	  :1;		//除湿设定值初始化完成标志 //lcx add 20240705
-	U8	  Reserve     		  :22;		//预留
+#if defined(__GNUC__)
+	U32	  Reserve     		  :22;		//预留（PC gcc 环境下使用 32 位基类型以满足 22bit 位宽）
+#else
+	U8	  Reserve     		  :22;		//预留（Keil 环境下原有定义）
+#endif
 	
 	ENUM_STATUS     Enum_Status;        //系统状态机
 	ENUM_SYSMODE    Mode;				//系统模式

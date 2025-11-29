@@ -14,6 +14,29 @@ Revision History   1:
 
 STRUCT_CIRCULATIONPUMP    CirculationPump;         //循环泵
 
+/* 在 PC / UNIT_TEST 环境下，将循环泵的硬件操作改为由外部函数提供，
+ * 便于在单元测试中用模拟函数替代真实 GPIO 操作。
+ */
+#if defined(UNIT_TEST)
+#ifdef P_CirculationPump_On
+#undef P_CirculationPump_On
+#endif
+#ifdef P_CirculationPump_Off
+#undef P_CirculationPump_Off
+#endif
+#ifdef P_CirculationPump_Output
+#undef P_CirculationPump_Output
+#endif
+#ifdef P_CirculationPump_Dispull
+#undef P_CirculationPump_Dispull
+#endif
+
+extern void P_CirculationPump_On(void);
+extern void P_CirculationPump_Off(void);
+extern void P_CirculationPump_Output(void);
+extern void P_CirculationPump_Dispull(void);
+#endif
+
 /****************************************************************************************************
 Function Name       :void    Init_DCFan(void)
 Description         :循环初始化

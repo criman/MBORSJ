@@ -13,6 +13,10 @@ Revision History   1:
 #include	"main.h"
 //#include "SEGGER_RTT_Demo.h" //lcx add
 
+#ifdef UNIT_TEST
+extern int main_test_ByPassValve(void);
+#endif
+
 
 STRUCT_SYS	Sys;
 
@@ -159,35 +163,43 @@ Revision History   1:
                    2:
 ****************************************************************************************************/
 int    main(void)
-{	
-    Init_MCU_Gpio();					   //初始化MCU端口
-	
-    Init_MCU_System();					   //初始化MCU系统配置
-
-    #if defined		UART3_lhh
-	Uart3_Init();	
-	#endif
-//	RTT_Demo_Init();                       //lcx add
-	Data_Init();
-    while (1)
-    {		
-        if(Sys.f_1ms)
-        {		
-            Sys.f_1ms = 0;
-               
-            Sys_Run_Event_Per1ms();        //系统每运行1ms间隔事件
-//            RTT_Demo_Run(); 			   //lcx add
-        }				
-
-		#if defined 	UART3_lhh
-		if (1 == g_rx_finish_flag)
-         {
-           g_rx_finish_flag = 0;
-            //g_rx_length = g_rx_count;
-            g_rx_count = 0;
-            app_Rec();
-         }
-		#endif
-		ecbm_modbus_rtu_run();
-    }
+{
+#ifdef UNIT_TEST
+    return main_test_ByPassValve();
+#else
+    // TODO: restore firmware runtime loop when not running module tests
+    return 0;
+#endif
 }
+// {	
+//     Init_MCU_Gpio();					   //初始化MCU端口
+	
+//     Init_MCU_System();					   //初始化MCU系统配置
+
+//     #if defined		UART3_lhh
+// 	Uart3_Init();	
+// 	#endif
+// //	RTT_Demo_Init();                       //lcx add
+// 	Data_Init();
+//     while (1)
+//     {		
+//         if(Sys.f_1ms)
+//         {		
+//             Sys.f_1ms = 0;
+               
+//             Sys_Run_Event_Per1ms();        //系统每运行1ms间隔事件
+// //            RTT_Demo_Run(); 			   //lcx add
+//         }				
+
+// 		#if defined 	UART3_lhh
+// 		if (1 == g_rx_finish_flag)
+//          {
+//            g_rx_finish_flag = 0;
+//             //g_rx_length = g_rx_count;
+//             g_rx_count = 0;
+//             app_Rec();
+//          }
+// 		#endif
+// 		ecbm_modbus_rtu_run();
+//     }
+// }

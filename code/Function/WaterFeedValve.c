@@ -14,6 +14,29 @@ Revision History   1:
 
 STRUCT_WFV    WFV;         //补水泵
 
+/* 在 PC / UNIT_TEST 环境下，将补水阀的硬件操作改为由外部函数提供，
+ * 便于在单元测试中用模拟函数替代真实 GPIO 操作。
+ */
+#if defined(UNIT_TEST)
+#ifdef P_WFV_On
+#undef P_WFV_On
+#endif
+#ifdef P_WFV_Off
+#undef P_WFV_Off
+#endif
+#ifdef P_WFV_Output
+#undef P_WFV_Output
+#endif
+#ifdef P_WFV_Dispull
+#undef P_WFV_Dispull
+#endif
+
+extern void P_WFV_On(void);
+extern void P_WFV_Off(void);
+extern void P_WFV_Output(void);
+extern void P_WFV_Dispull(void);
+#endif
+
 /****************************************************************************************************
 Function Name       :void    Init_WFV(void)
 Description         :补水泵初始化

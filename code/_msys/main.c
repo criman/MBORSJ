@@ -13,7 +13,12 @@ Revision History   1:
 #include	"main.h"
 //#include "SEGGER_RTT_Demo.h" //lcx add
 
-#ifdef UNIT_TEST
+/* 说明：
+ * 1. 正常固件运行（Keil / 芯片环境）使用原有 main() 初始化 + 死循环。
+ * 2. 在 PC 上用 gcc 做旁通阀单元测试时，仅在 __GNUC__ + UNIT_TEST 下，
+ *    main() 作为测试入口，转到 main_test_ByPassValve()。
+ */
+#if defined(__GNUC__) && defined(UNIT_TEST)
 extern int main_test_ByPassValve(void);
 #endif
 
@@ -163,43 +168,41 @@ Revision History   1:
                    2:
 ****************************************************************************************************/
 int    main(void)
-{
-#ifdef UNIT_TEST
-    return main_test_ByPassValve();
+{	
+#if defined(__GNUC__) && defined(UNIT_TEST)
+/* PC / gcc 单元测试入口：仅在定义 UNIT_TEST 时走这里 */
+return main_test_ByPassValve();
 #else
-    // TODO: restore firmware runtime loop when not running module tests
-    return 0;
-#endif
-}
-// {	
-//     Init_MCU_Gpio();					   //初始化MCU端口
+    /* 原有固件入口：芯片上运行正常程序 */
+    Init_MCU_Gpio();					   //初始化MCU端口
 	
-//     Init_MCU_System();					   //初始化MCU系统配置
+    Init_MCU_System();					   //初始化MCU系统配置
 
-//     #if defined		UART3_lhh
-// 	Uart3_Init();	
-// 	#endif
-// //	RTT_Demo_Init();                       //lcx add
-// 	Data_Init();
-//     while (1)
-//     {		
-//         if(Sys.f_1ms)
-//         {		
-//             Sys.f_1ms = 0;
+    #if defined		UART3_lhh
+	Uart3_Init();	
+	#endif
+//	RTT_Demo_Init();                       //lcx add
+	Data_Init();
+    while (1)
+    {		
+        if(Sys.f_1ms)
+        {		
+            Sys.f_1ms = 0;
                
-//             Sys_Run_Event_Per1ms();        //系统每运行1ms间隔事件
-// //            RTT_Demo_Run(); 			   //lcx add
-//         }				
+            Sys_Run_Event_Per1ms();        //系统每运行1ms间隔事件
+//            RTT_Demo_Run(); 			   //lcx add
+        }				
 
-// 		#if defined 	UART3_lhh
-// 		if (1 == g_rx_finish_flag)
-//          {
-//            g_rx_finish_flag = 0;
-//             //g_rx_length = g_rx_count;
-//             g_rx_count = 0;
-//             app_Rec();
-//          }
-// 		#endif
-// 		ecbm_modbus_rtu_run();
-//     }
-// }
+		#if defined 	UART3_lhh
+		if (1 == g_rx_finish_flag)
+         {
+           g_rx_finish_flag = 0;
+            //g_rx_length = g_rx_count;
+            g_rx_count = 0;
+            app_Rec();
+         }
+		#endif
+		ecbm_modbus_rtu_run();
+    }
+#endif           
+}

@@ -15,11 +15,16 @@ Revision History   1:
 
 /* 说明：
  * 1. 正常固件运行（Keil / 芯片环境）使用原有 main() 初始化 + 死循环。
- * 2. 在 PC 上用 gcc 做旁通阀单元测试时，仅在 __GNUC__ + UNIT_TEST 下，
- *    main() 作为测试入口，转到 main_test_ByPassValve()。
+ * 2. 在 PC 上用 gcc 做单元测试时，仅在 __GNUC__ + UNIT_TEST 下，
+ *    main() 作为测试入口，根据 TEST_MODULE 宏选择不同的测试模块。
  */
 #if defined(__GNUC__) && defined(UNIT_TEST)
 extern int main_test_ByPassValve(void);
+extern int main_test_WaterFeedValve(void);
+extern int main_test_CirculationPump(void);
+extern int main_test_Comp(void);
+extern int main_test_Fan(void);
+extern int main_test_Stepmotor(void);
 #endif
 
 
@@ -35,6 +40,21 @@ Version             :V1.0
 Revision History   1:
                    2:
 ****************************************************************************************************/
+#if defined(UNIT_TEST)
+/* 单元测试时提供存根函数 */
+void Sys_Run_Func1_Per100ms(void) {}
+void Sys_Run_Func2_Per100ms(void) {}
+void Sys_Run_Func3_Per100ms(void) {}
+void Sys_Run_Func4_Per100ms(void) {}
+void Sys_Run_Func5_Per100ms(void) {}
+void Sys_Run_Func1_Per10ms(void) {}
+void Sys_Run_Func2_Per10ms(void) {}
+void Sys_Run_Func3_Per10ms(void) {}
+void Sys_Run_Func4_Per10ms(void) {}
+void PhaseSequenceCheck(void) {}
+void Sys_Run_Per2ms(void) {}
+#endif
+
 void	Sys_Run_Event_Per100ms(void)
 {
     switch (Sys.u8_100ms_count)
@@ -74,11 +94,11 @@ void	Sys_Run_Event_Per100ms(void)
         #if		defined		SYS_RUN_EVENT09_PER100MS
         case	8:	SYS_RUN_EVENT09_PER100MS; break;	//系统100ms运行一次事件九
         #endif
-        
+    
         #if		defined		SYS_RUN_EVENT10_PER100MS
         case	9:	SYS_RUN_EVENT10_PER100MS; break;	//系统100ms运行一次事件十
         #endif
-        
+    
         default: break;
     }
                             
@@ -170,8 +190,28 @@ Revision History   1:
 int    main(void)
 {	
 #if defined(__GNUC__) && defined(UNIT_TEST)
-/* PC / gcc 单元测试入口：仅在定义 UNIT_TEST 时走这里 */
-return main_test_ByPassValve();
+/* PC / gcc 单元测试入口：根据 TEST_MODULE 选择测试模块 */
+#ifdef TEST_MODULE
+    #if TEST_MODULE == 1
+        return main_test_ByPassValve();
+    #elif TEST_MODULE == 2
+        return main_test_WaterFeedValve();
+    #elif TEST_MODULE == 3
+        return main_test_CirculationPump();
+    #elif TEST_MODULE == 4
+        return main_test_Comp();
+    #elif TEST_MODULE == 5
+        return main_test_Fan();
+    #elif TEST_MODULE == 6
+        return main_test_Stepmotor();
+    #else
+        printf("错误: 未定义的测试模块编号 %d\n", TEST_MODULE);
+        return 1;
+    #endif
+#else
+    /* 默认运行旁通阀测试 */
+    return main_test_ByPassValve();
+#endif
 #else
     /* 原有固件入口：芯片上运行正常程序 */
     Init_MCU_Gpio();					   //初始化MCU端口

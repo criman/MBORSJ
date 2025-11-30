@@ -26,6 +26,14 @@ Revision History   1:
 ****************************************************************************************************/
 void    Init_Comp(void)
 {
+#if defined(UNIT_TEST)
+    #undef P_Comp_Off
+    #undef P_Comp_Output
+    #undef P_Comp_Dispull
+    extern void P_Comp_Off(void);
+    extern void P_Comp_Output(void);
+    extern void P_Comp_Dispull(void);
+#endif
     P_Comp_Off();  
     P_Comp_Output();	
 	P_Comp_Dispull();	
@@ -1929,6 +1937,12 @@ void    Drv_Comp(void)
 //	}
 //}
 {
+#if defined(UNIT_TEST)
+    #undef P_Comp_On
+    #undef P_Comp_Off
+    extern void P_Comp_On(void);
+    extern void P_Comp_Off(void);
+#endif
 	if ((Comp.f_DrvOn == 1) || (Comp.f_ForceDrvOn == 1))
 	{
 		P_Comp_On();		

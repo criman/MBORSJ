@@ -416,9 +416,13 @@ void    DisplayBoard_Byte11_Update(void)
 		{
 			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_F7_COMPSTARTERR;	//驱动保护
 		}
+		else if (Protect.f_HighWaterLevelErr)
+		{
+			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_F6_HIGHWATERLEVELERR;		//高水位开关故障（显示F6）
+		}
 		else if (Comp.f_IPMPro)
 		{
-			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_F6_COMPIPMPRO;	//模块保护
+			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_F6_HIGHWATERLEVELERR;	//模块保护（复用F6代码，但高水位故障优先级更高）
 		}
 		else if (System.f_InEEpromErr)
 		{	
@@ -436,6 +440,14 @@ void    DisplayBoard_Byte11_Update(void)
 		else if (Protect.f_T2Cold)
 		{
 			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_FB_T2COLD;		//制冷T2温度过低保护
+		}
+		else if (Protect.f_MidWaterLevelErr)
+		{
+			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_FD_MIDWATERLEVELERR;		//中水位开关故障（显示Fb）
+		}
+		else if (Protect.f_LowWaterLevelErr)
+		{
+			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_FE_LOWWATERLEVELERR;		//低水位开关故障（显示FL）
 		}
 		else if (Protect.f_T3Cold)
 		{

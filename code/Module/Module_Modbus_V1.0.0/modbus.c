@@ -781,13 +781,36 @@ void ecbm_modbus_cmd_read_reg(emu16 addr,emu16 * dat){
 	{
 		if (Protect.f_HighPress)
 		{	
-			SETB(ecbm_modbus_rtu_reg_buf[addr], 0);
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 0);		//Bit0: 高压故障保护
 		}
 		
 		if (Protect.f_LowPress)
 		{	
-			SETB(ecbm_modbus_rtu_reg_buf[addr], 1);
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 1);		//Bit1: 低压故障保护
 		}
+		
+		if (Protect.f_HighWaterLevelErr)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 2);		//Bit2: 高水位开关故障
+		}
+		
+		if (Protect.f_MidWaterLevelErr)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 3);		//Bit3: 中水位开关故障
+		}
+		
+		if (Protect.f_LowWaterLevelErr)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 4);		//Bit4: 低水位开关故障
+		}
+		
+		if (Protect.f_WaterFlow)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 5);		//Bit5: 水流开关故障
+		}
+		
+		// Bit6: 预留
+		// Bit7: 预留
 	}
 	else if (addr == FlagErr3)			//故障标志3
 	{
@@ -1569,15 +1592,38 @@ void ecbm_modbus_cmd_read_reg(emu16 addr,emu16 * dat){
 	}
 	else if (addr == FlagErr2)			//故障标志2
 	{
-		if (Protect.T2HeatStatus != ENUM_PROSTATUS_NORMAL)
-		{
-			SETB(ecbm_modbus_rtu_reg_buf[addr], 2);
+		if (Protect.f_HighPress)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 0);		//Bit0: 高压故障保护
 		}
 		
-		if (Protect.f_CompCurr)
-		{
-			SETB(ecbm_modbus_rtu_reg_buf[addr], 3);
+		if (Protect.f_LowPress)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 1);		//Bit1: 低压故障保护
 		}
+		
+		if (Protect.f_HighWaterLevelErr)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 2);		//Bit2: 高水位开关故障
+		}
+		
+		if (Protect.f_MidWaterLevelErr)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 3);		//Bit3: 中水位开关故障
+		}
+		
+		if (Protect.f_LowWaterLevelErr)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 4);		//Bit4: 低水位开关故障
+		}
+		
+		if (Protect.f_WaterFlow)
+		{	
+			SETB(ecbm_modbus_rtu_reg_buf[addr], 5);		//Bit5: 水流开关故障
+		}
+		
+		// Bit6: 预留
+		// Bit7: 预留
 	}
 	else if (addr == FlagErr3)			//故障标志3
 	{

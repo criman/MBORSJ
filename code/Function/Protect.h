@@ -110,6 +110,9 @@ typedef    struct
 	U8    f_PhaseB_bak:1;		//B相电平上次的值备份
 	U8    f_PhaseC_bak:1;		//C相电平上次的值备份
 	U8    f_WaterFlow :1;		//水流开关保护
+	U8    f_MidWaterLevelErr :1;		//中水位开关故障
+	U8    f_HighWaterLevelErr :1;		//高水位开关故障
+	U8    f_LowWaterLevelErr :1;		//低水位开关故障
 	U8    Reserve	  :1;		//预留
 	
 	ENUM_PROSTATUS    TpStatus;			//排气保护阶段
@@ -137,9 +140,9 @@ typedef    struct
 	U16   u16_LpErrCnt;			//低压故障累计次数
 	U16   u16_CurErrCnt;		//过流故障累计次数
 	U16   u16_PhaseSeqErrCnt;	//错相故障累计次数
-	U16   u16_TpErr_1HourCnt;	//排气故障首次触发后计时
-	U16   u16_HpErr_1HourCnt;	//高压故障首次触发后计时
-	U16   u16_LpErr_1HourCnt;	//低压故障首次触发后计时
+	U32   u32_TpErr_1HourCnt;	//排气故障首次触发后计时（U32避免30分钟溢出：180000>65535）
+	U32   u32_HpErr_1HourCnt;	//高压故障首次触发后计时（U32避免30分钟溢出：180000>65535）
+	U32   u32_LpErr_1HourCnt;	//低压故障首次触发后计时（U32避免30分钟溢出：180000>65535）
 	U16   u16_CurErr_1HourCnt;	//过流故障首次触发后计时
 	U16   u16_CompHzLimitCount;  //限频频率计时
 	U16   u16_PhaseABCnt;  		//AB相的计时
@@ -147,6 +150,8 @@ typedef    struct
 	U16   u16_PhaseCACnt;  		//CA相的计时
 	S16   s16_ErrCur;			//过流故障动作值
 	U16   u16_WaterFlowCnt;  	//水流开关计时
+	U16   u16_MidWaterLevelErrCnt;  	//中水位开关故障计时
+	U16   u16_LowWaterLevelErrCnt;  	//低水位开关故障计时
 }STRUCT_PROTECT;
 
 //-----------------------------------------------------------------------------------------------------//

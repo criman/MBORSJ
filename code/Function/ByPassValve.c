@@ -66,21 +66,22 @@ Revision History   1:
 void    Func_BPV(void)
 {
 //	BPV.f_AppOn = Comp.f_DrvOn;
-	// 关闭条件：压机关闭 或 Td≤P21 或 Tw≤P22
-	if ((Comp.f_DrvOn == 0)
-	|| (Tp.s16_ValueMul10 <= TempValueMul10(FtyPara.s16P21))
-	|| (T5.s16_ValueMul10 <= TempValueMul10(FtyPara.s16P22)))
-	{
-		BPV.f_AppOn = 0; 
-	}
-	// 开启条件：压机开 且 (Tair≥P17 且 Tw≥P18 且 Td≥P19) 或 Td≥P20
-	else if ((Comp.f_DrvOn == 1) 
+	// 压机开，当检测到环境温度Tair≥50℃（参数P17）且水箱温度Tw≥45℃（参数P18）且排气温度Td≥95℃（参数P19）时，开启旁通阀
+	// 开启条件：压机开 且 ((Tair≥P17 且 Tw≥P18 且 Td≥P19) 或 Td≥P20)
+	if ((Comp.f_DrvOn == 1) 
 	&& (((T4.s16_ValueMul10 >= TempValueMul10(FtyPara.s16P17))
 	&& (T5.s16_ValueMul10 >= TempValueMul10(FtyPara.s16P18))
 	&& (Tp.s16_ValueMul10 >= TempValueMul10(FtyPara.s16P19)))
 	|| (Tp.s16_ValueMul10 >= TempValueMul10(FtyPara.s16P20))))
 	{
 		BPV.f_AppOn = 1; 
+	}
+	// 关闭条件：压机关闭 或 Td≤P21 或 Tw≤P22
+	else if ((Comp.f_DrvOn == 0)
+	|| (Tp.s16_ValueMul10 <= TempValueMul10(FtyPara.s16P21))
+	|| (T5.s16_ValueMul10 <= TempValueMul10(FtyPara.s16P22)))
+	{
+		BPV.f_AppOn = 0; 
 	}
 	// 如果关闭条件和开启条件都不满足，保持当前状态（不更新BPV.f_AppOn）
 	

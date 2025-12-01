@@ -237,13 +237,15 @@ typedef    enum
 	ENUM_ERRINFO_F3_OUTEEPROMERR = 0xF3,		//室外EEPROM故障
 	ENUM_ERRINFO_F4_OVCURRPRO    = 0xF4,		//过流保护
 	ENUM_ERRINFO_F5_VOLTLOWPRO   = 0xF5,		//欠压保护
-	ENUM_ERRINFO_F6_COMPIPMPRO   = 0xF6,		//模块保护
+	ENUM_ERRINFO_F6_HIGHWATERLEVELERR = 0xF6,		//高水位开关故障（显示F6）
 	ENUM_ERRINFO_F7_COMPSTARTERR = 0xF7,		//驱动保护
 	ENUM_ERRINFO_F8_T4PRO		 = 0xF8,		//T4温度过高过低保护
 	ENUM_ERRINFO_F9_T3COLD		 = 0xF9,		//制冷T3温度过高保护
 	ENUM_ERRINFO_FA_TPPRO		 = 0xFA,		//TP温度过高保护
 	ENUM_ERRINFO_FB_T2COLD		 = 0xFB,		//制冷T2温度过低保护
 	ENUM_ERRINFO_FC_T2HEAT       = 0xFC,		//制热防过热保护
+	ENUM_ERRINFO_FD_MIDWATERLEVELERR = 0xFD,		//中水位开关故障（显示Fb）
+	ENUM_ERRINFO_FE_LOWWATERLEVELERR = 0xFE,		//低水位开关故障（显示FL）
 }ENUM_ERRINFO;
 //--------------------------------------------------------------------------------------------------//
 typedef    union

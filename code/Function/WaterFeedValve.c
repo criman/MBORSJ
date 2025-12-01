@@ -75,6 +75,20 @@ void    Func_WFV(void)
 //		WFV.f_AppOn = 0; 
 //	}
 
+	// 低水位开关故障时，机组按照"定时补水"或者"手动补水"功能来控制水箱的水位
+	// 如果当前是自动补水模式，且没有设置定时补水或手动补水，则启用定时补水
+	if (Protect.f_LowWaterLevelErr)
+	{
+		if ((WFV.f_Auto == 1) && (WFV.f_Timing == 0) && (WFV.f_ManualON == 0))
+		{
+			// 低水位开关故障时，如果当前是自动补水且没有定时补水或手动补水，则启用定时补水
+			WFV.f_Auto = 0;
+			WFV.f_Timing = 1;
+			WFV.u16_AutoCnt = 0;
+			WFV.u16_TimingCnt = 0;
+		}
+	}
+
 	if (WFV.f_ManualOFF)
 	{
 		WFV.f_AppOn = OFF;
@@ -93,7 +107,20 @@ void    Func_WFV(void)
 	}
 	else if (WFV.f_Timing)
 	{
-		if (HighWaterLevel)			// 高水位断开，开始计时准备补水
+		// 如果高水位开关故障，禁用定时补水，启用自动补水
+		if (Protect.f_HighWaterLevelErr)
+		{
+			WFV.f_Timing = 0;
+			WFV.f_Auto = 1;
+			WFV.u16_TimingCnt = 0;
+			WFV.u32_TimingRunCnt = 0;
+			// 切换到自动补水时，如果低水位已接通，需要初始化自动补水计时
+			if (LowWaterLevel == 0)	// 低水位接通
+			{
+				WFV.u16_AutoCnt = 0;	// 从0开始计时，准备延时P11后关闭
+			}
+		}
+		else if (HighWaterLevel)			// 高水位断开，开始计时准备补水
 		{
 			if (WFV.u16_TimingCnt < (FtyPara.u16P9 * 6000))
 			{

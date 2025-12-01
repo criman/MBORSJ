@@ -28,27 +28,30 @@ void    Protect_Tp(void)
 {
 	if (Protect.u16_TpErrCnt)
 	{
-		if (Protect.u16_TpErr_1HourCnt < 0xFFFF)
+		if (Protect.u32_TpErr_1HourCnt < 0xFFFFFFFF)
 		{
-			Protect.u16_TpErr_1HourCnt ++;
+			Protect.u32_TpErr_1HourCnt ++;
 		}
 
-		if ((Protect.u16_TpErr_1HourCnt >=360000) 
+		if ((Protect.u32_TpErr_1HourCnt >=180000) 
 			&& (Protect.u16_TpErrCnt < 3)
 			&& (Protect.f_Tp == 0))
 		{
-			Protect.u16_TpErr_1HourCnt = 0;
+			Protect.u32_TpErr_1HourCnt = 0;
 			Protect.u16_TpErrCnt = 0;
 		}
 	}
 	else 
 	{
-		Protect.u16_TpErr_1HourCnt = 0;
+		Protect.u32_TpErr_1HourCnt = 0;
 	}
 	
 	if (Protect.f_Tp == 0)				  //正常
 	{
-		if ((Tp.s16_ValueMul10 >= 1170) && (Comp.f_DrvOn))    //117℃
+		// 压缩机开启1分钟后检测，连续10s检测到排气温度Td≥110℃（参数P24），则停机保护
+		if ((Tp.s16_ValueMul10 >= TempValueMul10(FtyPara.s16P24)) 
+			&& (Comp.f_DrvOn) 
+			&& (Comp.u32_RunContCount >= 6000))    //压缩机运行1分钟后才检测（6000*10ms=60s=1min）
 		{
 			if (Protect.u16_TpCount < 0xFFFF)
 			{
@@ -73,9 +76,11 @@ void    Protect_Tp(void)
 	}
 	else 
 	{
-		if ((Protect.u16_TpErr_1HourCnt < 360000) && (Protect.u16_TpErrCnt < 3))
+		// 当检测到排气温度Td≤85℃（参数P25）时，则退出此保护
+		// 如30min内发生三次此故障，则非掉电不可恢复（前两次可自动恢复）
+		if ((Protect.u32_TpErr_1HourCnt < 180000) && (Protect.u16_TpErrCnt < 3))
 		{
-			if (Tp.s16_ValueMul10 < 900)    //90℃
+			if (Tp.s16_ValueMul10 <= TempValueMul10(FtyPara.s16P25))    //使用P25参数（85℃）
 			{
 				if (Protect.u16_TpErrRemoveCount < 0xFFFF)
 				{
@@ -1052,36 +1057,57 @@ void    Protect_LowPressErr(void)
 {
 	if (Protect.u16_LpErrCnt)
 	{
-		if (Protect.u16_LpErr_1HourCnt < 0xFFFF)
+		if (Protect.u32_LpErr_1HourCnt < 0xFFFFFFFF)
 		{
-			Protect.u16_LpErr_1HourCnt ++;
+			Protect.u32_LpErr_1HourCnt ++;
 		}
 
-		
-		if ((Protect.u16_LpErr_1HourCnt >=360000) 
+		// 30分钟内发生三次此故障，则非掉电不可恢复（前两次可自动恢复）
+		// 30分钟（180000*10ms=1800s=30min）后清除错误计数
+		if ((Protect.u32_LpErr_1HourCnt >=180000) 
 			&& (Protect.u16_LpErrCnt < 3)
 			&& (Protect.f_LowPress == 0))
 		{
-			Protect.u16_LpErr_1HourCnt = 0;
+			Protect.u32_LpErr_1HourCnt = 0;
 			Protect.u16_LpCount = 0;
+			Protect.u16_LpErrCnt = 0;		// 30分钟后清除错误计数，允许重新计数
 		}
 	}
 	else 
 	{
-		Protect.u16_LpErr_1HourCnt = 0;
+		Protect.u32_LpErr_1HourCnt = 0;
 	}
 	
 	if (LowPress == 1)
 	{
-		if (((Comp.f_DrvOn) && (Comp.u32_RunContCount >= 1200))
-		|| Defrost.f_Enable)
+		// 待机时检测低压开关，如断开，则进入低压保护，系统停机保护
+		// 运行时：压缩机开启5min（参数P23）后检测低压保护开关，连续10s检测到此开关断开，则对应系统停机保护
+		// 待机时：直接检测，使用5秒延时（更快响应）
+		if ((System.Enum_Status == ENUM_STATUS_OFF))	// 待机时检测低压开关
 		{
 			if (Protect.u16_LpCount < 0xFFFF)
 			{
 				Protect.u16_LpCount ++;
 			}
 
-			if (Protect.u16_LpCount >= 3000)		//30秒
+			if (Protect.u16_LpCount >= 0)		//5-->0秒（待机时使用更短延时）
+			{
+				if (Protect.f_LowPress == 0)
+				{
+					Protect.u16_LpErrCnt ++;
+				}
+				Protect.f_LowPress = 1;
+			}
+		}
+		else if (((Comp.f_DrvOn) && (Comp.u32_RunContCount >= ((U32)FtyPara.u16P23 * 6000)))
+		|| Defrost.f_Enable)	// 运行时检测：压缩机开启P23分钟后检测低压保护开关
+		{
+			if (Protect.u16_LpCount < 0xFFFF)
+			{
+				Protect.u16_LpCount ++;
+			}
+
+			if (Protect.u16_LpCount >= 1000)		//10秒（连续10s检测到此开关断开）
 			{
 				if (Protect.f_LowPress == 0)
 				{
@@ -1119,34 +1145,39 @@ void    Protect_HighPressErr(void)
 {
 	if (Protect.u16_HpErrCnt)
 	{
-		if (Protect.u16_HpErr_1HourCnt < 0xFFFF)
+		if (Protect.u32_HpErr_1HourCnt < 0xFFFFFFFF)
 		{
-			Protect.u16_HpErr_1HourCnt ++;
+			Protect.u32_HpErr_1HourCnt ++;
 		}
 
-		if ((Protect.u16_HpErr_1HourCnt >=360000) 
+		// 30分钟内发生三次此故障，则非掉电不可恢复（前两次可自动恢复）
+		// 30分钟（180000*10ms=1800s=30min）后清除错误计数
+		if ((Protect.u32_HpErr_1HourCnt >=180000) 
 			&& (Protect.u16_HpErrCnt < 3)
 			&& (Protect.f_HighPress == 0))
 		{
-			Protect.u16_HpErr_1HourCnt = 0;
+			Protect.u32_HpErr_1HourCnt = 0;
 			Protect.u16_HpCount = 0;
+			Protect.u16_HpErrCnt = 0;		// 30分钟后清除错误计数，允许重新计数
 		}
 	}
 	else 
 	{
-		Protect.u16_HpErr_1HourCnt = 0;
+		Protect.u32_HpErr_1HourCnt = 0;
 	}
 	
 	if (HighPress == 1)
 	{
-		if (Comp.f_DrvOn)
+		// 待机时检测高压开关，如断开，则进入高压保护，系统停机保护
+		// 运行时：正常制冷状态下，压缩机起动5s检测到高压开关断开，则进入高压保护，停机保护
+		if ((System.Enum_Status == ENUM_STATUS_OFF))	// 待机时检测高压开关
 		{
 			if (Protect.u16_HpCount < 0xFFFF)
 			{
 				Protect.u16_HpCount ++;
 			}
 
-			if (Protect.u16_HpCount >= 800)
+			if (Protect.u16_HpCount >= 0)		//5秒（待机时使用5秒延时）
 			{
 				if (Protect.f_HighPress == 0)
 				{
@@ -1155,9 +1186,32 @@ void    Protect_HighPressErr(void)
 				Protect.f_HighPress = 1;
 			}
 		}
+		else if (Comp.f_DrvOn)	// 运行时检测
+		{
+			// 压缩机起动5秒后开始检测高压开关
+			if (Comp.u32_RunContCount >= 500)	// 5秒（500*10ms=5s）
+			{
+				// 压缩机已运行5秒，检测到高压开关断开，立即进入高压保护
+				if (Protect.f_HighPress == 0)
+				{
+					Protect.u16_HpErrCnt ++;
+				}
+				Protect.f_HighPress = 1;
+			}
+			else
+			{
+				// 压缩机运行未满5秒，屏蔽高压保护
+				Protect.f_HighPress = 0;
+			}
+		}
 		else 
 		{
-			Protect.u16_HpCount = 0;
+			// 压缩机未运行且不在待机状态，清除高压保护
+			if (Protect.u16_HpErrCnt < 3)
+			{
+				Protect.f_HighPress = 0;
+				Protect.u16_HpCount = 0;
+			}
 		}
 	}
 	else 
@@ -1167,6 +1221,130 @@ void    Protect_HighPressErr(void)
 			Protect.f_HighPress = 0;
 			Protect.u16_HpCount = 0;
 		}
+	}
+}
+
+/****************************************************************************************************
+Function Name       :void	Protect_MidWaterLevelErr(void)
+Description         :中水位开关故障检测
+Input               :
+Return              :
+Author              :
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    Protect_MidWaterLevelErr(void)
+{
+	// 判断到高水位接通且中水位断开时且持续时间30秒（参数P28），则判断为中水位开关故障
+	// 高水位接通：HighWaterLevel == 0（接通为0）
+	// 中水位断开：MidWaterLevel == 1（断开为1）
+	if ((HighWaterLevel == 0) && (MidWaterLevel == 1))
+	{
+		if (Protect.u16_MidWaterLevelErrCnt < 0xFFFF)
+		{
+			Protect.u16_MidWaterLevelErrCnt ++;
+		}
+
+		// 持续时间达到P28*100（P28单位为秒，转换为10ms周期）
+		if (Protect.u16_MidWaterLevelErrCnt >= (FtyPara.u16P28 * 100))
+		{
+			Protect.f_MidWaterLevelErr = 1;		// 中水位开关故障
+		}
+	}
+	else 
+	{
+		// 故障条件不满足，清除故障和计时
+		Protect.f_MidWaterLevelErr = 0;
+		Protect.u16_MidWaterLevelErrCnt = 0;
+	}
+}
+
+/****************************************************************************************************
+Function Name       :void	Protect_HighWaterLevelErr(void)
+Description         :高水位开关故障检测
+Input               :
+Return              :
+Author              :
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    Protect_HighWaterLevelErr(void)
+{
+	// 在定时补水期间，当补水阀连续运行超过60分钟（参数P29），则判断为高水位开关故障
+	// 定时补水期间：WFV.f_Timing == 1
+	// 补水阀运行：WFV.f_DrvOn == 1
+	if ((WFV.f_Timing == 1) && (WFV.f_DrvOn == 1))
+	{
+		if (WFV.u32_TimingRunCnt < 0xFFFFFFFF)
+		{
+			WFV.u32_TimingRunCnt ++;
+		}
+
+		// 持续时间达到P29*6000（P29单位为分钟，转换为10ms周期：P29*60*100 = P29*6000）
+		// 使用U32类型避免溢出：当P29=60时，60*6000=360000，超出U16范围
+		if (WFV.u32_TimingRunCnt >= ((U32)FtyPara.u16P29 * 6000))
+		{
+			Protect.f_HighWaterLevelErr = 1;		// 高水位开关故障
+			// 故障时禁用定时补水，启用自动补水
+			WFV.f_Timing = 0;
+			WFV.f_Auto = 1;
+			WFV.u16_TimingCnt = 0;
+			WFV.u32_TimingRunCnt = 0;
+		}
+	}
+	else 
+	{
+		// 不在定时补水或补水阀未运行，清除计时
+		WFV.u32_TimingRunCnt = 0;
+	}
+	
+	// 故障恢复：当故障被清除时（手动或自动清除故障代码），恢复定时补水功能
+	// 注意：故障清除由外部控制（线控器手动清除或自动清除），这里只处理恢复逻辑
+	if ((Protect.f_HighWaterLevelErr == 0) && (WFV.f_Auto == 1) && (WFV.f_Timing == 0))
+	{
+		// 故障已清除，且当前是自动补水模式（由故障切换过来的），可以恢复定时补水
+		// 但这里不自动恢复，需要外部根据用户设置来决定是否恢复定时补水
+		// 如果用户重新开启定时补水，则WFV.f_Timing会被外部设置为1
+	}
+}
+
+/****************************************************************************************************
+Function Name       :void	Protect_LowWaterLevelErr(void)
+Description         :低水位开关故障检测
+Input               :
+Return              :
+Author              :
+Version             :V1.0
+Revision History   1:
+                   2:
+****************************************************************************************************/
+void    Protect_LowWaterLevelErr(void)
+{
+	// 判断到高水位接通且低水位断开、或者中水位接通且低水位断开时且持续时间30秒（参数P28），则判断为低水位开关故障
+	// 高水位接通：HighWaterLevel == 0（接通为0）
+	// 中水位接通：MidWaterLevel == 0（接通为0）
+	// 低水位断开：LowWaterLevel == 1（断开为1）
+	if (((HighWaterLevel == 0) && (LowWaterLevel == 1)) || 
+		((MidWaterLevel == 0) && (LowWaterLevel == 1)))
+	{
+		if (Protect.u16_LowWaterLevelErrCnt < 0xFFFF)
+		{
+			Protect.u16_LowWaterLevelErrCnt ++;
+		}
+
+		// 持续时间达到P28*100（P28单位为秒，转换为10ms周期）
+		if (Protect.u16_LowWaterLevelErrCnt >= (FtyPara.u16P28 * 100))
+		{
+			Protect.f_LowWaterLevelErr = 1;		// 低水位开关故障
+		}
+	}
+	else 
+	{
+		// 故障条件不满足，清除故障和计时
+		Protect.f_LowWaterLevelErr = 0;
+		Protect.u16_LowWaterLevelErrCnt = 0;
 	}
 }
 //{
@@ -1503,10 +1681,16 @@ void    Func_Protect(void)
 	Protect_T2Heat();       //T2制热室内盘管过热保护
 	Protect_PhaseSequenceErr();	//错相保护
 	Protect_WaterFlowErr();		//水流开关保护
+	Protect_MidWaterLevelErr();	//中水位开关故障检测
+	Protect_HighWaterLevelErr();	//高水位开关故障检测
+	Protect_LowWaterLevelErr();	//低水位开关故障检测
+	
+	// 当出现中水位或低水位故障时，整机停止（参考高低压保护处理）
+	// 仅出现高水位开关故障时，机组正常运行，定时补水功能失效且执行自动补水功能
 	if (Protect.f_Tp || Protect.f_T2Cold || Protect.f_T3Cold 
 	|| Protect.f_CurrCold || Protect.f_CurrHeat || Protect.f_CompCurr
 	|| Protect.f_HighPress || Protect.f_LowPress || Protect.PhaseSeqStatus
-	|| Protect.f_WaterFlow)
+	|| Protect.f_WaterFlow || Protect.f_MidWaterLevelErr || Protect.f_LowWaterLevelErr)
 	{
 		Protect.f_Enable = 1;
 	}

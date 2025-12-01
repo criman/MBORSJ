@@ -51,6 +51,7 @@ typedef    struct
 	U16	  u16_Delay;
 	U16   u16_AutoCnt;					//自动补水计时
 	U16   u16_TimingCnt;				//定时补水计时
+	U32   u32_TimingRunCnt;				//定时补水期间补水阀连续运行计时（U32避免P29*6000溢出）
 }STRUCT_WFV;
 
 extern    STRUCT_WFV    WFV;

@@ -1090,7 +1090,7 @@ void    Protect_LowPressErr(void)
 				Protect.u16_LpCount ++;
 			}
 
-			if (Protect.u16_LpCount >= 0)		//5-->0秒（待机时使用更短延时）
+			if (Protect.u16_LpCount >= 500)		//5秒（待机时使用5秒延时）
 			{
 				if (Protect.f_LowPress == 0)
 				{
@@ -1177,7 +1177,7 @@ void    Protect_HighPressErr(void)
 				Protect.u16_HpCount ++;
 			}
 
-			if (Protect.u16_HpCount >= 0)		//5秒（待机时使用5秒延时）
+			if (Protect.u16_HpCount >= 500)		//5秒（待机时使用5秒延时）
 			{
 				if (Protect.f_HighPress == 0)
 				{
@@ -1625,35 +1625,46 @@ Revision History   1:
 ****************************************************************************************************/
 void    Protect_WaterFlowErr(void)
 {
-	if (CirculationPump.f_DrvOn)		//60s
+	// 系统请求开机，先开启循环水泵；循环水泵启动运行20秒（参数P6）后，若连续15秒（参数P7）检测到水流开关信号断开，则停止所有负载并报警、故障不可恢复
+	// 故障不可恢复，需按开关键关机或者断电后重新上电才能清除水流开关故障
+	if ((System.Enum_Status == ENUM_STATUS_INIT) || (System.Enum_Status == ENUM_STATUS_OFF))
 	{
-		if (CirculationPump.u16_RunCnt >= (FtyPara.u16P6 * 10))
+		// 系统初始化或关机时，清除水流开关故障
+		Protect.f_WaterFlow = 0;
+		Protect.u16_WaterFlowCnt = 0;
+	}
+	else if (CirculationPump.f_DrvOn)		//循环泵运行
+	{
+		if (CirculationPump.u16_RunCnt >= (FtyPara.u16P6 * 100))	//循环水泵启动运行P6秒后（P6单位为秒，转换为10ms周期：P6*100）
 		{
-			
-			if (WaterFlow == 1)
+			if (WaterFlow == 1)		//水流开关信号断开
 			{
-				Protect.u16_WaterFlowCnt++;
-				if (Protect.u16_WaterFlowCnt >= (FtyPara.u16P7 * 100))		
+				if (Protect.u16_WaterFlowCnt < 0xFFFF)
 				{
-					Protect.f_WaterFlow = 1;	
+					Protect.u16_WaterFlowCnt++;
+				}
+				// 连续15秒（参数P7）检测到水流开关信号断开
+				if (Protect.u16_WaterFlowCnt >= (FtyPara.u16P7 * 100))		//P7单位为秒，转换为10ms周期：P7*100
+				{
+					Protect.f_WaterFlow = 1;		//水流开关故障，故障不可恢复
 				}
 			}
 			else 
 			{
+				// 水流开关信号接通，清除计数
 				Protect.u16_WaterFlowCnt = 0;
 			}
 		}
 		else 
 		{
+			// 循环泵运行未满P6秒，清除计数
 			Protect.u16_WaterFlowCnt = 0;
 		}
 	}
 	else 
 	{
-		if (CirculationPump.u16_StopCnt >= 900)	//90s
-		{
-			Protect.f_WaterFlow = 0;
-		}
+		// 循环泵未运行，不清除故障（保持故障状态，除非系统初始化或关机）
+		// 不清除Protect.f_WaterFlow，保持故障状态
 	}
 }
 

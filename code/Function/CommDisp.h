@@ -218,7 +218,7 @@ typedef    enum
 	ENUM_ERRINFO_E1_TEMPROOM     = 0xE1,		//室温传感器T1故障
 	ENUM_ERRINFO_E2_TEMPCOIL     = 0xE2,		//盘管传感器T2故障
 	ENUM_ERRINFO_E3_WATERFULL    = 0xE3,		//水满保护
-	ENUM_ERRINFO_E4_PUMP	     = 0xE4,		//水泵保护
+	ENUM_ERRINFO_E4_PUMP	     = 0xE4,		//水泵保护（水流开关故障）
 	ENUM_ERRINFO_E5_FDP		     = 0xE5,		//缺氟保护
 	ENUM_ERRINFO_E6_TANKP	     = 0xE6,		//水箱保护
 	ENUM_ERRINFO_E7_TEMPEXHAUST  = 0xE7,		//排气传感器TP故障

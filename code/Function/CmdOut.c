@@ -416,6 +416,10 @@ void    DisplayBoard_Byte11_Update(void)
 		{
 			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_F7_COMPSTARTERR;	//驱动保护
 		}
+		else if (Protect.f_WaterFlow)
+		{
+			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_E4_PUMP;		//水流开关故障（显示E4）
+		}
 		else if (Protect.f_HighWaterLevelErr)
 		{
 			CommDisp.Tx.Byte11.ErrInfo = ENUM_ERRINFO_F6_HIGHWATERLEVELERR;		//高水位开关故障（显示F6）

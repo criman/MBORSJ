@@ -22,6 +22,9 @@ STRUCT_FTYPARA FtyPara = {0};
 U8 HighWaterLevel = 0;
 U8 LowWaterLevel  = 0;
 
+/* 提供缺失的全局变量存根 */
+STRUCT_SWITCHBYTE SwitchFlag1 = {0};
+
 /* WFV 由 WaterFeedValve.c 中定义，这里只用声明（通过头文件） */
 
 /* 硬件函数模拟：统计调用次数，验证驱动状态 */
@@ -86,6 +89,10 @@ static void setup_env(void)
     FtyPara.u16P9  = 3;   /* 定时补水延时（分钟） */
     FtyPara.u16P10 = 1;   /* 自动补水启动延时（分钟） */
     FtyPara.u16P11 = 3;   /* 自动补水停止延时（分钟） */
+    
+    /* 注意：Func_WFV() 在末尾会检查 f_Timing 和 f_Auto，如果为 0 会重置计数器
+     * 所以在测试用例中，必须先设置这些标志，再调用 Func_WFV()
+     */
 }
 
 /********************************** 测试用例 **********************************/
@@ -113,10 +120,40 @@ static void test_WFV_manual_on_high_level_logic(void)
 
     /* 高水位断开，允许补水 */
     WFV.f_ManualON   = 1;
+    WFV.f_ManualOFF  = 0;  /* 确保手动关标志为 0 */
+    WFV.f_Timing     = 0;  /* 确保定时补水标志为 0 */
+    WFV.f_Auto       = 0;  /* 确保自动补水标志为 0 */
     HighWaterLevel   = 1;
-
+    
+    /* 调用前检查 */
+    if (WFV.f_ManualON != 1)
+    {
+        printf("FAIL: 设置 f_ManualON=1 失败\n");
+        test_failed++;
+        return;
+    }
+    
+    /* 调用 Func_WFV() 处理逻辑 */
     Func_WFV();
-    TEST_ASSERT(WFV.f_AppOn == 1, "手动开 + 高水位断开时应开启补水阀");
+    
+    if (WFV.f_AppOn != 1)
+    {
+        printf("FAIL: 手动开 + 高水位断开时应开启补水阀\n");
+        printf("      调用前: f_ManualON=%d, f_ManualOFF=%d, HighWaterLevel=%d\n", 
+               1, 0, 1);
+        printf("      调用后: f_ManualON=%d, f_ManualOFF=%d, HighWaterLevel=%d, f_AppOn=%d\n", 
+               WFV.f_ManualON, WFV.f_ManualOFF, HighWaterLevel, WFV.f_AppOn);
+        test_failed++;
+        return;
+    }
+    
+    /* 验证 f_ManualON 没有被清除（因为 HighWaterLevel=1） */
+    if (WFV.f_ManualON != 1)
+    {
+        printf("FAIL: 手动开模式下，高水位断开时 f_ManualON 不应被清除\n");
+        test_failed++;
+        return;
+    }
 
     /* 高水位接通，立即关闭补水阀并复位 f_ManualON */
     HighWaterLevel = 0;
@@ -136,21 +173,70 @@ static void test_WFV_timing_mode_P9_delay(void)
     test_total++;
     setup_env();
 
-    WFV.f_Timing = 1;
-    HighWaterLevel = 1;          /* 高水位断开 */
+    /* 设置参数和标志 */
     FtyPara.u16P9 = 1;           /* 1 分钟，方便测试 */
     target = (U32)FtyPara.u16P9 * 6000U;
-
+    HighWaterLevel = 1;          /* 高水位断开 */
+    WFV.f_Timing = 1;            /* 设置定时补水标志 */
+    WFV.f_ManualOFF = 0;        /* 确保手动关标志为 0 */
+    WFV.f_ManualON = 0;         /* 确保手动开标志为 0 */
+    WFV.f_Auto = 0;             /* 确保自动补水标志为 0 */
+    WFV.u16_TimingCnt = 0;      /* 确保计数器从0开始 */
+    
+    /* 调用前检查 */
+    if (WFV.f_Timing != 1)
+    {
+        printf("FAIL: 设置 f_Timing=1 失败\n");
+        test_failed++;
+        return;
+    }
+    
     /* 延时未到之前应保持关闭 */
     for (i = 0; i < (int)target - 1; i++)
     {
+        U16 cnt_before = WFV.u16_TimingCnt;
         Func_WFV();
-        TEST_ASSERT(WFV.f_AppOn == 0, "定时补水：延时未到前应保持关闭");
+        U16 cnt_after = WFV.u16_TimingCnt;
+        
+        if (WFV.f_AppOn != 0)
+        {
+            printf("FAIL: 定时补水：延时未到前应保持关闭 (i=%d, TimingCnt=%d, f_Timing=%d)\n", 
+                   i, WFV.u16_TimingCnt, WFV.f_Timing);
+            test_failed++;
+            return;
+        }
+        
+        /* 验证计数器在递增 */
+        if (i == 0 && cnt_after == 0)
+        {
+            printf("FAIL: 定时补水：计数器应该从第一次调用后开始递增\n");
+            printf("      调用前: TimingCnt=%d, f_Timing=%d, HighWaterLevel=%d\n", 
+                   cnt_before, WFV.f_Timing, HighWaterLevel);
+            printf("      调用后: TimingCnt=%d, f_Timing=%d\n", 
+                   cnt_after, WFV.f_Timing);
+            test_failed++;
+            return;
+        }
+        
+        /* 验证 f_Timing 没有被清除 */
+        if (WFV.f_Timing != 1)
+        {
+            printf("FAIL: 定时补水：f_Timing 不应被清除 (i=%d)\n", i);
+            test_failed++;
+            return;
+        }
     }
 
     /* 再执行一次，使计数达到阈值，补水阀应开启 */
     Func_WFV();
-    TEST_ASSERT(WFV.f_AppOn == 1, "定时补水：延时到达后应开启补水阀");
+    if (WFV.f_AppOn != 1)
+    {
+        printf("FAIL: 定时补水：延时到达后应开启补水阀\n");
+        printf("      TimingCnt=%d, target=%d, f_AppOn=%d, f_Timing=%d\n", 
+               WFV.u16_TimingCnt, (int)target, WFV.f_AppOn, WFV.f_Timing);
+        test_failed++;
+        return;
+    }
 
     /* 高水位接通时应立即关闭并清零计时 */
     HighWaterLevel = 0;
@@ -171,24 +257,74 @@ static void test_WFV_auto_mode_P10_P11_logic(void)
     test_total++;
     setup_env();
 
-    WFV.f_Auto = 1;
-    LowWaterLevel  = 1;      /* 低水位断开 */
-    HighWaterLevel = 1;      /* 高水位断开（不影响启动） */
+    /* 设置参数和标志 */
     FtyPara.u16P10 = 1;
     FtyPara.u16P11 = 1;
-
     startCnt = (U32)FtyPara.u16P10 * 6000U;
     stopCnt  = (U32)FtyPara.u16P11 * 6000U;
+    
+    LowWaterLevel  = 1;      /* 低水位断开 */
+    HighWaterLevel = 1;      /* 高水位断开（不影响启动） */
+    WFV.f_Auto = 1;          /* 设置自动补水标志 */
+    WFV.f_ManualOFF = 0;    /* 确保手动关标志为 0 */
+    WFV.f_ManualON = 0;     /* 确保手动开标志为 0 */
+    WFV.f_Timing = 0;       /* 确保定时补水标志为 0 */
+    WFV.f_AppOn = 0;        /* 确保初始状态为关闭 */
+    WFV.u16_AutoCnt = 0;    /* 确保计数器从0开始 */
+
+    /* 调用前检查 */
+    if (WFV.f_Auto != 1)
+    {
+        printf("FAIL: 设置 f_Auto=1 失败\n");
+        test_failed++;
+        return;
+    }
 
     /* 启动延时：在 P10*6000 之前保持关闭 */
     for (i = 0; i < (int)startCnt - 1; i++)
     {
+        U16 cnt_before = WFV.u16_AutoCnt;
         Func_WFV();
-        TEST_ASSERT(WFV.f_AppOn == 0, "自动补水：P10 延时未到前应保持关闭");
+        U16 cnt_after = WFV.u16_AutoCnt;
+        
+        if (WFV.f_AppOn != 0)
+        {
+            printf("FAIL: 自动补水：P10 延时未到前应保持关闭 (i=%d, AutoCnt=%d, f_Auto=%d)\n", 
+                   i, WFV.u16_AutoCnt, WFV.f_Auto);
+            test_failed++;
+            return;
+        }
+        
+        /* 验证计数器在递增 */
+        if (i == 0 && cnt_after == 0)
+        {
+            printf("FAIL: 自动补水：计数器应该从第一次调用后开始递增\n");
+            printf("      调用前: AutoCnt=%d, f_Auto=%d, LowWaterLevel=%d, HighWaterLevel=%d\n", 
+                   cnt_before, WFV.f_Auto, LowWaterLevel, HighWaterLevel);
+            printf("      调用后: AutoCnt=%d, f_Auto=%d\n", 
+                   cnt_after, WFV.f_Auto);
+            test_failed++;
+            return;
+        }
+        
+        /* 验证 f_Auto 没有被清除 */
+        if (WFV.f_Auto != 1)
+        {
+            printf("FAIL: 自动补水：f_Auto 不应被清除 (i=%d)\n", i);
+            test_failed++;
+            return;
+        }
     }
 
     Func_WFV();  /* 到达启动阈值 */
-    TEST_ASSERT(WFV.f_AppOn == 1, "自动补水：P10 延时到达后应开启补水阀");
+    if (WFV.f_AppOn != 1)
+    {
+        printf("FAIL: 自动补水：P10 延时到达后应开启补水阀\n");
+        printf("      AutoCnt=%d, startCnt=%d, f_AppOn=%d, f_Auto=%d\n", 
+               WFV.u16_AutoCnt, (int)startCnt, WFV.f_AppOn, WFV.f_Auto);
+        test_failed++;
+        return;
+    }
 
     /* 模拟低水位再次接通，开始 P11 延时关阀（保持高水位未接通） */
     LowWaterLevel  = 0;      /* 低水位接通 */
@@ -247,7 +383,7 @@ static void test_WFV_drive_output_calls(void)
 
 /********************************** 测试入口 **********************************/
 
-int main(void)
+int main_test_WaterFeedValve(void)
 {
     printf("========================================\n");
     printf("补水阀功能单元测试\n");

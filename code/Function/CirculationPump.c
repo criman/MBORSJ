@@ -69,7 +69,13 @@ void    Func_CirculationPump(void)
 	{
 		U32 u32StopDelay = (U32)(FtyPara.u16P3 + FtyPara.u16P5) * 10U;
 		U8 bCompStopped = (Comp.f_DrvOn == 0);
-		U8 bStopSeqKeepOn = bCompStopped && (Comp.u32_StopContCount < u32StopDelay);
+		/* 修复：上电初始化时，Comp.u32_StopContCount初始值为0，会导致bStopSeqKeepOn误判
+		 * 增加系统状态判断，只有在非初始化状态且Comp.u32_StopContCount大于0时才判断保持开启
+		 * 这样可以区分"上电初始状态"和"压缩机停止后的保持开启状态"
+		 */
+		U8 bPowerOnInit = (System.Enum_Status == ENUM_STATUS_INIT) || (System.u8_PowerOn_Count < 30);
+		U8 bStopSeqKeepOn = bCompStopped && (Comp.u32_StopContCount < u32StopDelay) 
+			&& !bPowerOnInit && (Comp.u32_StopContCount > 0);
 		U8 bStopSeqAllowOff = bCompStopped && (Comp.u32_StopContCount >= u32StopDelay) && (Fan.Outdoor.f_DrvOn == 0);
 
 		/* 关闭顺序优先：一旦满足“允许关闭”的条件，应立即关闭循环泵，

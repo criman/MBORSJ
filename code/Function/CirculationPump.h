@@ -27,7 +27,7 @@ Revision History   1:
 #define		P_CirculationPump_Enpull()						DEFINE_PA30_ENPULLUP				//Р§зг:DEFINE_P00_ENPULL
 #define		P_CirculationPump_Dispull()						DEFINE_PA30_DISPULLUP			//Р§зг:DEFINE_P00_DISPULL
 //---------------------------------------------------------------------------------------------------//
-#if (DCFan_SigValid == 1)
+#if (CirculationPump_SigValid == 1)
 #define		P_CirculationPump_On()							P_CirculationPump_Hi()
 #define		P_CirculationPump_Off()							P_CirculationPump_Low()
 #else

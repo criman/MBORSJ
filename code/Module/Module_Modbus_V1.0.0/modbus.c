@@ -859,6 +859,11 @@ void ecbm_modbus_cmd_read_reg(emu16 addr,emu16 * dat){
 	{
 		ecbm_modbus_rtu_reg_buf[addr] = TH.s16_ValueMul10; 
 	}
+	else if (addr == CurEEVStep)		//当前电子膨胀阀步数
+	{
+		ecbm_modbus_rtu_reg_buf[addr] = StepMotor.var.u16_agcurrent; 
+	}
+	
 	else if (addr == SoftwareVersion)
 	{
 		ecbm_modbus_rtu_reg_buf[addr] = MainSoftWareVersion;

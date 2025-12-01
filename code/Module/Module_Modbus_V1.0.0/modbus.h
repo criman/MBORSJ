@@ -185,8 +185,8 @@ extern emu16  ecbm_modbus_rtu_reg_buf[ECBM_MODBUS_RTU_REG_BUF_SIZE];//寄存器存放
 #define  u16MB_T5OTemp	 		ecbm_modbus_rtu_reg_buf[T5OTemp]	//出水温度 (0.1精度)
 #define  THTemp	 				0x05	//回气温度 (0.1精度)
 #define  u16MB_THTemp	 		ecbm_modbus_rtu_reg_buf[THTemp]	//出水温度 (0.1精度)
-#define  CurEEVStep	 			0x07	//回气温度 (0.1精度)
-#define  u16MB_CurEEVStep	 	ecbm_modbus_rtu_reg_buf[CurEEVStep]	//出水温度 (0.1精度)
+#define  CurEEVStep	 			0x07	//电子膨胀阀开度
+#define  u16MB_CurEEVStep	 	ecbm_modbus_rtu_reg_buf[CurEEVStep]	//电子膨胀阀开度
 
 #define  FlagWork				0x0C
 #define  u16MB_FlagWork 		ecbm_modbus_rtu_reg_buf[FlagWork]	//工作标志

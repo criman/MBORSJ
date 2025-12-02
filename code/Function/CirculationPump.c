@@ -74,23 +74,39 @@ void    Func_CirculationPump(void)
 		 * 这样可以区分"上电初始状态"和"压缩机停止后的保持开启状态"
 		 */
 		U8 bPowerOnInit = (System.Enum_Status == ENUM_STATUS_INIT) || (System.u8_PowerOn_Count < 30);
+		/* 修复：bStopSeqKeepOn需要增加Comp.f_HavedDrvOn判断
+		 * 只有压缩机曾经运行过(f_HavedDrvOn==1)，停机后才需要保持循环泵开启
+		 * 避免开机命令下发但未满足开机条件时误开循环泵
+		 */
 		U8 bStopSeqKeepOn = bCompStopped && (Comp.u32_StopContCount < u32StopDelay) 
-			&& !bPowerOnInit && (Comp.u32_StopContCount > 0);
-		U8 bStopSeqAllowOff = bCompStopped && (Comp.u32_StopContCount >= u32StopDelay) && (Fan.Outdoor.f_DrvOn == 0);
-
-		/* 关闭顺序优先：一旦满足“允许关闭”的条件，应立即关闭循环泵，
+			&& !bPowerOnInit && (Comp.u32_StopContCount > 0) && (Comp.f_HavedDrvOn == 1);
+		/* 修复：bStopSeqAllowOff需要排除"正在启动"的情况
+		 * 当循环泵已经在运行时(f_DrvOn==ON)，不应关闭
+		 * 当循环泵请求开启时(f_AppOn==ON)，不应关闭
+		 */
+		U8 bStopSeqAllowOff = bCompStopped && (Comp.u32_StopContCount >= u32StopDelay) 
+			&& (Fan.Outdoor.f_DrvOn == 0) && (CirculationPump.f_AppOn == OFF) 
+			&& (CirculationPump.f_DrvOn == OFF);
+		
+		/* 修复：EEV初始化完成前不允许开启循环泵
+		 * StepMotor.var.u8_status >= ENUM_STEPMOTOR_STATUS_RUN 表示EEV已完成复位
+		 */
+		U8 bEEVReady = (StepMotor.var.u8_status >= ENUM_STEPMOTOR_STATUS_RUN);
+		
+		/* 关闭顺序优先：一旦满足"允许关闭"的条件，应立即关闭循环泵，
 		 * 其优先级高于常规保持开启的逻辑。
 		 */
 		if (bStopSeqAllowOff)
 		{
 			CirculationPump.f_AppOn = OFF;
 		}
-		else if (((CirculationPump.f_AppOn == 1)
+		else if ((((CirculationPump.f_AppOn == 1)
 		&& (Comp.u16_RestartDelay <= 900 )
 		&& (Comp.u8_SelTestDelay <= 900)
 		&& (Comp.u8_PowerOnDelay <= 900))
 		|| (Defrost.f_Enable)
 		|| bStopSeqKeepOn)
+		&& bEEVReady)	//EEV初始化完成后才允许开启
 		{
 			CirculationPump.f_AppOn = ON;
 		}

@@ -200,9 +200,14 @@ void 	App_Status_On(void)
 				{
 					if (SystemMode.f_TempCEC == 0)
 					{
-						if ((T5.s16_ValueMul10bc  >= (TempValueMul10(Tempr.u8_TempCSet) + (U8)(FtyPara.u16L2))))
-//						&& (Comp.u16_RestartDelay == 0) &&(Fan.Outdoor.u16_Delay == 0))
-						{
+						/* 修复：增加Comp.u16_RestartDelay == 0判断，确保压机停满3min后才能开启循环泵
+					 * 规格书要求：若压机关满3min后开，才按顺序启动（水泵→40s→风机→15s→压机）
+					 * 增加EEV初始化完成判断，确保电子膨胀阀复位完成后才能开启循环泵
+					 */
+					if ((T5.s16_ValueMul10bc  >= (TempValueMul10(Tempr.u8_TempCSet) + (U8)(FtyPara.u16L2)))
+						&& (Comp.u16_RestartDelay == 0)
+						&& (StepMotor.var.u8_status >= ENUM_STEPMOTOR_STATUS_RUN))	//EEV初始化完成
+					{
 							if (CirculationPump.u16_RunCnt >= (FtyPara.u16P4 * 10))
 							{
 								Fan.Outdoor.f_AppOn = ON;
@@ -211,20 +216,26 @@ void 	App_Status_On(void)
 							CirculationPump.f_AppOn = ON;
 							SystemMode.f_ConTemp = 0;
 						}
-						else if ((T5.s16_ValueMul10bc <= (TempValueMul10(Tempr.u8_TempCSet)))
-						&& (Fan.Outdoor.u16_Delay == 0) 
-						&& (Comp.u32_StopContCount >= (FtyPara.u16P3 * 10)))
+						/* 达温后关闭顺序（参考时序图）：
+						 * 1. 先关压缩机
+						 * 2. 压缩机停机P3秒后关风机
+						 * 3. 风机关闭后P5秒关水泵（即压缩机停机P3+P5秒后）
+						 */
+						else if (T5.s16_ValueMul10bc <= (TempValueMul10(Tempr.u8_TempCSet)))
 						{
-							Fan.Outdoor.f_AppOn = OFF;
+							//压缩机停机P3秒后关风机
+							if (Comp.u32_StopContCount >= (FtyPara.u16P3 * 10))
+							{
+								Fan.Outdoor.f_AppOn = OFF;
+							}
+							
+							//压缩机停机P3+P5秒后关水泵
 							if (Comp.u32_StopContCount >= ((FtyPara.u16P3 * 10) + (FtyPara.u16P5 * 10)))
-							{//20251128 延长循环泵运行时间
+							{
 								CirculationPump.f_AppOn = OFF;
 							}
 							
-							if (T5.s16_ValueMul10bc <= (TempValueMul10(Tempr.u8_TempCSet)))
-							{
-								SystemMode.f_ConTemp = 1;
-							}
+							SystemMode.f_ConTemp = 1;
 						}
 						
 						if ((Fan.Outdoor.f_AppOn == 0)
@@ -769,10 +780,12 @@ void 	App_Status_On(void)
 				{
 					if (SystemMode.f_TempCEC == 0)
 					{
-						if ((T5.s16_ValueMul10bc  <= (TempValueMul10(Tempr.u8_TempCSet) - (U8)(FtyPara.u16L2))))
-//						&& (Comp.u16_RestartDelay == 0)&& (Fan.Outdoor.u16_Delay == 0))
+						/* 修复：增加Comp.u16_RestartDelay == 0判断，确保压机停满3min后才能开启循环泵
+						 * 规格书要求：若压机关满3min后开，才按顺序启动（水泵→40s→风机→15s→压机）
+						 */
+						if ((T5.s16_ValueMul10bc  <= (TempValueMul10(Tempr.u8_TempCSet) - (U8)(FtyPara.u16L2)))
+						&& (Comp.u16_RestartDelay == 0))
 						{
-							
 							CirculationPump.f_AppOn = ON;
 							if (CirculationPump.u16_RunCnt >= 300)
 							{

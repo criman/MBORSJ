@@ -388,8 +388,11 @@ void	App_StepMotor_Run(void)
         {
         	if (StepMotor.var.u16_agcurrent == StepMotor.var.u16_agtarget)
             {
-		            StepMotor.var.u16_agcurrent = C_STEPMOTOR_RESET_OFF;										//起点
-		            StepMotor.var.u16_agtarget  = 0;			    		//上电校准风门先打开的角度
+		            /* 复位校准策略：开到250P后，认为该点是550P，然后关550步到0P
+		             * 目的：确保电子膨胀阀完全关死（多出的步数会顶在机械限位上）
+		             */
+		            StepMotor.var.u16_agcurrent = C_STEPMOTOR_RESET_OFF;		//认为当前位置是550P
+		            StepMotor.var.u16_agtarget  = 0;							//目标关到0P（关550步）
 					StepMotor.var.u8_status += 1;
 			}
         }break;
@@ -398,22 +401,23 @@ void	App_StepMotor_Run(void)
         {
             if (StepMotor.var.u16_agcurrent == StepMotor.var.u16_agtarget)
             {
-//                StepMotor.var.u16_agcurrent = C_STEPMOTOR_MAX;		        //风门最大角度
-//                StepMotor.var.u16_agtarget  = 0;							        //起点
+				/* 复位完成后，根据是否运行过压缩机决定目标位置：
+				 * 1. 上电复位后（未运行过）：设置到初开度
+				 * 2. 停机复位后（运行过）：设置到160P停机步数
+				 */
+				StepMotor.var.u16_agcurrent = 0;
 				if (Comp.f_HavedDrvOn == 1)
 				{
-					StepMotor.var.u16_agcurrent = 0;
+					//压缩机运行过，设置到160P停机步数
 					StepMotor.var.u16_agtarget = C_STEPMOTOR_COMPOFF_STEP;
-					if (Comp.u32_StopContCount >= 1800)
-					{//停机复位到160P要等待到压机停满3min才回到初开度
-						Comp.f_HavedDrvOn = 0;
-					}
 				}
-				else 
+				else
 				{
-	                EEV_InitOpenStep();
-	                StepMotor.var.u8_status += 1;
-	            }
+					//上电复位后，设置到初开度
+					EEV_InitOpenStep();
+					StepMotor.var.u16_agtarget = StepMotor.var.u16_OpenInitStep;
+				}
+				StepMotor.var.u8_status += 1;	//进入INITOPEN状态
             }
         }break;
         
@@ -429,14 +433,15 @@ void	App_StepMotor_Run(void)
 //            }
 //        }break;
 
-        case	ENUM_STEPMOTOR_STATUS_INITOPEN:		//等待达到初开度
+        case	ENUM_STEPMOTOR_STATUS_INITOPEN:		//等待达到初开度或停机步数
         {
             if (StepMotor.var.u16_agcurrent == StepMotor.var.u16_agtarget)
             {
-                StepMotor.var.u16_agcurrent = 0;									//起点
-                StepMotor.var.u16_agtarget = StepMotor.var.u16_OpenInitStep;										//起点
-//                StepMotor.var.u8_run = ENUM_STEPMOTOR_POSITION_OFFINIT;			    //功能运行默认关闭等待命令
-            
+				/* 已到达目标位置（初开度或160P），进入RUN状态
+				 * 在RUN状态中：
+				 * - 上电复位后未运行过：保持初开度
+				 * - 运行过并停机：保持160P，有开机需求且循环泵开启时调整到初开度
+				 */
                 StepMotor.var.u8_status += 1;
             }
         }break;
@@ -453,19 +458,29 @@ void	App_StepMotor_Run(void)
 			{
 				if  (Comp.f_DrvOn == 0)
 				{
-					if (Comp.f_HavedDrvOn == 1)
+					/* 压缩机停机时的EEV控制（根据时序图）：
+					 * 1. 上电复位后未运行过：保持初开度（不修改目标）
+					 * 2. 运行过并停机：保持在160P停机步数
+					 * 3. 有开机需求且循环泵已开启：从160P调整到初开度
+					 * 4. 停机2min后复位一次（使用f_HavedDrvOn防止重复）
+					 */
+					if (CirculationPump.f_DrvOn == ON)
 					{
+						//有开机需求且循环泵已开启，调整到初开度
+						EEV_InitOpenStep();
+						StepMotor.var.u16_agtarget = StepMotor.var.u16_OpenInitStep;
+					}
+					else if (Comp.f_HavedDrvOn == 1)
+					{
+						//压缩机运行过并停机，保持160P停机步数
 						StepMotor.var.u16_agtarget = FtyPara.u16P13;
-						
 					}
-					else 	//上电后未开启过压缩机时不动作
-					{
+					//上电后未开启过压缩机时：保持初开度（不修改目标）
 
-					}
-
-					if (Comp.u32_StopContCount >= 1200)
-					{//压缩机停机2min后，复位一次
+					if ((Comp.u32_StopContCount >= 1200) && (Comp.f_HavedDrvOn == 1))
+					{//压缩机停机2min后，复位一次（f_HavedDrvOn作为标志位防止重复复位）
 						StepMotor.var.u8_status = ENUM_STEPMOTOR_STATUS_RESETON;
+						Comp.f_HavedDrvOn = 0;	//清除标志，防止重复复位
 					}
 				}
 				else 

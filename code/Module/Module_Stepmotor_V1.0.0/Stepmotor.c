@@ -12,9 +12,14 @@ Revision History   1:
 
 #include		"main.h"
 
-
-STRUCT_STEPMOTORBYTE		StepMotorFlag;
-UNION_STEPMOTOR				StepMotor;
+#if defined(UNIT_TEST)
+    // 在测试环境中，全局变量在 test_compat.c 中定义
+    extern STRUCT_STEPMOTORBYTE StepMotorFlag;
+    extern UNION_STEPMOTOR StepMotor;
+#else
+    STRUCT_STEPMOTORBYTE		StepMotorFlag;
+    UNION_STEPMOTOR				StepMotor;
+#endif
 
 //--------------------------------------------------------------------------------------------------//
 //橙(bit3)-黄(bit2)-粉(bit1)-蓝(bit0)组成十六进制相序表

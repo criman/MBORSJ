@@ -12,7 +12,12 @@ Revision History   1:
 
 #include	"main.h"
 
-STRUCT_COMP    Comp;
+#if defined(UNIT_TEST)
+    // 在测试环境中，全局变量在 test_compat.c 中定义
+    extern STRUCT_COMP Comp;
+#else
+    STRUCT_COMP    Comp;
+#endif
 
 /****************************************************************************************************
 Function Name       :void    Init_Comp(void)

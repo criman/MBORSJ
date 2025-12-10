@@ -12,7 +12,12 @@ Revision History   1:
 
 #include	"main.h"
 
-STRUCT_CIRCULATIONPUMP    CirculationPump;         //循环泵
+#if defined(UNIT_TEST)
+    // 在测试环境中，全局变量在 test_compat.c 中定义
+    extern STRUCT_CIRCULATIONPUMP CirculationPump;
+#else
+    STRUCT_CIRCULATIONPUMP    CirculationPump;         //循环泵
+#endif
 
 /* 在 PC / UNIT_TEST 环境下，将循环泵的硬件操作改为由外部函数提供，
  * 便于在单元测试中用模拟函数替代真实 GPIO 操作。

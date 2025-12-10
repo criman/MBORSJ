@@ -12,7 +12,12 @@ Revision History   1:
 
 #include	"main.h"
 
-STRUCT_BPV    BPV;         //旁通泵
+#if defined(UNIT_TEST)
+    // 在测试环境中，全局变量在 test_compat.c 中定义
+    extern STRUCT_BPV BPV;
+#else
+    STRUCT_BPV    BPV;         //旁通泵
+#endif
 
 /* 在 PC / UNIT_TEST 环境下，将旁通阀的硬件操作改为由外部函数提供
  * 这样可以在单元测试中用模拟函数替代真实 GPIO 操作，避免链接到底层驱动。

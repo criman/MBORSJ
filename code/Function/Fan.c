@@ -12,7 +12,28 @@ Revision History   1:
 
 #include	"main.h"
 
-STRUCT_FAN    Fan;
+#if defined(UNIT_TEST)
+    // 在测试环境中，全局变量在 test_compat.c 中定义
+    extern STRUCT_FAN Fan;
+#else
+    STRUCT_FAN    Fan;
+#endif
+
+/* 在 PC / UNIT_TEST 环境下，将外风机的硬件操作改为由外部函数提供
+ * 这样可以在单元测试中用模拟函数替代真实 GPIO 操作，避免链接到底层驱动。
+ */
+#if defined(UNIT_TEST)
+    #undef P_OutDoorFan_On
+    #undef P_OutDoorFan_Off
+    #undef P_OutDoorFan_Output
+    #undef P_OutDoorFan_Dispull
+    #undef P_OutDoorFan_Hi
+    #undef P_OutDoorFan_Low
+    extern void P_OutDoorFan_On(void);
+    extern void P_OutDoorFan_Off(void);
+    extern void P_OutDoorFan_Output(void);
+    extern void P_OutDoorFan_Dispull(void);
+#endif
 
 
 /****************************************************************************************************
@@ -121,14 +142,6 @@ Revision History   1:
 ****************************************************************************************************/
 void    Init_OutDoorFan(void)
 {
-#if defined(UNIT_TEST)
-    #undef P_OutDoorFan_Off
-    #undef P_OutDoorFan_Output
-    #undef P_OutDoorFan_Dispull
-    extern void P_OutDoorFan_Off(void);
-    extern void P_OutDoorFan_Output(void);
-    extern void P_OutDoorFan_Dispull(void);
-#endif
     P_OutDoorFan_Off();  
     P_OutDoorFan_Output();	
 	P_OutDoorFan_Dispull();	
@@ -1123,16 +1136,6 @@ void    Drv_Fan_OutDoor(void)
 				Fan.Outdoor.u16_TargetRPM = 0;
 			}
 		}
-#if defined(UNIT_TEST)
-        extern void P_OutDoorFan_On(void);
-        extern void P_OutDoorFan_Off(void);
-#endif
-#if defined(UNIT_TEST)
-        #undef P_OutDoorFan_On
-        #undef P_OutDoorFan_Off
-        extern void P_OutDoorFan_On(void);
-        extern void P_OutDoorFan_Off(void);
-#endif
 		P_OutDoorFan_On();
 	}
 	else

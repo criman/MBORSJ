@@ -12,7 +12,12 @@ Revision History   1:
 
 #include	"main.h"
 
-STRUCT_WFV    WFV;         //补水泵
+#if defined(UNIT_TEST)
+    // 在测试环境中，全局变量在 test_compat.c 中定义
+    extern STRUCT_WFV WFV;
+#else
+    STRUCT_WFV    WFV;         //补水泵
+#endif
 
 /* 在 PC / UNIT_TEST 环境下，将补水阀的硬件操作改为由外部函数提供，
  * 便于在单元测试中用模拟函数替代真实 GPIO 操作。

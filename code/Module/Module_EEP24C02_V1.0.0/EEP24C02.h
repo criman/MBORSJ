@@ -18,23 +18,23 @@ Revision History   1:
 //===================================================================================================//
 //模拟IIC控制SCL引脚IO配置
 //---------------------------------------------------------------------------------------------------//
-#define			Pin_IICM_SCL					PB17//SCL IO端口选择			例子:P00/P0_0
-#define			P_IICM_SCL_H()					DEFINE_PB17_HI				//例子:DEFINE_P00_HI
-#define			P_IICM_SCL_L()					DEFINE_PB17_LOW				//例子:DEFINE_P00_LOW
-#define			P_IICM_SCL_OUT()				DEFINE_PB17_OUTPUT			//例子:DEFINE_P00_OUTPUT
-#define			P_IICM_SCL_IN()					DEFINE_PB17_INPUT			//例子:DEFINE_P00_INPUT
-#define         P_IICM_SCL_ENPULL()             DEFINE_PB17_ENPULLUP		//例子:DEFINE_P00_ENPULL
-#define         P_IICM_SCL_DISPULL()            DEFINE_PB17_DISPULLUP		//例子:DEFINE_P00_DISPULL
+#define			Pin_IICM_SCL					PB8//SCL IO端口选择			例子:P00/P0_0
+#define			P_IICM_SCL_H()					DEFINE_PB8_HI				//例子:DEFINE_P00_HI
+#define			P_IICM_SCL_L()					DEFINE_PB8_LOW				//例子:DEFINE_P00_LOW
+#define			P_IICM_SCL_OUT()				DEFINE_PB8_OUTPUT			//例子:DEFINE_P00_OUTPUT
+#define			P_IICM_SCL_IN()					DEFINE_PB8_INPUT			//例子:DEFINE_P00_INPUT
+#define         P_IICM_SCL_ENPULL()             DEFINE_PB8_ENPULLUP		//例子:DEFINE_P00_ENPULL
+#define         P_IICM_SCL_DISPULL()            DEFINE_PB8_DISPULLUP		//例子:DEFINE_P00_DISPULL
 //===================================================================================================//
 //模拟IIC控制SDA引脚IO配置
 //---------------------------------------------------------------------------------------------------//
-#define			Pin_IICM_SDA					PB16//SCL IO端口选择			例子:P00/P0_0
-#define			P_IICM_SDA_H()					DEFINE_PB16_HI				//例子:DEFINE_P00_HI
-#define			P_IICM_SDA_L()					DEFINE_PB16_LOW				//例子:DEFINE_P00_LOW
-#define			P_IICM_SDA_OUT()				DEFINE_PB16_OUTPUT			//例子:DEFINE_P00_OUTPUT
-#define			P_IICM_SDA_IN()					DEFINE_PB16_INPUT			//例子:DEFINE_P00_INPUT
-#define			P_IICM_SDA_ENPULL()				DEFINE_PB16_ENPULLUP		//例子:DEFINE_P00_ENPULL
-#define			P_IICM_SDA_DISPULL()            DEFINE_PB16_DISPULLUP		//例子:DEFINE_P00_DISPULL
+#define			Pin_IICM_SDA					PB9//SCL IO端口选择			例子:P00/P0_0
+#define			P_IICM_SDA_H()					DEFINE_PB9_HI				//例子:DEFINE_P00_HI
+#define			P_IICM_SDA_L()					DEFINE_PB9_LOW				//例子:DEFINE_P00_LOW
+#define			P_IICM_SDA_OUT()				DEFINE_PB9_OUTPUT			//例子:DEFINE_P00_OUTPUT
+#define			P_IICM_SDA_IN()					DEFINE_PB9_INPUT			//例子:DEFINE_P00_INPUT
+#define			P_IICM_SDA_ENPULL()				DEFINE_PB9_ENPULLUP		//例子:DEFINE_P00_ENPULL
+#define			P_IICM_SDA_DISPULL()            DEFINE_PB9_DISPULLUP		//例子:DEFINE_P00_DISPULL
 //===================================================================================================//
 //从机地址和ID命令
 //---------------------------------------------------------------------------------------------------//
@@ -48,7 +48,7 @@ Revision History   1:
 //以下宏定义无需修改参数
 //---------------------------------------------------------------------------------------------------//
 //---------------------------------------------------------------------------------------------------//
-#define			Read_SDA() 								(PortPin_Read(GPIOB, GPIO_Pin_16))
+#define			Read_SDA() 								(PortPin_Read(GPIOB, GPIO_Pin_9))
 //---------------------------------------------------------------------------------------------------//
 //===================================================================================================//
 

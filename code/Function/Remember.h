@@ -19,13 +19,13 @@ Revision History   1:
 //---------------------------------------------------------------------------------------------------//
 #define		EEPwren_SigValid						0//PowEnPTC工作端口电平		例子:高电平有效1/低电平有效0
 //---------------------------------------------------------------------------------------------------//
-#define		Pin_EEPwren							PortPin_Read(GPIOA, GPIO_Pin_10)//SWITCH1 IO端口选择			例子:P00/P0_0										
-#define		P_EEPwren_Hi()						DEFINE_PA10_HI					//例子:DEFINE_P00_HI
-#define		P_EEPwren_Low()						DEFINE_PA10_LOW					//例子:DEFINE_P00_LOW
-#define		P_EEPwren_Output()					DEFINE_PA10_OUTPUT				//例子:DEFINE_P00_OUTPUT
-#define		P_EEPwren_Input()					DEFINE_PA10_INPUT				//例子:DEFINE_P00_INPUT
-#define		P_EEPwren_Enpull()					DEFINE_PA10_ENPULLUP			//例子:DEFINE_P00_ENPULL
-#define		P_EEPwren_Dispull()					DEFINE_PA10_DISPULLUP			//例子:DEFINE_P00_DISPULL
+#define		Pin_EEPwren							PortPin_Read(GPIOB, GPIO_Pin_10)//SWITCH1 IO端口选择			例子:P00/P0_0										
+#define		P_EEPwren_Hi()						DEFINE_PB10_HI					//例子:DEFINE_P00_HI
+#define		P_EEPwren_Low()						DEFINE_PB10_LOW					//例子:DEFINE_P00_LOW
+#define		P_EEPwren_Output()					DEFINE_PB10_OUTPUT				//例子:DEFINE_P00_OUTPUT
+#define		P_EEPwren_Input()					DEFINE_PB10_INPUT				//例子:DEFINE_P00_INPUT
+#define		P_EEPwren_Enpull()					DEFINE_PB10_ENPULLUP			//例子:DEFINE_P00_ENPULL
+#define		P_EEPwren_Dispull()					DEFINE_PB10_DISPULLUP			//例子:DEFINE_P00_DISPULL
 //---------------------------------------------------------------------------------------------------//
 #if (PowEn12V_SigValid == 1)
 #define		P_EEPwren_On()						P_EEPwren_Hi()

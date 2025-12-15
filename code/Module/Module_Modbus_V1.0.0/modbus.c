@@ -182,7 +182,32 @@ void ecbm_modbus_cmd_write_reg(emu16 addr,emu16 dat){
 //    if ((addr == CoolSetTemp) || (addr == HeatSetTemp))	//制冷制热设定温度解析
     if (addr == CoolSetTemp)//制冷制热设定温度解析
     {
+		// F1 and F2 limit check: F1 is lower limit, F2 is upper limit
+		emu16 u16_TempLimitMin = FtyPara.u16F1 * 10;  // F1 lower limit * 10 (CoolSetTemp stores temperature * 10)
+		emu16 u16_TempLimitMax = FtyPara.u16F2 * 10;  // F2 upper limit * 10
+		
+		// Limit the write value within [F1*10, F2*10] range
+		if (ecbm_modbus_rtu_reg_buf[addr] < u16_TempLimitMin)
+		{
+			ecbm_modbus_rtu_reg_buf[addr] = u16_TempLimitMin;
+		}
+		else if (ecbm_modbus_rtu_reg_buf[addr] > u16_TempLimitMax)
+		{
+			ecbm_modbus_rtu_reg_buf[addr] = u16_TempLimitMax;
+		}
+		
 		Tempr.u8_TempCSet = ecbm_modbus_rtu_reg_buf[addr]/10;		// 为下发温度*10
+		
+		// Additional limit check for Tempr.u8_TempCSet (ensure value is within [F1, F2] range)
+		if (Tempr.u8_TempCSet < FtyPara.u16F1)
+		{
+			Tempr.u8_TempCSet = FtyPara.u16F1;
+		}
+		else if (Tempr.u8_TempCSet > FtyPara.u16F2)
+		{
+			Tempr.u8_TempCSet = FtyPara.u16F2;
+		}
+		
 		if (SystemMode.f_Sleep)
 		{
 			Tempr.u8_TempCSetSleep = Tempr.u8_TempCSet;

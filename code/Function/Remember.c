@@ -97,28 +97,41 @@ void    Remember_ReadEEFunc(void)
 	if (ChkGood == 0)	//读取值不正确按默认值并重新写EE
 	{
 		Remember_WriteEEFunc(0);
+		//读取失败时，从写入缓冲区获取默认值（因为写入函数会设置正确的默认值）
+		Remember.u8_DB_TempCSet = EEP.u8_wrBuf[4];  //lcx add db
+		//功能模式相关参数
+		System.Enum_Status = (ENUM_STATUS)EEP.u8_wrBuf[1];			//01.开关机 
+		System.Mode = (ENUM_SYSMODE)EEP.u8_wrBuf[2];				//02.工作模式 
+		Fan.Mode = (ENUM_FANMODE)EEP.u8_wrBuf[3];					//03.风速 
+		Tempr.u8_TempCSet = EEP.u8_wrBuf[4];						//04.温度设定值 
+		Tempr.u8_ColdCSet = EEP.u8_wrBuf[5];						//05.制冷温度设定值(℃) 
+		Tempr.u8_HeatCSet = EEP.u8_wrBuf[6];						//06.制热温度设定值(℃) 
+		Tempr.u8_TempFSet = EEP.u8_wrBuf[7];						//07.温度设定值(℉) 
+		Tempr.u8_ColdFSet = EEP.u8_wrBuf[8];						//08.制冷温度设定值(℉) 
+		Tempr.u8_HeatFSet = EEP.u8_wrBuf[9];						//09.制热温度设定值(℉) 
+		
+		//10-13. L1和L2参数（每个参数2个字节）-从写入缓冲区读取默认值
+		FtyPara.u16L1 = EEP.u8_wrBuf[10] | (EEP.u8_wrBuf[11] << 8);		//10-11. L1参数（低字节在前）
+		FtyPara.u16L2 = EEP.u8_wrBuf[12] | (EEP.u8_wrBuf[13] << 8);		//12-13. L2参数（低字节在前）
 	}
-	Remember.u8_DB_TempCSet = EEP.u8_rdBuf[4];  //lcx add db
-	//功能模式相关参数
-	System.Enum_Status = (ENUM_STATUS)EEP.u8_rdBuf[1];			//01.开关机 
-	System.Mode = (ENUM_SYSMODE)EEP.u8_rdBuf[2];				//02.工作模式 
-	Fan.Mode = (ENUM_FANMODE)EEP.u8_rdBuf[3];					//03.风速 
-	Tempr.u8_TempCSet = EEP.u8_rdBuf[4];						//04.温度设定值 
-	Tempr.u8_ColdCSet = EEP.u8_rdBuf[5];						//05.制冷温度设定值(℃) 
-	Tempr.u8_HeatCSet = EEP.u8_rdBuf[6];						//06.制冷温度设定值(℃) 
-	Tempr.u8_TempFSet = EEP.u8_rdBuf[7];						//07.温度设定值(℉) 
-	Tempr.u8_ColdFSet = EEP.u8_rdBuf[8];						//08.制冷温度设定值(℉) 
-	Tempr.u8_HeatFSet = EEP.u8_rdBuf[9];						//09.制冷温度设定值(℉) 
-	
-	Tempr.f_TempUnit = ((EEP.u8_rdBuf[10]&0x01)?1:0);  			//10.温度单位 0：℃	1：℉
-	Fan.f_SweepLR = ((EEP.u8_rdBuf[10]&0x02)?1:0);  			//10.摆风状态是否设定打开
-	Timer.f_Enable = ((EEP.u8_rdBuf[10]&0x04)?1:0);				//10.定时是否设定	
-    SystemMode.f_Sleep = ((EEP.u8_rdBuf[10]&0x08)?1:0);         //10.睡眠是否设定
-    UVC.f_FuncOn = ((EEP.u8_rdBuf[10]&0x10)?1:0);               //10.负离子是否设定
-    WiFi.f_FuncOn = ((EEP.u8_rdBuf[10]&0x20)?1:0);              //10.wifi电源开启标志			
-	
-	Swing.u16_anglebak = EEP.u8_rdBuf[12]<<8;     				//11.12.摆叶角度
-	Swing.u16_anglebak += EEP.u8_rdBuf[11];
+	else
+	{
+		Remember.u8_DB_TempCSet = EEP.u8_rdBuf[4];  //lcx add db
+		//功能模式相关参数
+		System.Enum_Status = (ENUM_STATUS)EEP.u8_rdBuf[1];			//01.开关机 
+		System.Mode = (ENUM_SYSMODE)EEP.u8_rdBuf[2];				//02.工作模式 
+		Fan.Mode = (ENUM_FANMODE)EEP.u8_rdBuf[3];					//03.风速 
+		Tempr.u8_TempCSet = EEP.u8_rdBuf[4];						//04.温度设定值 
+		Tempr.u8_ColdCSet = EEP.u8_rdBuf[5];						//05.制冷温度设定值(℃) 
+		Tempr.u8_HeatCSet = EEP.u8_rdBuf[6];						//06.制热温度设定值(℃) 
+		Tempr.u8_TempFSet = EEP.u8_rdBuf[7];						//07.温度设定值(℉) 
+		Tempr.u8_ColdFSet = EEP.u8_rdBuf[8];						//08.制冷温度设定值(℉) 
+		Tempr.u8_HeatFSet = EEP.u8_rdBuf[9];						//09.制热温度设定值(℉) 
+		
+		//10-13. L1和L2参数（每个参数2个字节）-从读取缓冲区读取
+		FtyPara.u16L1 = EEP.u8_rdBuf[10] | (EEP.u8_rdBuf[11] << 8);		//10-11. L1参数（低字节在前）
+		FtyPara.u16L2 = EEP.u8_rdBuf[12] | (EEP.u8_rdBuf[13] << 8);		//12-13. L2参数（低字节在前）
+	}
 	
 	//备份摇头/UVC/wifi电源状态
 	Fan.f_SweepLRChkBak = Fan.f_SweepLR;
@@ -173,16 +186,11 @@ void    Remember_WriteEEFunc(U8 ParaType)
 		EEP.u8_wrBuf[8]  = C_REMEMBER_MODEFUNC_COLDFSET_DFT; 		    //08.制冷温度设定值(℉) - 73℉
 		EEP.u8_wrBuf[9]  = C_REMEMBER_MODEFUNC_HEATFSET_DFT;	        //09.制热温度设定值(℉) - 81℉
 		
-		EEP.u8_wrBuf[10] = 0;
-		if (C_REMEMBER_MODEFUNC_TEMPUNIT)		EEP.u8_wrBuf[10] |= 0x01;	//10.温度单位-默认1：华氏度
-		if (C_REMEMBER_MODEFUNC_SWEEP)			EEP.u8_wrBuf[10] |= 0x02;	//10.摆风状态-默认0：关闭
-		if (C_REMEMBER_MODEFUNC_TIMER)			EEP.u8_wrBuf[10] |= 0x04;	//10.定时是否设定-默认无
-		if (C_REMEMBER_MODEFUNC_SLEEP)			EEP.u8_wrBuf[10] |= 0x08;	//10.睡眠是否设定-默认无			
-		if (C_REMEMBER_MODEFUNC_FLZ)			EEP.u8_wrBuf[10] |= 0x10;	//10.负离子是否设定-默认无
-		if (C_REMEMBER_MODEFUNC_WIFIPWRONOFF)	EEP.u8_wrBuf[10] |= 0x20;	//10.wifi电源开启标志	
-			
-		EEP.u8_wrBuf[11] = C_STEPMOTOR_ANGLE_DEFAULT & 0xFF;
-		EEP.u8_wrBuf[12] = C_STEPMOTOR_ANGLE_DEFAULT >> 8;
+		//10-13. L1和L2参数（每个参数2个字节）-默认值
+		EEP.u8_wrBuf[10] = C_REMEMBER_MODEFUNC_L1_DFT & 0xFF;				//10. L1参数低字节
+		EEP.u8_wrBuf[11] = (C_REMEMBER_MODEFUNC_L1_DFT >> 8) & 0xFF;		//11. L1参数高字节
+		EEP.u8_wrBuf[12] = C_REMEMBER_MODEFUNC_L2_DFT & 0xFF;				//12. L2参数低字节
+		EEP.u8_wrBuf[13] = (C_REMEMBER_MODEFUNC_L2_DFT >> 8) & 0xFF;		//13. L2参数高字节
 
 	}
 	else	//非0:实际值
@@ -197,21 +205,13 @@ void    Remember_WriteEEFunc(U8 ParaType)
 		EEP.u8_wrBuf[8]  = Tempr.u8_ColdFSet;	
 		EEP.u8_wrBuf[9]  = Tempr.u8_HeatFSet;		
 		
-		EEP.u8_wrBuf[10] = 0;
-		if (Tempr.f_TempUnit)		EEP.u8_wrBuf[10] |= 0x01;
-		if (Fan.f_SweepLR)			EEP.u8_wrBuf[10] |= 0x02;
-		if (Timer.f_Enable)			EEP.u8_wrBuf[10] |= 0x04;
-		if (SystemMode.f_Sleep)		EEP.u8_wrBuf[10] |= 0x08;
-		if (UVC.f_FuncOn)			EEP.u8_wrBuf[10] |= 0x10;
-		if (WiFi.f_FuncOn)			EEP.u8_wrBuf[10] |= 0x20;
-		
-		EEP.u8_wrBuf[11] = Swing.u16_anglebak & 0xFF;		
-		EEP.u8_wrBuf[12] = Swing.u16_anglebak >> 8;		
+		//10-13. L1和L2参数（每个参数2个字节）
+		EEP.u8_wrBuf[10] = FtyPara.u16L1 & 0xFF;				//10. L1参数低字节
+		EEP.u8_wrBuf[11] = (FtyPara.u16L1 >> 8) & 0xFF;		//11. L1参数高字节
+		EEP.u8_wrBuf[12] = FtyPara.u16L2 & 0xFF;				//12. L2参数低字节
+		EEP.u8_wrBuf[13] = (FtyPara.u16L2 >> 8) & 0xFF;		//13. L2参数高字节
 		
 	}
-	//预留的也清零	
-		
-	EEP.u8_wrBuf[13] = 0;
 	
 	ChkSum = 0;
 	for (i=0; i<14; i++)
@@ -736,7 +736,8 @@ void    LowVoltDetect(void)	//2ms运行一次
 			(EEP.u8_wrBuf[7]  != Tempr.u8_TempFSet)  ||		
 			(EEP.u8_wrBuf[8]  != Tempr.u8_ColdFSet)  ||	
 			(EEP.u8_wrBuf[9]  != Tempr.u8_HeatFSet)  ||		
-			(EEP.u8_wrBuf[10] != DataTemp))			
+			(EEP.u8_wrBuf[10] != (FtyPara.u16L1 & 0xFF)) || (EEP.u8_wrBuf[11] != ((FtyPara.u16L1 >> 8) & 0xFF)) ||
+			(EEP.u8_wrBuf[12] != (FtyPara.u16L2 & 0xFF)) || (EEP.u8_wrBuf[13] != ((FtyPara.u16L2 >> 8) & 0xFF)))			
 		{		
 			P_EEPwren_On();						//允许写EE
 			Remember_WriteEEFunc(1);
@@ -761,6 +762,8 @@ void    SaveDatToEEP(void)	//100ms运行一次
 {
 	U8  DataTemp;
 	static U8 u8_lstBuf[11] = {0};
+	static U16 u16_lstL1 = 0;
+	static U16 u16_lstL2 = 0;
 
 	//只有数据发送变化时才写入EE
 	DataTemp = 0;		
@@ -780,7 +783,8 @@ void    SaveDatToEEP(void)	//100ms运行一次
 		(EEP.u8_wrBuf[7]  != Tempr.u8_TempFSet)  || 	
 		(EEP.u8_wrBuf[8]  != Tempr.u8_ColdFSet)  || 
 		(EEP.u8_wrBuf[9]  != Tempr.u8_HeatFSet)  || 	
-		(EEP.u8_wrBuf[10] != DataTemp)) 		
+		(EEP.u8_wrBuf[10] != (FtyPara.u16L1 & 0xFF)) || (EEP.u8_wrBuf[11] != ((FtyPara.u16L1 >> 8) & 0xFF)) ||
+		(EEP.u8_wrBuf[12] != (FtyPara.u16L2 & 0xFF)) || (EEP.u8_wrBuf[13] != ((FtyPara.u16L2 >> 8) & 0xFF))) 		
 	{		
 		Remember.f_DataChange = 1;
 		if(u8_lstBuf[1] != System.Enum_Status)
@@ -828,9 +832,14 @@ void    SaveDatToEEP(void)	//100ms运行一次
 			u8_lstBuf[9] = Tempr.u8_HeatFSet;
 			Remember.u8_WriteDelay = 0;
 		}
-		if(u8_lstBuf[10] != DataTemp)
+		if(u16_lstL1 != FtyPara.u16L1)
 		{
-			u8_lstBuf[10] = DataTemp;
+			u16_lstL1 = FtyPara.u16L1;
+			Remember.u8_WriteDelay = 0;
+		}
+		if(u16_lstL2 != FtyPara.u16L2)
+		{
+			u16_lstL2 = FtyPara.u16L2;
 			Remember.u8_WriteDelay = 0;
 		}
 	}

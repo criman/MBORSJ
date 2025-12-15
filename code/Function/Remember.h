@@ -66,7 +66,9 @@ Revision History   1:
 #define	   C_REMEMBER_MODEFUNC_TIMER		  	    0						   //10.定时是否设定-默认无			
 #define	   C_REMEMBER_MODEFUNC_SLEEP			    0						   //10.睡眠是否设定-默认无
 #define	   C_REMEMBER_MODEFUNC_FLZ				    0						   //10.负离子是否设定-默认无
-#define	   C_REMEMBER_MODEFUNC_WIFIPWRONOFF		    0						   //10.wifi电源开启标志-默认关			
+#define	   C_REMEMBER_MODEFUNC_WIFIPWRONOFF		    0						   //10.wifi电源开启标志-默认关
+#define	   C_REMEMBER_MODEFUNC_L1_DFT			    24						   //10-11. L1参数默认值-24（水系统启停时间，单位：小时）
+#define	   C_REMEMBER_MODEFUNC_L2_DFT			    5						   //12-13. L2参数默认值-5（回差温度，单位：℃）			
 
 
 

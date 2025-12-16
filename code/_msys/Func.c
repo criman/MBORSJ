@@ -86,8 +86,8 @@ void	Init_MCU_Gpio(void)
     memset(&x, 0, sizeof(x));
 
 	//add code..
-//	Init_Pin_WP_Enable();
-//	Module_Init_IICM();
+	Init_Pin_WP_Enable();
+	Module_Init_IICM();
 	
 	Module_Init_Ad();
 	Module_Init_Switch();

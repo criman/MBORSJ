@@ -27,7 +27,7 @@ void	EEV_TrgSuperHeatCalc(void)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = 20;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
@@ -35,18 +35,18 @@ void	EEV_TrgSuperHeatCalc(void)
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = 40;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 10;
+				StepMotor.var.s16_SuperHeatTrg = 50;
 			}
 		}
 		else if (Tp.s16_ValueMul10 >= 80)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = 20;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
@@ -54,22 +54,22 @@ void	EEV_TrgSuperHeatCalc(void)
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = 40;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 10;
+				StepMotor.var.s16_SuperHeatTrg = 50;
 			}
 		}
 		else if (Tp.s16_ValueMul10 >= 60)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 10;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = 20;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
@@ -77,22 +77,22 @@ void	EEV_TrgSuperHeatCalc(void)
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = 40;
 			}
 		}
 		else //TP < 60
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 60;
+				StepMotor.var.s16_SuperHeatTrg = 0;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 10;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = 20;
 			}
 			else 
 			{
@@ -112,23 +112,23 @@ void	EEV_InitOpenStep(void)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 450;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 450;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 420;
 		}
 		else if (T5.s16_ValueMul10bc >= 250)
 		{
-			StepMotor.var.u16_OpenInitStep = 450;
+			StepMotor.var.u16_OpenInitStep = 420;
 		}
 		else if (T5.s16_ValueMul10bc >= 150)
 		{
-			StepMotor.var.u16_OpenInitStep = 400;
+			StepMotor.var.u16_OpenInitStep = 380;
 		}
 		else //if (T5.s16_ValueMul10bc >= 50)
 		{
@@ -139,15 +139,15 @@ void	EEV_InitOpenStep(void)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 440;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 440;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 400;
 		}
 		else if (T5.s16_ValueMul10bc >= 250)
 		{
@@ -166,15 +166,15 @@ void	EEV_InitOpenStep(void)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 420;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 420;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
-			StepMotor.var.u16_OpenInitStep = 450;
+			StepMotor.var.u16_OpenInitStep = 380;
 		}
 		else if (T5.s16_ValueMul10bc >= 250)
 		{
@@ -193,11 +193,11 @@ void	EEV_InitOpenStep(void)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 480;
+			StepMotor.var.u16_OpenInitStep = 420;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 450;
+			StepMotor.var.u16_OpenInitStep = 400;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
@@ -220,7 +220,7 @@ void	EEV_InitOpenStep(void)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 450;
+			StepMotor.var.u16_OpenInitStep = 400;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
@@ -247,7 +247,7 @@ void	EEV_InitOpenStep(void)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 400;
+			StepMotor.var.u16_OpenInitStep = 350;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{

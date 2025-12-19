@@ -27,76 +27,76 @@ void	EEV_TrgSuperHeatCalc(void)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = -30;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = -10;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 0;
 			}
 		}
 		else if (Tp.s16_ValueMul10 >= 80)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = -30;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = -10;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 0;
 			}
 		}
 		else if (Tp.s16_ValueMul10 >= 60)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 10;
+				StepMotor.var.s16_SuperHeatTrg = -40;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = -30;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = -10;
 			}
 		}
 		else //TP < 60
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 0;
+				StepMotor.var.s16_SuperHeatTrg = -50;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 10;
+				StepMotor.var.s16_SuperHeatTrg = -40;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = -30;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 		}
 

@@ -27,76 +27,76 @@ void	EEV_TrgSuperHeatCalc(void)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = -10;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 0;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 0;
 			}
 		}
 		else if (Tp.s16_ValueMul10 >= 80)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = -10;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 0;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 50;
+				StepMotor.var.s16_SuperHeatTrg = 0;
 			}
 		}
 		else if (Tp.s16_ValueMul10 >= 60)
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = -30;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = -10;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 40;
+				StepMotor.var.s16_SuperHeatTrg = -10;
 			}
 		}
 		else //TP < 60
 		{
 			if (T5.s16_ValueMul10bc >= 550)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 10;
+				StepMotor.var.s16_SuperHeatTrg = -40;
 			}
 			else if (T5.s16_ValueMul10bc >= 450)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 20;
+				StepMotor.var.s16_SuperHeatTrg = -30;
 			}
 			else if (T5.s16_ValueMul10bc >= 350)
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 			else 
 			{
-				StepMotor.var.s16_SuperHeatTrg = 30;
+				StepMotor.var.s16_SuperHeatTrg = -20;
 			}
 		}
 
@@ -112,30 +112,84 @@ void	EEV_InitOpenStep(void)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 430;
+			StepMotor.var.u16_OpenInitStep = 470;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 390;
+			StepMotor.var.u16_OpenInitStep = 420;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
-			StepMotor.var.u16_OpenInitStep = 340;
+			StepMotor.var.u16_OpenInitStep = 380;
 		}
 		else if (T5.s16_ValueMul10bc >= 250)
 		{
-			StepMotor.var.u16_OpenInitStep = 240;
+			StepMotor.var.u16_OpenInitStep = 280;
 		}
 		else if (T5.s16_ValueMul10bc >= 150)
 		{
-			StepMotor.var.u16_OpenInitStep = 220;
+			StepMotor.var.u16_OpenInitStep = 260;
 		}
 		else //if (T5.s16_ValueMul10bc >= 50)
 		{
-			StepMotor.var.u16_OpenInitStep = 190;
+			StepMotor.var.u16_OpenInitStep = 230;
 		}
 	}
 	else if (T4.s16_ValueMul10 >= 400)
+	{
+		if (T5.s16_ValueMul10bc >= 550)
+		{
+			StepMotor.var.u16_OpenInitStep = 440;
+		}
+		else if (T5.s16_ValueMul10bc >= 450)
+		{
+			StepMotor.var.u16_OpenInitStep = 400;
+		}
+		else if (T5.s16_ValueMul10bc >= 350)
+		{
+			StepMotor.var.u16_OpenInitStep = 350;
+		}
+		else if (T5.s16_ValueMul10bc >= 250)
+		{
+			StepMotor.var.u16_OpenInitStep = 250;
+		}
+		else if (T5.s16_ValueMul10bc >= 150)
+		{
+			StepMotor.var.u16_OpenInitStep = 230;
+		}
+		else //if (T5.s16_ValueMul10bc >= 50)
+		{
+			StepMotor.var.u16_OpenInitStep = 200;
+		}
+	}
+	else if (T4.s16_ValueMul10 >= 350)
+	{
+		if (T5.s16_ValueMul10bc >= 550)
+		{
+			StepMotor.var.u16_OpenInitStep = 420;
+		}
+		else if (T5.s16_ValueMul10bc >= 450)
+		{
+			StepMotor.var.u16_OpenInitStep = 380;
+		}
+		else if (T5.s16_ValueMul10bc >= 350)
+		{
+			StepMotor.var.u16_OpenInitStep = 330;
+		}
+		else if (T5.s16_ValueMul10bc >= 250)
+		{
+			StepMotor.var.u16_OpenInitStep = 230;
+		}
+		else if (T5.s16_ValueMul10bc >= 150)
+		{
+			StepMotor.var.u16_OpenInitStep = 210;
+		}
+		else //if (T5.s16_ValueMul10bc >= 50)
+		{
+			StepMotor.var.u16_OpenInitStep = 180;
+		}
+	}
+	else if (T4.s16_ValueMul10 >= 300)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
@@ -143,11 +197,11 @@ void	EEV_InitOpenStep(void)
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 360;
+			StepMotor.var.u16_OpenInitStep = 370;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
-			StepMotor.var.u16_OpenInitStep = 310;
+			StepMotor.var.u16_OpenInitStep = 320;
 		}
 		else if (T5.s16_ValueMul10bc >= 250)
 		{
@@ -162,11 +216,11 @@ void	EEV_InitOpenStep(void)
 			StepMotor.var.u16_OpenInitStep = 160;
 		}
 	}
-	else if (T4.s16_ValueMul10 >= 350)
+	else if (T4.s16_ValueMul10 >= 200)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 380;
+			StepMotor.var.u16_OpenInitStep = 370;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
@@ -186,45 +240,18 @@ void	EEV_InitOpenStep(void)
 		}
 		else //if (T5.s16_ValueMul10bc >= 50)
 		{
-			StepMotor.var.u16_OpenInitStep = 140;
-		}
-	}
-	else if (T4.s16_ValueMul10 >= 300)
-	{
-		if (T5.s16_ValueMul10bc >= 550)
-		{
-			StepMotor.var.u16_OpenInitStep = 360;
-		}
-		else if (T5.s16_ValueMul10bc >= 450)
-		{
-			StepMotor.var.u16_OpenInitStep = 330;
-		}
-		else if (T5.s16_ValueMul10bc >= 350)
-		{
-			StepMotor.var.u16_OpenInitStep = 280;
-		}
-		else if (T5.s16_ValueMul10bc >= 250)
-		{
-			StepMotor.var.u16_OpenInitStep = 170;
-		}
-		else if (T5.s16_ValueMul10bc >= 150)
-		{
 			StepMotor.var.u16_OpenInitStep = 150;
 		}
-		else //if (T5.s16_ValueMul10bc >= 50)
-		{
-			StepMotor.var.u16_OpenInitStep = 120;
-		}
 	}
-	else if (T4.s16_ValueMul10 >= 200)
+	else if (T4.s16_ValueMul10 >= 100)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 330;
+			StepMotor.var.u16_OpenInitStep = 340;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 300;
+			StepMotor.var.u16_OpenInitStep = 310;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
@@ -232,26 +259,26 @@ void	EEV_InitOpenStep(void)
 		}
 		else if (T5.s16_ValueMul10bc >= 250)
 		{
-			StepMotor.var.u16_OpenInitStep = 150;
+			StepMotor.var.u16_OpenInitStep = 170;
 		}
 		else if (T5.s16_ValueMul10bc >= 150)
 		{
-			StepMotor.var.u16_OpenInitStep = 130;
+			StepMotor.var.u16_OpenInitStep = 150;
 		}
 		else //if (T5.s16_ValueMul10bc >= 50)
 		{
-			StepMotor.var.u16_OpenInitStep = 110;
+			StepMotor.var.u16_OpenInitStep = 140;
 		}
 	}
-	else if (T4.s16_ValueMul10 >= 100)
+	else //if (T4.s16_ValueMul10 >= 0)
 	{
 		if (T5.s16_ValueMul10bc >= 550)
 		{
-			StepMotor.var.u16_OpenInitStep = 300;
+			StepMotor.var.u16_OpenInitStep = 310;
 		}
 		else if (T5.s16_ValueMul10bc >= 450)
 		{
-			StepMotor.var.u16_OpenInitStep = 270;
+			StepMotor.var.u16_OpenInitStep = 280;
 		}
 		else if (T5.s16_ValueMul10bc >= 350)
 		{
@@ -259,42 +286,15 @@ void	EEV_InitOpenStep(void)
 		}
 		else if (T5.s16_ValueMul10bc >= 250)
 		{
-			StepMotor.var.u16_OpenInitStep = 130;
+			StepMotor.var.u16_OpenInitStep = 150;
 		}
 		else if (T5.s16_ValueMul10bc >= 150)
 		{
-			StepMotor.var.u16_OpenInitStep = 110;
+			StepMotor.var.u16_OpenInitStep = 140;
 		}
 		else //if (T5.s16_ValueMul10bc >= 50)
 		{
-			StepMotor.var.u16_OpenInitStep = 100;
-		}
-	}
-	else //if (T4.s16_ValueMul10 >= 0)
-	{
-		if (T5.s16_ValueMul10bc >= 550)
-		{
-			StepMotor.var.u16_OpenInitStep = 270;
-		}
-		else if (T5.s16_ValueMul10bc >= 450)
-		{
-			StepMotor.var.u16_OpenInitStep = 240;
-		}
-		else if (T5.s16_ValueMul10bc >= 350)
-		{
-			StepMotor.var.u16_OpenInitStep = 170;
-		}
-		else if (T5.s16_ValueMul10bc >= 250)
-		{
 			StepMotor.var.u16_OpenInitStep = 110;
-		}
-		else if (T5.s16_ValueMul10bc >= 150)
-		{
-			StepMotor.var.u16_OpenInitStep = 100;
-		}
-		else //if (T5.s16_ValueMul10bc >= 50)
-		{
-			StepMotor.var.u16_OpenInitStep = 70;
 		}
 	}
 }

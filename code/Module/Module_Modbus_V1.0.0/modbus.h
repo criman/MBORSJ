@@ -31,7 +31,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                             * 若1群满人：进群927297508*
                             **************************
 ------------------------------------------------------------------------------------*/
-#define MainSoftWareVersion   0x023C		//内机版本
+#define MainSoftWareVersion   0x023F		//内机版本
 //-----------------以下是图形设置界面，可在Configuration Wizard界面设置-----------------
 //<<< Use Configuration Wizard in Context Menu >>>
 //<q>使能IO控制读写功能？

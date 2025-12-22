@@ -63,14 +63,18 @@ typedef    enum
 }ENUM_STEP;
 
 //---------------------------------------------------------------------------------------------------//
-
+#ifndef EEP_PARA_TOTAL_LEN
+/* 如果上层未定义 EEP_PARA_TOTAL_LEN，则默认适配为 240 字节（包含头码与校验两字节）
+ * 注意：EEPROM 24C02 总容量 256 字节，若参数区从地址 16 开始，最大可用长度为 240 字节（0x10..0xFF） */
+#define EEP_PARA_TOTAL_LEN    240
+#endif
 typedef    struct
 {
 	ENUM_STEP    Step;
 	U8  		 f_1ms		 		 :1;	//1ms中断标志
 	U8			 u7_Count            :7;	//计时范围 0-127
-	U8  		 u8_wrBuf[160];				//写缓存
-	U8			 u8_rdBuf[160];				//读缓存
+	U8  		 u8_wrBuf[EEP_PARA_TOTAL_LEN + 16];				//写缓存
+	U8			 u8_rdBuf[EEP_PARA_TOTAL_LEN + 16];				//读缓存
 }STRUCT_EEP;
 
 //---------------------------------------------------------------------------------------------------//

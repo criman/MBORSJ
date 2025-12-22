@@ -414,6 +414,22 @@ typedef    struct
 
 extern    STRUCT_REMEMBER    Remember;
 
+/* EEV 参数结构与接口（从驱动层迁移到应用层，参数体从字节17开始） */
+#define EEV_PARA_HEAD        0x5A
+#define EEV_PARA_EE_ADDR     16
+#define EEV_PARA_BODY_LEN    (24 + 84)
+typedef struct
+{
+	S16  s16_SH_Trg[3][4];       /* 过热度目标表 */
+	U16  u16_OpenInitStep[7][6]; /* 初始开度步数表 */
+} STRUCT_EEV_PARA;
+
+extern STRUCT_EEV_PARA g_EEVPara;
+
+void EEV_Para_LoadDefault(void);
+void EEV_Para_LoadFromEE(void);
+void EEV_Para_SaveToEE(void);
+
 /****************************************************************************************************
 Function Name       :void    Init_Pin_WP_Enable(void)
 Description         :EE读写允许引脚初始化

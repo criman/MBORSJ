@@ -299,6 +299,101 @@ void	EEV_InitOpenStep(void)
 	}
 }
 
+/*-------------------------------------------------------------
+ * 应用函数（放在 Stepmotor_app.c）：使用 g_EEVPara 更新 StepMotor 的参数（超热度目标）
+ *------------------------------------------------------------*/
+void EEV_Apply_TrgSuperHeatCalc(void)
+{
+	if ((T5.f_Error) || (Tp.f_Error))
+	{
+		StepMotor.var.s16_SuperHeatTrg = 10;
+		return;
+	}
+
+	if (Comp.u32_RunContCount <= 1800)
+	{
+		StepMotor.var.s16_SuperHeatTrg = 10;
+		return;
+	}
+
+	{
+		U8 tp_idx, t5_idx;
+
+		if (Tp.s16_ValueMul10 >= 100)
+			tp_idx = 3;
+		else if (Tp.s16_ValueMul10 >= 80)
+			tp_idx = 2;
+		else if (Tp.s16_ValueMul10 >= 60)
+			tp_idx = 1;
+		else
+			tp_idx = 0;
+
+		if (T5.s16_ValueMul10bc >= 550)
+			t5_idx = 3;
+		else if (T5.s16_ValueMul10bc >= 450)
+			t5_idx = 2;
+		else if (T5.s16_ValueMul10bc >= 350)
+			t5_idx = 1;
+		else
+			t5_idx = 0;
+
+		StepMotor.var.s16_SuperHeatTrg = g_EEVPara.s16_SH_Trg[tp_idx][t5_idx];
+		if (StepMotor.var.s16_SuperHeatTrg == 0)
+			StepMotor.var.s16_SuperHeatTrg = 10;
+
+		if (BPV.f_DrvOn)
+		{
+			StepMotor.var.s16_SuperHeatTrg -= TempValueMul10(FtyPara.s16P15);
+		}
+	}
+}
+
+/*-------------------------------------------------------------
+ * 应用函数（放在 Stepmotor_app.c）：使用 g_EEVPara 更新 StepMotor 的初始开度步数
+ *------------------------------------------------------------*/
+void EEV_Apply_InitOpenStep(void)
+{
+	U8 t4_idx, t5_idx;
+	U16 step;
+
+	if (T4.s16_ValueMul10 >= 450)
+		t4_idx = 6;
+	else if (T4.s16_ValueMul10 >= 400)
+		t4_idx = 5;
+	else if (T4.s16_ValueMul10 >= 350)
+		t4_idx = 4;
+	else if (T4.s16_ValueMul10 >= 300)
+		t4_idx = 3;
+	else if (T4.s16_ValueMul10 >= 200)
+		t4_idx = 2;
+	else if (T4.s16_ValueMul10 >= 100)
+		t4_idx = 1;
+	else
+		t4_idx = 0; /* T4 <=100 (including negative) */
+
+	if (T5.s16_ValueMul10bc >= 550)
+		t5_idx = 5;
+	else if (T5.s16_ValueMul10bc >= 450)
+		t5_idx = 4;
+	else if (T5.s16_ValueMul10bc >= 350)
+		t5_idx = 3;
+	else if (T5.s16_ValueMul10bc >= 250)
+		t5_idx = 2;
+	else if (T5.s16_ValueMul10bc >= 150)
+		t5_idx = 1;
+	else
+		t5_idx = 0;
+
+	step = g_EEVPara.u16_OpenInitStep[t4_idx][t5_idx];
+	if (step == 0)
+	{
+		EEV_Para_LoadDefault();
+		step = g_EEVPara.u16_OpenInitStep[t4_idx][t5_idx];
+	}
+
+	StepMotor.var.u16_OpenInitStep = step;
+}
+
 /****************************************************************************************************
 Function Name       :U8	Case_StepMotor_StepTime(void)
 Description         :步进电机选择速度选择
@@ -451,7 +546,7 @@ void	App_StepMotor_Run(void)
 #if 1
 			if ((T3.f_Error) || (TH.f_Error))
 			{
-				EEV_InitOpenStep();
+				EEV_Apply_InitOpenStep();
 				StepMotor.var.u16_agtarget = StepMotor.var.u16_OpenInitStep;
 			}
 			else 
@@ -467,7 +562,7 @@ void	App_StepMotor_Run(void)
 					if (CirculationPump.f_DrvOn == ON)
 					{
 						//有开机需求且循环泵已开启，调整到初开度
-						EEV_InitOpenStep();
+						EEV_Apply_InitOpenStep();
 						StepMotor.var.u16_agtarget = StepMotor.var.u16_OpenInitStep;
 					}
 					else if (Comp.f_HavedDrvOn == 1)
@@ -485,7 +580,7 @@ void	App_StepMotor_Run(void)
 				}
 				else 
 				{
-					EEV_TrgSuperHeatCalc();		//计算过热度
+					EEV_Apply_TrgSuperHeatCalc();		//计算过热度
 					Comp.f_HavedDrvOn = 1;
 		        	StepMotor.var.u16_CtrlPeriod ++;
 		        	if ((StepMotor.var.u16_CtrlPeriod % 500) == 0)

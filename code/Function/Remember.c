@@ -14,6 +14,262 @@ Revision History   1:
 
 
 STRUCT_REMEMBER    Remember;
+STRUCT_EEV_PARA    g_EEVPara;
+
+/* 内部清零工具 */
+static void EEV_Para_Clear(void)
+{
+	U8 i, j;
+	for (i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			g_EEVPara.s16_SH_Trg[i][j] = 0;
+		}
+	}
+	for (i = 0; i < 7; i++)
+	{
+		for (j = 0; j < 6; j++)
+		{
+			g_EEVPara.u16_OpenInitStep[i][j] = 0;
+		}
+	}
+}
+
+/* 默认值初始化（与原代码中硬编码的常数保持一致） */
+void EEV_Para_LoadDefault(void)
+{
+	U8 i;
+	EEV_Para_Clear();
+
+	/* 过热度目标表 s16_SH_Trg[tp_idx][t5_idx]（3x4） */
+	/* 第四行（索引3）已移除，保留三行默认值 */
+	g_EEVPara.s16_SH_Trg[2][3] = -60;
+	g_EEVPara.s16_SH_Trg[2][2] = -50;
+	g_EEVPara.s16_SH_Trg[2][1] = -50;
+	g_EEVPara.s16_SH_Trg[2][0] = -30;
+	g_EEVPara.s16_SH_Trg[1][3] = -60;
+	g_EEVPara.s16_SH_Trg[1][2] = -60;
+	g_EEVPara.s16_SH_Trg[1][1] = -50;
+	g_EEVPara.s16_SH_Trg[1][0] = -40;
+	g_EEVPara.s16_SH_Trg[0][3] = -70;
+	g_EEVPara.s16_SH_Trg[0][2] = -70;
+	g_EEVPara.s16_SH_Trg[0][1] = -60;
+	g_EEVPara.s16_SH_Trg[0][0] = -50;
+
+	/* 初始开度步数表 u16_OpenInitStep[7][6] */
+	g_EEVPara.u16_OpenInitStep[0][5] = 350;
+	g_EEVPara.u16_OpenInitStep[0][4] = 310;
+	g_EEVPara.u16_OpenInitStep[0][3] = 250;
+	g_EEVPara.u16_OpenInitStep[0][2] = 220;
+	g_EEVPara.u16_OpenInitStep[0][1] = 180;
+	g_EEVPara.u16_OpenInitStep[0][0] = 150;
+
+	g_EEVPara.u16_OpenInitStep[1][5] = 350;
+	g_EEVPara.u16_OpenInitStep[1][4] = 310;
+	g_EEVPara.u16_OpenInitStep[1][3] = 250;
+	g_EEVPara.u16_OpenInitStep[1][2] = 220;
+	g_EEVPara.u16_OpenInitStep[1][1] = 180;
+	g_EEVPara.u16_OpenInitStep[1][0] = 150;
+
+	g_EEVPara.u16_OpenInitStep[2][5] = 400;
+	g_EEVPara.u16_OpenInitStep[2][4] = 350;
+	g_EEVPara.u16_OpenInitStep[2][3] = 280;
+	g_EEVPara.u16_OpenInitStep[2][2] = 250;
+	g_EEVPara.u16_OpenInitStep[2][1] = 220;
+	g_EEVPara.u16_OpenInitStep[2][0] = 180;
+
+	g_EEVPara.u16_OpenInitStep[3][5] = 420;
+	g_EEVPara.u16_OpenInitStep[3][4] = 400;
+	g_EEVPara.u16_OpenInitStep[3][3] = 310;
+	g_EEVPara.u16_OpenInitStep[3][2] = 280;
+	g_EEVPara.u16_OpenInitStep[3][1] = 250;
+	g_EEVPara.u16_OpenInitStep[3][0] = 220;
+
+	g_EEVPara.u16_OpenInitStep[4][5] = 440;
+	g_EEVPara.u16_OpenInitStep[4][4] = 420;
+	g_EEVPara.u16_OpenInitStep[4][3] = 350;
+	g_EEVPara.u16_OpenInitStep[4][2] = 330;
+	g_EEVPara.u16_OpenInitStep[4][1] = 300;
+	g_EEVPara.u16_OpenInitStep[4][0] = 250;
+
+	g_EEVPara.u16_OpenInitStep[5][5] = 460;
+	g_EEVPara.u16_OpenInitStep[5][4] = 440;
+	g_EEVPara.u16_OpenInitStep[5][3] = 400;
+	g_EEVPara.u16_OpenInitStep[5][2] = 380;
+	g_EEVPara.u16_OpenInitStep[5][1] = 350;
+	g_EEVPara.u16_OpenInitStep[5][0] = 300;
+
+	g_EEVPara.u16_OpenInitStep[6][5] = 480;
+	g_EEVPara.u16_OpenInitStep[6][4] = 450;
+	g_EEVPara.u16_OpenInitStep[6][3] = 430;
+	g_EEVPara.u16_OpenInitStep[6][2] = 420;
+	g_EEVPara.u16_OpenInitStep[6][1] = 380;
+	g_EEVPara.u16_OpenInitStep[6][0] = 350;
+
+	/* 索引7（第八行）不再使用，故不再复制第六行 */
+}
+
+/* 将 g_EEVPara -> EEP.u8_wrBuf[] 并写入 24C02，从字节17开始放参数体 */
+void EEV_Para_SaveToEE(void)
+{
+	U8  i, j;
+	U16 idx = 17;    // 从 17 开始放参数体
+
+	/* 头码 */
+	EEP.u8_wrBuf[16] = EEV_PARA_HEAD;
+
+	/* 一、s16_SH_Trg[3][4] 逐字节存放（高字节先） */
+	for (i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			S16 v = g_EEVPara.s16_SH_Trg[i][j];
+			EEP.u8_wrBuf[idx++] = (U8)((v >> 8) & 0xFF);
+			EEP.u8_wrBuf[idx++] = (U8)(v & 0xFF);
+		}
+	}
+
+	/* 二、u16_OpenInitStep[7][6] 以高字节在前的顺序存放 */
+	for (i = 0; i < 7; i++)
+	{
+		for (j = 0; j < 6; j++)
+		{
+			U16 v = g_EEVPara.u16_OpenInitStep[i][j];
+			EEP.u8_wrBuf[idx++] = (U8)(v >> 8);   // 高字节
+			EEP.u8_wrBuf[idx++] = (U8)(v & 0xFF); // 低字节
+		}
+	}
+
+	/* 写入 24C02：从地址 16 开始，总长 = 1(头码) + EEV_PARA_BODY_LEN */
+	Write_24C02(&EEP.u8_wrBuf[16], EEV_PARA_EE_ADDR, (U8)(1 + EEV_PARA_BODY_LEN));
+}
+
+/* 从 24C02 读到 EEP.u8_rdBuf[] 然后解析到 g_EEVPara，若头码不对则加载默认并写回 */
+void EEV_Para_LoadFromEE(void)
+{
+	U8 i, j;
+	U16 idx = 17;
+
+	/* 读取 1 + body_len 字节到 rdBuf[16..] */
+	Read_24C02(&EEP.u8_rdBuf[16], EEV_PARA_EE_ADDR, (U8)(1 + EEV_PARA_BODY_LEN));
+
+	if (EEP.u8_rdBuf[16] != EEV_PARA_HEAD)
+	{
+		/* 未初始化或数据损坏 -> 使用默认值并写回 EE */
+		EEV_Para_LoadDefault();
+		EEV_Para_SaveToEE();
+		return;
+	}
+
+	/* 解析参数体 */
+	idx = 17;
+
+	/* 一、s16_SH_Trg[3][4] */
+	for (i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			U16 hi = EEP.u8_rdBuf[idx++];
+			U16 lo = EEP.u8_rdBuf[idx++];
+			g_EEVPara.s16_SH_Trg[i][j] = (S16)((hi << 8) | lo);
+		}
+	}
+
+	/* 二、u16_OpenInitStep[7][6] */
+	for (i = 0; i < 7; i++)
+	{
+		for (j = 0; j < 6; j++)
+		{
+			U16 hi = EEP.u8_rdBuf[idx++];
+			U16 lo = EEP.u8_rdBuf[idx++];
+			g_EEVPara.u16_OpenInitStep[i][j] = (hi << 8) | lo;
+		}
+	}
+}
+
+/* 将 g_EEVPara 序列化到 EEP.u8_wrBuf[16..]（头码在[16]，参数体从[17]开始） */
+void EEV_Para_SerializeToWrBuf(void)
+{
+	U8 i, j;
+	U16 idx = 17;
+
+	EEP.u8_wrBuf[16] = EEV_PARA_HEAD;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			S16 v = g_EEVPara.s16_SH_Trg[i][j];
+			EEP.u8_wrBuf[idx++] = (U8)((v >> 8) & 0xFF);
+			EEP.u8_wrBuf[idx++] = (U8)(v & 0xFF);
+		}
+	}
+
+	for (i = 0; i < 7; i++)
+	{
+		for (j = 0; j < 6; j++)
+		{
+			U16 v = g_EEVPara.u16_OpenInitStep[i][j];
+			EEP.u8_wrBuf[idx++] = (U8)(v >> 8);
+			EEP.u8_wrBuf[idx++] = (U8)(v & 0xFF);
+		}
+	}
+}
+
+/* 从 EEP.u8_rdBuf[16..] 解析到 g_EEVPara（rdBuf 已经填充） */
+void EEV_Para_ParseFromRdBuf(void)
+{
+	U8 i, j;
+	U16 idx = 17;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			U16 hi = EEP.u8_rdBuf[idx++];
+			U16 lo = EEP.u8_rdBuf[idx++];
+			g_EEVPara.s16_SH_Trg[i][j] = (S16)((hi << 8) | lo);
+		}
+	}
+
+	for (i = 0; i < 7; i++)
+	{
+		for (j = 0; j < 6; j++)
+		{
+			U16 hi = EEP.u8_rdBuf[idx++];
+			U16 lo = EEP.u8_rdBuf[idx++];
+			g_EEVPara.u16_OpenInitStep[i][j] = (hi << 8) | lo;
+		}
+	}
+}
+
+/* 从 EEP.u8_wrBuf[16..] 解析到 g_EEVPara（用于写入前从 wrBuf 恢复到内存） */
+void EEV_Para_ParseFromWrBuf(void)
+{
+	U8 i, j;
+	U16 idx = 17;
+
+	for (i = 0; i < 3; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			U16 hi = EEP.u8_wrBuf[idx++];
+			U16 lo = EEP.u8_wrBuf[idx++];
+			g_EEVPara.s16_SH_Trg[i][j] = (S16)((hi << 8) | lo);
+		}
+	}
+
+	for (i = 0; i < 7; i++)
+	{
+		for (j = 0; j < 6; j++)
+		{
+			U16 hi = EEP.u8_wrBuf[idx++];
+			U16 lo = EEP.u8_wrBuf[idx++];
+			g_EEVPara.u16_OpenInitStep[i][j] = (hi << 8) | lo;
+		}
+	}
+}
 
 /****************************************************************************************************
 Function Name       :void    Init_Pin_WP_Enable(void)
@@ -393,6 +649,7 @@ void    Remember_WriteEEPara(U8 ParaType)
 	
 	if (ParaType == 0)		//0：默认值
 	{
+#if  0
 		//1.室内风速							   	        (rpm/10)        13Byte
 		EEP.u8_wrBuf[17] = C_REMEMBER_PARA01_00;        //125 			//测试-商检
 		EEP.u8_wrBuf[18] = C_REMEMBER_PARA01_01;        //115			//测试-额定制冷
@@ -550,6 +807,10 @@ void    Remember_WriteEEPara(U8 ParaType)
 		EEP.u8_wrBuf[142] = C_REMEMBER_PARA15_00;		//10		   //额定制冷压机运行档位
 		EEP.u8_wrBuf[143] = C_REMEMBER_PARA15_01;		//1		       //最小制冷压机运行档位
 		EEP.u8_wrBuf[144] = C_REMEMBER_PARA15_02;		//10		   //额定制热压机运行档位
+#endif
+		/* 使用 EEV 模块自身默认值覆盖参数区（参数体从字节17开始） */
+		EEV_Para_LoadDefault();
+		EEV_Para_SerializeToWrBuf();
 	}
 	else
 	{
@@ -558,6 +819,9 @@ void    Remember_WriteEEPara(U8 ParaType)
 			EEP.u8_wrBuf[i] = EEP.u8_rdBuf[i];
 		}
 	}
+	
+	/* 将写入缓冲区中的 EEV 参数解析回内存结构（参数体从字节17开始） */
+	EEV_Para_ParseFromWrBuf();
 	
 	//预留的也清零
 	for (i=145; i<158; i++)

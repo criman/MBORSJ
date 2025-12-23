@@ -44,7 +44,7 @@ Revision History   1:
 
 //EE数据头码
 #ifndef    C_REMEMBER_PARA_FOR_TEST
-#define    C_REMEMBER_HEAD							0xA4	
+#define    C_REMEMBER_HEAD							0xA5	
 #else
 #define    C_REMEMBER_HEAD							0xC9
 #endif
@@ -416,7 +416,7 @@ typedef    struct
 extern    STRUCT_REMEMBER    Remember;
 
 /* EEV 参数结构与接口（从驱动层迁移到应用层，参数体从字节17开始） */
-#define EEV_PARA_HEAD        0x5A
+#define EEV_PARA_HEAD        0xA5
 #define EEV_PARA_EE_ADDR     16
 /* EEP 参数区总长度（包含头码），单位：字节
  *  由 E 方要求：整体参数区预留 240 字节（包含 2 字节的校验 ChkSum）
@@ -429,18 +429,26 @@ extern    STRUCT_REMEMBER    Remember;
  *  这里将总长设为 240（包含头码与 2 字节校验）
  */
 #define EEP_PARA_TOTAL_LEN    240
-
 typedef struct
 {
-	S16  s16_SH_Trg[3][4];       /* 过热度目标表 */
-	U16  u16_OpenInitStep[7][6]; /* 初始开度步数表 */
+	/* 宏化尺寸，便于序列化/解析时统一使用 */
+#define EEV_SH_ROWS            3
+#define EEV_SH_COLS            4
+#define EEV_OPENINIT_ROWS      7
+#define EEV_OPENINIT_COLS      6
+
+	S16  s16_SH_Trg[EEV_SH_ROWS][EEV_SH_COLS];       /* 过热度目标表 */
+	U16  u16_OpenInitStep[EEV_OPENINIT_ROWS][EEV_OPENINIT_COLS]; /* 初始开度步数表 */
 } STRUCT_EEV_PARA;
 
 extern STRUCT_EEV_PARA g_EEVPara;
 
 void EEV_Para_LoadDefault(void);
 void EEV_Para_LoadFromEE(void);
-void EEV_Para_SaveToEE(void);
+U8 EEV_Para_SaveToEE(void);
+void EEV_Para_SerializeToWrBuf(void);
+void EEV_Para_ParseFromRdBuf(void);
+void EEV_Para_ParseFromWrBuf(void);
 
 /****************************************************************************************************
 Function Name       :void    Init_Pin_WP_Enable(void)

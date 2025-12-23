@@ -53,14 +53,14 @@ static U8 EEPROM_WritePage_WithVerify(U16 offset, U8 *src, U8 len)
 	for (retry = 0; retry < 5; retry++)
 	{
 		/* 写入单页 */
-		Write_24C02(src, (U8)offset, len);
+		Write_24C02(src, offset, len);
 
 		/* 简单延时，等待 EEPROM 内部写完成（约几 ms） */
 		/* 增加等待，近似 10ms 空循环（目标平台无精确定时器） */
 		for (k = 0; k < 20000; k++) { volatile U16 t = k; (void)t; }
 
 		/* 读回比较 */
-		Read_24C02(&EEP.u8_rdBuf[offset], (U8)offset, len);
+		Read_24C02(&EEP.u8_rdBuf[offset], offset, len);
 		for (p = 0; p < len; p++)
 		{
 			if (EEP.u8_rdBuf[offset + p] != src[p])
@@ -89,7 +89,7 @@ void EEV_Para_LoadDefault(void)
 	/* 第四行（索引3）已移除，保留三行默认值 */
 	g_EEVPara.s16_SH_Trg[2][3] = -60;
 	g_EEVPara.s16_SH_Trg[2][2] = -50;
-	g_EEVPara.s16_SH_Trg[2][1] = -50;
+	g_EEVPara.s16_SH_Trg[2][1] = -40;
 	g_EEVPara.s16_SH_Trg[2][0] = -30;
 	g_EEVPara.s16_SH_Trg[1][3] = -60;
 	g_EEVPara.s16_SH_Trg[1][2] = -60;
@@ -101,12 +101,12 @@ void EEV_Para_LoadDefault(void)
 	g_EEVPara.s16_SH_Trg[0][0] = -50;
 
 	/* 初始开度步数表 u16_OpenInitStep[7][6] */
-	g_EEVPara.u16_OpenInitStep[0][5] = 350;
-	g_EEVPara.u16_OpenInitStep[0][4] = 310;
-	g_EEVPara.u16_OpenInitStep[0][3] = 250;
-	g_EEVPara.u16_OpenInitStep[0][2] = 220;
-	g_EEVPara.u16_OpenInitStep[0][1] = 180;
-	g_EEVPara.u16_OpenInitStep[0][0] = 150;
+	g_EEVPara.u16_OpenInitStep[0][5] = 310;
+	g_EEVPara.u16_OpenInitStep[0][4] = 280;
+	g_EEVPara.u16_OpenInitStep[0][3] = 220;
+	g_EEVPara.u16_OpenInitStep[0][2] = 180;
+	g_EEVPara.u16_OpenInitStep[0][1] = 150;
+	g_EEVPara.u16_OpenInitStep[0][0] = 120;
 
 	g_EEVPara.u16_OpenInitStep[1][5] = 350;
 	g_EEVPara.u16_OpenInitStep[1][4] = 310;
@@ -153,130 +153,32 @@ void EEV_Para_LoadDefault(void)
 	/* 索引7（第八行）不再使用，故不再复制第六行 */
 }
 
-/* 将 g_EEVPara -> EEP.u8_wrBuf[] 并写入 24C02，从字节17开始放参数体 */
-void EEV_Para_SaveToEE(void)
+/* 将 g_EEVPara -> EEP.u8_wrBuf[] 并写入 24C02，从字节17开始放参数体
+   说明：为避免多处不同实现导致写入不一致或“重复写入”问题，
+   这里统一使用 EEV_Para_SerializeToWrBuf() 填充 EEP.u8_wrBuf，然后写页。
+*/
+U8 EEV_Para_SaveToEE(void)
 {
-	U8  i, j;
-	U16 idx = 17;    // 从 17 开始放参数体
+	U16 para_start = EEV_PARA_EE_ADDR;
+	U16 para_total = EEP_PARA_TOTAL_LEN;
+	U16 pages = (para_total + 15) / 16;
+	U16 p;
 
-	/* 头码 */
-	EEP.u8_wrBuf[16] = EEV_PARA_HEAD;
+	/* 使用统一的序列化入口填充写缓冲区 */
+	EEV_Para_SerializeToWrBuf();
 
-	/* 一、s16_SH_Trg[3][4] 逐字节存放（高字节先） */
-	for (i = 0; i < 3; i++)
+	/* 按页写入并逐页校验 */
+	for (p = 0; p < pages; p++)
 	{
-		for (j = 0; j < 4; j++)
+		U16 offset = para_start + p * 16;
+		U8 size = (U8)((para_total > p * 16 + 16) ? 16 : (para_total - p * 16));
+		if (!EEPROM_WritePage_WithVerify(offset, &EEP.u8_wrBuf[offset], size))
 		{
-			S16 v = g_EEVPara.s16_SH_Trg[i][j];
-			EEP.u8_wrBuf[idx++] = (U8)((v >> 8) & 0xFF);
-			EEP.u8_wrBuf[idx++] = (U8)(v & 0xFF);
+			/* 当前页写入失败，直接返回失败，让调用方决定是否重试 */
+			return 0;
 		}
 	}
-
-	/* 二、u16_OpenInitStep[7][6] 以高字节在前的顺序存放 */
-	for (i = 0; i < 7; i++)
-	{
-		for (j = 0; j < 6; j++)
-		{
-			U16 v = g_EEVPara.u16_OpenInitStep[i][j];
-			EEP.u8_wrBuf[idx++] = (U8)(v >> 8);   // 高字节
-			EEP.u8_wrBuf[idx++] = (U8)(v & 0xFF); // 低字节
-		}
-	}
-	/* 三、紧随 EEV 参数后的 FtyPara（结构体按 STRUCT_FTYPARA 定义） */
-	/* 以高字节在前的顺序存放 */
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P1 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P1 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P2 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P2 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P3 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P3 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P4 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P4 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P5 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P5 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P6 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P6 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P7 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P7 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P8 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P8 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P9 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P9 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P10 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P10 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P11 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P11 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P12 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P12 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P13 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P13 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P14 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P14 & 0xFF);
-
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P15 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P15 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P16 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P16 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P17 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P17 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P18 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P18 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P19 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P19 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P20 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P20 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P21 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P21 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P22 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P22 & 0xFF);
-
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P23 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P23 & 0xFF);
-
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P24 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P24 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P25 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P25 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P26 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P26 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16P27 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16P27 & 0xFF);
-
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P28 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P28 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P29 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16P29 & 0xFF);
-
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16F1 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16F1 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16F2 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16F2 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16F3 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16F3 & 0xFF);
-
-	EEP.u8_wrBuf[idx++] = (U8)((FtyPara.s16F4 >> 8) & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.s16F4 & 0xFF);
-
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16L1 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16L1 & 0xFF);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16L2 >> 8);
-	EEP.u8_wrBuf[idx++] = (U8)(FtyPara.u16L2 & 0xFF);
-
-	/* 写入 24C02：从地址 16 开始，总长 = EEP_PARA_TOTAL_LEN（包含头码） */
-	{
-		U16 para_start = EEV_PARA_EE_ADDR;
-		U16 para_total = EEP_PARA_TOTAL_LEN;
-		U16 pages = (para_total + 15) / 16;
-		U16 p;
-		for (p = 0; p < pages; p++)
-		{
-			U16 offset = para_start + p * 16;
-			U8 size = (U8)((para_total > p * 16 + 16) ? 16 : (para_total - p * 16));
-			/* 每页写入并读回校验，失败则可重试内部逻辑 */
-			EEPROM_WritePage_WithVerify(offset, &EEP.u8_wrBuf[offset], size);
-		}
-	}
+	return 1;
 }
 
 /* 从 24C02 读到 EEP.u8_rdBuf[] 然后解析到 g_EEVPara，若头码不对则加载默认并写回 */
@@ -296,7 +198,7 @@ void EEV_Para_LoadFromEE(void)
 		{
 			U16 offset = para_start + p * 16;
 			U8 size = (U8)((para_total > p * 16 + 16) ? 16 : (para_total - p * 16));
-			Read_24C02(&EEP.u8_rdBuf[offset], (U8)offset, size);
+			Read_24C02(&EEP.u8_rdBuf[offset], offset, size);
 		}
 	}
 
@@ -311,10 +213,10 @@ void EEV_Para_LoadFromEE(void)
 	/* 解析参数体 */
 	idx = 17;
 
-	/* 一、s16_SH_Trg[3][4] */
-	for (i = 0; i < 3; i++)
+	/* 一、s16_SH_Trg（使用尺寸宏解析） */
+	for (i = 0; i < EEV_SH_ROWS; i++)
 	{
-		for (j = 0; j < 4; j++)
+		for (j = 0; j < EEV_SH_COLS; j++)
 		{
 			U16 hi = EEP.u8_rdBuf[idx++];
 			U16 lo = EEP.u8_rdBuf[idx++];
@@ -322,10 +224,10 @@ void EEV_Para_LoadFromEE(void)
 		}
 	}
 
-	/* 二、u16_OpenInitStep[7][6] */
-	for (i = 0; i < 7; i++)
+	/* 二、u16_OpenInitStep（使用尺寸宏解析） */
+	for (i = 0; i < EEV_OPENINIT_ROWS; i++)
 	{
-		for (j = 0; j < 6; j++)
+		for (j = 0; j < EEV_OPENINIT_COLS; j++)
 		{
 			U16 hi = EEP.u8_rdBuf[idx++];
 			U16 lo = EEP.u8_rdBuf[idx++];
@@ -430,9 +332,9 @@ void EEV_Para_SerializeToWrBuf(void)
 
 	EEP.u8_wrBuf[16] = EEV_PARA_HEAD;
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < EEV_SH_ROWS; i++)
 	{
-		for (j = 0; j < 4; j++)
+		for (j = 0; j < EEV_SH_COLS; j++)
 		{
 			S16 v = g_EEVPara.s16_SH_Trg[i][j];
 			EEP.u8_wrBuf[idx++] = (U8)((v >> 8) & 0xFF);
@@ -440,9 +342,9 @@ void EEV_Para_SerializeToWrBuf(void)
 		}
 	}
 
-	for (i = 0; i < 7; i++)
+	for (i = 0; i < EEV_OPENINIT_ROWS; i++)
 	{
-		for (j = 0; j < 6; j++)
+		for (j = 0; j < EEV_OPENINIT_COLS; j++)
 		{
 			U16 v = g_EEVPara.u16_OpenInitStep[i][j];
 			EEP.u8_wrBuf[idx++] = (U8)(v >> 8);
@@ -530,7 +432,7 @@ void EEV_Para_ParseFromRdBuf(void)
 	U8 i, j;
 	U16 idx = 17;
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 3; i++)
 	{
 		for (j = 0; j < 4; j++)
 		{
@@ -557,9 +459,9 @@ void EEV_Para_ParseFromWrBuf(void)
 	U8 i, j;
 	U16 idx = 17;
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < EEV_SH_ROWS; i++)
 	{
-		for (j = 0; j < 4; j++)
+		for (j = 0; j < EEV_SH_COLS; j++)
 		{
 			U16 hi = EEP.u8_wrBuf[idx++];
 			U16 lo = EEP.u8_wrBuf[idx++];
@@ -567,9 +469,9 @@ void EEV_Para_ParseFromWrBuf(void)
 		}
 	}
 
-	for (i = 0; i < 7; i++)
+	for (i = 0; i < EEV_OPENINIT_ROWS; i++)
 	{
-		for (j = 0; j < 6; j++)
+		for (j = 0; j < EEV_OPENINIT_COLS; j++)
 		{
 			U16 hi = EEP.u8_wrBuf[idx++];
 			U16 lo = EEP.u8_wrBuf[idx++];
@@ -997,10 +899,10 @@ void    Remember_WriteEEPara(U8 ParaType)
 	
 	//地址16-159存放参数信息
 	EEP.u8_wrBuf[para_start] = C_REMEMBER_HEAD;	//头码
-	// 先清零参数区（头码保留），再由序列化或拷贝填充
+	// 先将参数区未定义（预留）字节设置为 0xFF（头码保留），再由序列化或拷贝填充
 	for (i = para_start + 1; i < checksum_low; i++)
 	{
-		EEP.u8_wrBuf[i] = 0;
+		EEP.u8_wrBuf[i] = 0xFF;
 	}
 	
 	if (ParaType == 0)		//0：默认值
@@ -1198,21 +1100,14 @@ void    Remember_WriteEEPara(U8 ParaType)
 	{
 		if (EEP.Step == ENUM_STEP_IDLE)
 		{
-			/* 按页写入整个参数区，逐页读回校验并重试 */
-			pages = (para_total + 15) / 16;
-			for (p = 0; p < pages; p++)
+			/* 使用统一写入函数按页写入整个参数区，失败由该函数返回 */
+			if (!EEV_Para_SaveToEE())
 			{
-				U16 offset = para_start + p * 16;
-				U8 size = (U8)((para_total > p * 16 + 16) ? 16 : (para_total - p * 16));
-				if (!EEPROM_WritePage_WithVerify(offset, &EEP.u8_wrBuf[offset], size))
-				{
-					/* 当前页写入失败，设置重写标志，稍后重试整个区域 */
-					EEP.Step = ENUM_STEP_IDLE;
-					i += 1;
-					break;
-				}
+				/* 写失败，稍后重试整个区域 */
+				EEP.Step = ENUM_STEP_IDLE;
+				i += 1;
 			}
-			if (EEP.Step != ENUM_STEP_IDLE)
+			else
 			{
 				EEP.Step = ENUM_STEP_WR;
 			}

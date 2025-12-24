@@ -319,9 +319,7 @@ void EEV_Apply_TrgSuperHeatCalc(void)
 	{
 		U8 tp_idx, t5_idx;
 
-		if (Tp.s16_ValueMul10 >= 100)
-			tp_idx = 3;
-		else if (Tp.s16_ValueMul10 >= 80)
+		if (Tp.s16_ValueMul10 >= 80)
 			tp_idx = 2;
 		else if (Tp.s16_ValueMul10 >= 60)
 			tp_idx = 1;
@@ -578,8 +576,8 @@ void	App_StepMotor_Run(void)
 						Comp.f_HavedDrvOn = 0;	//清除标志，防止重复复位
 					}
 				}
-				else 
-				{
+				else if ((Comp.u32_RunContCount > 1800) && (Comp.f_DrvOn == 1))
+				{//压机启动3min内不计算过热度
 					EEV_Apply_TrgSuperHeatCalc();		//计算过热度
 					Comp.f_HavedDrvOn = 1;
 		        	StepMotor.var.u16_CtrlPeriod ++;

@@ -31,7 +31,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                             * 若1群满人：进群927297508*
                             **************************
 ------------------------------------------------------------------------------------*/
-#define MainSoftWareVersion   0x0260		//内机版本
+#define MainSoftWareVersion   0x0270		//内机版本
 //-----------------以下是图形设置界面，可在Configuration Wizard界面设置-----------------
 //<<< Use Configuration Wizard in Context Menu >>>
 //<q>使能IO控制读写功能？
@@ -406,6 +406,12 @@ extern emu16  ecbm_modbus_rtu_reg_buf[ECBM_MODBUS_RTU_REG_BUF_SIZE];//寄存器存放
 #define  u16MB_EEV_SuperHeatAvg		ecbm_modbus_rtu_reg_buf[EEV_SuperHeatAvg]
 #define  EEV_DeltaStep				0x10E	//开度变化值
 #define  u16MB_EEV_DeltaStep		ecbm_modbus_rtu_reg_buf[EEV_DeltaStep]
+#define  EEV_SuperHeatTrg			0x10F	//目标过热度
+#define  u16MB_EEV_SuperHeatTrg		ecbm_modbus_rtu_reg_buf[EEV_SuperHeatTrg]
+#define  EEV_CtrlPeriod				0x110	//当前调节计时
+#define  u16MB_EEV_CtrlPeriod		ecbm_modbus_rtu_reg_buf[EEV_CtrlPeriod]
+#define  EEV_Kp						0x111	//当前kp
+#define  u16MB_EEV_Kp				ecbm_modbus_rtu_reg_buf[EEV_Kp]
 
 
 #endif

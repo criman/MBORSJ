@@ -319,9 +319,9 @@ void EEV_Apply_TrgSuperHeatCalc(void)
 	{
 		U8 tp_idx, t5_idx;
 
-		if (Tp.s16_ValueMul10 >= 80)
+		if (Tp.s16_ValueMul10 >= 800)
 			tp_idx = 2;
-		else if (Tp.s16_ValueMul10 >= 60)
+		else if (Tp.s16_ValueMul10 >= 600)
 			tp_idx = 1;
 		else
 			tp_idx = 0;
@@ -459,7 +459,7 @@ Revision History   1:
 ****************************************************************************************************/
 void	App_StepMotor_Run(void)
 {
-	static int s16SuperHeatSum,s16KP;
+	static int s16SuperHeatSum;
 	static unsigned char u8SuperHeatCnt;
     switch (StepMotor.var.u8_status)
     {
@@ -608,18 +608,18 @@ void	App_StepMotor_Run(void)
 							{
 								if (StepMotor.var.s16_SuperHeatAvg > 0)
 								{
-									s16KP = 10;
+									StepMotor.var.s16_EEVKp = 10;
 								}
 								else if (StepMotor.var.s16_SuperHeatAvg > -10)
 								{
-									s16KP = 15;
+									StepMotor.var.s16_EEVKp = 15;
 								}
 								else 
 								{
-									s16KP = 20;
+									StepMotor.var.s16_EEVKp = 20;
 								}
 								
-								StepMotor.var.s16_EEVDeltaStep = s16KP * 
+								StepMotor.var.s16_EEVDeltaStep = StepMotor.var.s16_EEVKp * 
 								  (StepMotor.var.s16_SuperHeatAvg -StepMotor.var.s16_SuperHeatTrg)/100;	// /10取温度个位数，/10为Kp取小数点
 
 								if (StepMotor.var.s16_EEVDeltaStep >=0)

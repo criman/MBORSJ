@@ -133,6 +133,7 @@ typedef		struct
     int16_t			s16_SuperHeatAvg;			//平均过热度
     int16_t			s16_SuperHeatTrg;			//目标过热度
     int16_t			s16_EEVDeltaStep;			//电子膨胀阀开度变化量
+    int16_t			s16_EEVKp;					//电子膨胀阀比例
 }STRUCT_STEPMOTOR;
 
 typedef		union

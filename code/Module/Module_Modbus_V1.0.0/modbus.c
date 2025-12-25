@@ -1171,7 +1171,19 @@ void ecbm_modbus_cmd_read_reg(emu16 addr,emu16 * dat){
     {
 		ecbm_modbus_rtu_reg_buf[addr] = StepMotor.var.s16_EEVDeltaStep;
     } 
-    
+    else if (addr == EEV_SuperHeatTrg)
+    {
+		ecbm_modbus_rtu_reg_buf[addr] = StepMotor.var.s16_SuperHeatTrg;
+    } 
+    else if (addr == EEV_CtrlPeriod)
+    {
+		ecbm_modbus_rtu_reg_buf[addr] = StepMotor.var.u16_CtrlPeriod;
+    }
+    else if (addr == EEV_Kp)
+    {
+		ecbm_modbus_rtu_reg_buf[addr] = StepMotor.var.s16_EEVKp;
+    }
+
     *dat=ecbm_modbus_rtu_reg_buf[addr];
 }
 #endif
